@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>勇者そらまめ - フィールド試作8</title>
+<title>勇者そらまめ - フィールド試作9</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;touch-action:none;overscroll-behavior:none;-webkit-text-size-adjust:100%;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;background:#102039;color:#fff}
@@ -15,18 +15,29 @@ button{font:inherit;-webkit-user-select:none;user-select:none;-webkit-touch-call
 #world{position:absolute;touch-action:none;overscroll-behavior:none;inset:58px 0 0;overflow:hidden;background:
 radial-gradient(circle at 52% 45%,rgba(116,204,93,.75),transparent 30%),
 linear-gradient(155deg,#376b35 0 58%,#80643e 58% 77%,#2f6b7f 77%);}
-#mapLayer{position:absolute;left:-120%;top:-120%;width:340%;height:340%;will-change:transform;pointer-events:none;}
-#path{position:absolute;left:-10%;top:52%;width:120%;height:25%;background:#8d7048;border-top:5px solid #725a3a;border-bottom:5px solid #725a3a;border-radius:20px;transform:rotate(1deg)}
-.water{position:absolute;right:-10%;bottom:-4%;width:58%;height:24%;background:#21637b;border-top:5px solid #17485b}
-.grass{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1px);background-size:25px 25px;opacity:.55}
+#mapLayer{
+ position:absolute;left:50%;top:50%;width:2400px;height:1800px;
+ will-change:transform;pointer-events:none;
+ background:#376b35;
+ background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1px);
+ background-size:42px 42px;
+}
+#path{position:absolute;left:0;top:720px;width:2400px;height:210px;background:#8d7048;border-top:7px solid #725a3a;border-bottom:7px solid #725a3a;border-radius:30px}
+#path2{position:absolute;left:1080px;top:0;width:180px;height:1800px;background:#8d7048;border-left:7px solid #725a3a;border-right:7px solid #725a3a}
+.water{position:absolute;left:1450px;top:180px;width:700px;height:420px;background:#21637b;border:7px solid #17485b;border-radius:40px}
+.grass{position:absolute;left:180px;top:180px;width:420px;height:330px;background:#4b823e;border-radius:45px;opacity:.9}
 #player{position:absolute;z-index:8;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:86px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .player-body{font-size:48px;filter:drop-shadow(0 3px 2px #17351a)}
 #playerName{margin-top:-3px;background:#142b18;padding:3px 9px;border-radius:10px;font-size:12px;font-weight:900}
 #playerMarker{position:absolute;z-index:7;left:50%;top:calc(50% + 37px);transform:translateX(-50%);font-size:23px;filter:drop-shadow(0 2px 2px #17351a)}
 .landmark{position:absolute;pointer-events:none;z-index:4;font-size:38px;filter:drop-shadow(0 3px 2px #17351a)}
-.t1{left:32%;top:38%}.t2{left:76%;top:63%}.r1{left:66%;top:34%}.r2{left:24%;top:70%}
+.t1{left:300px;top:300px}.t2{left:700px;top:1120px}.t3{left:1700px;top:900px}.t4{left:2050px;top:1350px}
+.r1{left:820px;top:300px}.r2{left:1450px;top:1050px}.r3{left:430px;top:1280px}.r4{left:1850px;top:420px}
+.sign{position:absolute;left:980px;top:650px;z-index:4;font-weight:900;background:#17361b;padding:10px 14px;border-radius:12px}
+.stage{left:1320px;top:640px}
+.mountain{left:1080px;top:480px}
 .node{position:absolute;pointer-events:none;z-index:5;padding:9px 13px;border-radius:14px;background:#16261a;color:#fff;border:2px solid #4d7654;font-weight:900;box-shadow:0 4px 8px #18351a66}
-.stage{left:57%;top:56%;background:#3d241b;border-color:#a76d45}
+.stage{background:#3d241b;border-color:#a76d45}
 .mountain{left:49%;top:43%;font-size:14px}
 .stage{pointer-events:auto;cursor:pointer;touch-action:manipulation}
 .stage:active{transform:scale(.96)}
@@ -52,13 +63,14 @@ linear-gradient(155deg,#376b35 0 58%,#80643e 58% 77%,#2f6b7f 77%);}
   <div id="hud"><div class="title">🌱 勇者そらまめ</div><div class="stats"><div class="badge">Lv.3</div><div class="badge">💰 375</div></div></div>
   <div id="notice">👣 しばらく歩くと敵が突然あらわれる！　敵はフィールドには表示されません</div>
   <div id="world"><div id="mapLayer">
-    <div class="grass"></div><div id="path"></div><div class="water"></div>
+    <div class="grass"></div><div id="path"></div><div id="path2"></div><div class="water"></div>
     <div class="node mountain">⛰️ 山道</div>
     <div class="node stage">🚪 ステージ1</div>
-    <div class="landmark tree t1">🌳</div>
-    <div class="landmark tree t2">🌳</div>
-    <div class="landmark rock r1">🪨</div>
-    <div class="landmark rock r2">🪨</div>
+    <div class="landmark tree t1">🌳</div><div class="landmark tree t2">🌳</div>
+    <div class="landmark tree t3">🌳</div><div class="landmark tree t4">🌳</div>
+    <div class="landmark rock r1">🪨</div><div class="landmark rock r2">🪨</div>
+    <div class="landmark rock r3">🪨</div><div class="landmark rock r4">🪨</div>
+    <div class="sign">🌱 村への道</div>
     </div><button id="worldBtn">🌎 世界移動</button><div id="player"><div class="player-body">🧑‍🌾</div><div id="playerName">そらまめ</div></div>
     <div id="playerMarker">🌱</div>
   </div>
@@ -78,6 +90,7 @@ linear-gradient(155deg,#376b35 0 58%,#80643e 58% 77%,#2f6b7f 77%);}
 </div>
 <script>
 let x=0,y=0,moving=false,steps=0,inBattle=false;
+window.addEventListener('load',()=>{document.getElementById('mapLayer').style.transform='translate(-50%,-50%)'});
 const world=document.getElementById('world');
 function move(dir){
   if(inBattle)return;
@@ -85,8 +98,17 @@ function move(dir){
   const dy={left:0,right:0,up:-1,down:1}[dir];
   x+=dx;y+=dy;steps++;
   // そらまめは画面中央に固定。地形・ステージだけがカメラに合わせて動く。
-  document.getElementById('mapLayer').style.transform =
-    `translate(${-x*70}px,${-y*70}px)`;
+  const map=document.getElementById('mapLayer');
+  map.style.transform =
+    `translate(calc(-50% + ${-x*64}px), calc(-50% + ${-y*64}px))`;
+  // 歩くたびに主人公が少し上下して「移動している」感を出す
+  const p=document.getElementById('player');
+  p.animate(
+    [{transform:'translate(-50%,-50%) translateY(0)'},
+     {transform:'translate(-50%,-50%) translateY(-7px)'},
+     {transform:'translate(-50%,-50%) translateY(0)'}],
+    {duration:180,easing:'ease-out'}
+  );
   if(steps>=8 && Math.random()<0.10){steps=0;encounter();}
 }
 
