@@ -488,7 +488,7 @@ function showStage2() {
         <button class="stage-node" style="left:342px;top:475px" onclick="stage2Middle()">🔵<small>入口</small></button>
         <button class="stage-node key ${k1 ? "done" : ""}" style="left:167px;top:170px" onclick="getStage2Key(1)">🔑<small>${k1 ? "取得済み" : "鍵1"}</small></button>
         <button class="stage-node key ${k2 ? "done" : ""}" style="left:517px;top:170px" onclick="getStage2Key(2)">🔑<small>${k2 ? "取得済み" : "鍵2"}</small></button>
-        <button class="stage-node ${unlocked ? "boss" : "locked"}" style="left:342px;top:110px" ${unlocked ? 'onclick="stage2Boss()"' : 'onclick="showLockMessage(2)"}'>
+        <button class="stage-node ${unlocked ? "boss" : "locked"}" style="left:342px;top:110px" ${unlocked ? 'onclick="stage2Boss()"' : 'onclick="showLockMessage(2)"'}>
             ${unlocked ? "👿" : "🔒"}<small>${unlocked ? "ボス" : "鍵2つ必要"}</small>
         </button>
 
@@ -560,15 +560,15 @@ function showStage3() {
             🔑<small>${k2 ? "取得済み" : "鍵2"}</small>
         </button>
 
-        <button class="stage-node ${unlocked ? "" : "locked"}" style="left:342px;top:265px" ${unlocked ? 'onclick="stage3UpperRoute()"' : 'onclick="showLockMessage(3)'}>
+        <button class="stage-node ${unlocked ? "" : "locked"}" style="left:342px;top:265px" ${unlocked ? 'onclick="stage3UpperRoute()"' : 'onclick="showLockMessage(3)"'}>
             ${unlocked ? "🔓" : "🔒"}<small>${unlocked ? "開通" : "封鎖中"}</small>
         </button>
 
-        <button class="stage-node ${unlocked ? "boss" : "locked"}" style="left:177px;top:65px" ${unlocked ? 'onclick="stage3Boss()"' : 'onclick="showLockMessage(3)'}>
+        <button class="stage-node ${unlocked ? "boss" : "locked"}" style="left:177px;top:65px" ${unlocked ? 'onclick="stage3Boss()"' : 'onclick="showLockMessage(3)"'}>
             ${unlocked ? "👿" : "🔒"}<small>${unlocked ? "ボス" : "未解放"}</small>
         </button>
 
-        <button class="stage-node ${unlocked ? "" : "locked"}" style="left:507px;top:65px" ${unlocked ? 'onclick="stage3UpperRoute()"' : 'onclick="showLockMessage(3)'}>
+        <button class="stage-node ${unlocked ? "" : "locked"}" style="left:507px;top:65px" ${unlocked ? 'onclick="stage3UpperRoute()"' : 'onclick="showLockMessage(3)"'}>
             ${unlocked ? "🔵" : "🔒"}<small>${unlocked ? "奥へ" : "封鎖中"}</small>
         </button>
 
