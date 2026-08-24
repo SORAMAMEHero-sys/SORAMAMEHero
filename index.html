@@ -1814,18 +1814,8 @@ function updateCamera(){
     )`;
 
 
-  player.style.left =
-    (
-      game.player.x -
-      cameraX
-    ) + "px";
-
-
-  player.style.top =
-    (
-      game.player.y -
-      cameraY
-    ) + "px";
+  player.style.left = game.player.x + "px";
+player.style.top = game.player.y + "px";
 
 }
 
