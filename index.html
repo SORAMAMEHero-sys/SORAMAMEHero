@@ -1361,11 +1361,350 @@ button{
 
 }
 
+よっしゃ！！😎🔥
+じゃあ**戦闘画面に入るときの「フィールドイン演出」**を追加しよう！
+
+今の戦闘UIは触らず、戦闘開始前に演出を挟む方式にするのが安全。
+追加するのは主にCSSと startBattle() の処理だけでOK。
+
+🎬 演出の流れ
+
+フィールド
+→ ⚡ 一瞬フラッシュ
+→ 📳 画面がガクッと揺れる
+→ 🌑 暗転
+→ ⚔️ 戦闘画面がフェードイン
+→ 👹「○○が現れた！」
+
+① CSSに追加
+
+</style> の直前に追加👇
+
+/* =========================================================
+   BATTLE TRANSITION
+========================================================= */
+
+#battleTransition{
+  position:fixed;
+  z-index:1000;
+  inset:0;
+
+  pointer-events:none;
+
+  background:#080b14;
+
+  opacity:0;
+
+  transition:
+    opacity .25s ease;
+}
+
+#battleTransition.active{
+  opacity:1;
+}
+
+#battleTransition.flash{
+  animation:
+    battleFlash .55s ease;
+}
+
+@keyframes battleFlash{
+
+  0%{
+    background:#ffffff;
+    opacity:0;
+  }
+
+  15%{
+    background:#ffffff;
+    opacity:.95;
+  }
+
+  35%{
+    background:#ffffff;
+    opacity:.15;
+  }
+
+  55%{
+    background:#080b14;
+    opacity:1;
+  }
+
+  100%{
+    background:#080b14;
+    opacity:1;
+  }
+
+}
+
+#viewport.battleShake{
+  animation:
+    battleShake .45s ease;
+}
+
+@keyframes battleShake{
+
+  0%{
+    transform:translate(0,0);
+  }
+
+  20%{
+    transform:translate(-8px,4px);
+  }
+
+  40%{
+    transform:translate(8px,-4px);
+  }
+
+  60%{
+    transform:translate(-5px,2px);
+  }
+
+  80%{
+    transform:translate(4px,-2px);
+  }
+
+  100%{
+    transform:translate(0,0);
+  }
+
+}
+
+② HTMLに追加
+
+<body> の中、#battle の前あたりに👇
+
+<div id="battleTransition"></div>
+
+③ JavaScriptに追加
+
+ELEMENTSのところに👇
+
+const battleTransition =
+  document.getElementById(
+    "battleTransition"
+  );
+
+④ startBattle() を少し変更
+
+今の
+
+function startBattle(enemy){
+
+から始まる処理を、こういう流れにする。
+
+function startBattle(enemy){
+
+  game.battle = true;
+
+  game.currentTurn = 0;
+
+  game.enemy.name =
+    enemy.name;
+
+  game.enemy.icon =
+    enemy.icon;
+
+  game.enemy.maxHp =
+    enemy.hp;
+
+  game.enemy.hp =
+    enemy.hp;
+
+
+  game.party.forEach(
+    member => {
+      member.defend = false;
+    }
+  );
+
+
+  document.getElementById(
+    "enemyIcon"
+  ).textContent =
+    game.enemy.icon;
+
+  document.getElementById(
+    "enemyNameBig"
+  ).textContent =
+    game.enemy.name;
+
+  document.getElementById(
+    "battleEnemyName"
+  ).textContent =
+    game.enemy.name;
+
+
+  battleResult.style.display =
+    "none";
+
+  skillWindow.classList.remove(
+    "show"
+  );
+
+
+  updateBattleUI();
+
+
+  /* =========================
+     戦闘突入演出
+  ========================= */
+
+  battleTransition.classList.remove(
+    "active",
+    "flash"
+  );
+
+  void battleTransition.offsetWidth;
+
+  battleTransition.classList.add(
+    "flash"
+  );
+
+  viewport.classList.add(
+    "battleShake"
+  );
+
+
+  setTimeout(() => {
+
+    viewport.classList.remove(
+      "battleShake"
+    );
+
+    battle.style.display =
+      "block";
+
+    battle.classList.remove(
+      "show"
+    );
+
+    requestAnimationFrame(() => {
+
+      battle.classList.add(
+        "show"
+      );
+
+    });
+
+  }, 450);
+
+
+  setTimeout(() => {
+
+    battleTransition.classList.remove(
+      "active"
+    );
+
+  }, 700);
+
+
+  setLog(
+    game.enemy.name +
+    "が現れた！"
+  );
+
+
+  updateTurnUI();
+
+}
+
+/* =========================================================
+   BATTLE TRANSITION
+========================================================= */
+
+#battleTransition{
+  position:fixed;
+  z-index:1000;
+  inset:0;
+
+  pointer-events:none;
+
+  background:#080b14;
+
+  opacity:0;
+
+  transition:
+    opacity .25s ease;
+}
+
+#battleTransition.active{
+  opacity:1;
+}
+
+#battleTransition.flash{
+  animation:
+    battleFlash .55s ease;
+}
+
+@keyframes battleFlash{
+
+  0%{
+    background:#ffffff;
+    opacity:0;
+  }
+
+  15%{
+    background:#ffffff;
+    opacity:.95;
+  }
+
+  35%{
+    background:#ffffff;
+    opacity:.15;
+  }
+
+  55%{
+    background:#080b14;
+    opacity:1;
+  }
+
+  100%{
+    background:#080b14;
+    opacity:1;
+  }
+
+}
+
+#viewport.battleShake{
+  animation:
+    battleShake .45s ease;
+}
+
+@keyframes battleShake{
+
+  0%{
+    transform:translate(0,0);
+  }
+
+  20%{
+    transform:translate(-8px,4px);
+  }
+
+  40%{
+    transform:translate(8px,-4px);
+  }
+
+  60%{
+    transform:translate(-5px,2px);
+  }
+
+  80%{
+    transform:translate(4px,-2px);
+  }
+
+  100%{
+    transform:translate(0,0);
+  }
+
+}
+
 </style>
 </head>
 
 <body>
 
+<div id="battleTransition"></div>
 
 <!-- =====================================================
      FIELD HUD
@@ -1980,6 +2319,11 @@ const game = {
    ELEMENTS
 ========================================================= */
 
+const battleTransition =
+  document.getElementById(
+    "battleTransition"
+  );
+
 const viewport =
   document.getElementById("viewport");
 
@@ -2301,7 +2645,6 @@ function startBattle(enemy){
 
   game.currentTurn = 0;
 
-
   game.enemy.name =
     enemy.name;
 
@@ -2317,9 +2660,7 @@ function startBattle(enemy){
 
   game.party.forEach(
     member => {
-
       member.defend = false;
-
     }
   );
 
@@ -2329,12 +2670,10 @@ function startBattle(enemy){
   ).textContent =
     game.enemy.icon;
 
-
   document.getElementById(
     "enemyNameBig"
   ).textContent =
     game.enemy.name;
-
 
   document.getElementById(
     "battleEnemyName"
@@ -2345,7 +2684,6 @@ function startBattle(enemy){
   battleResult.style.display =
     "none";
 
-
   skillWindow.classList.remove(
     "show"
   );
@@ -2354,17 +2692,58 @@ function startBattle(enemy){
   updateBattleUI();
 
 
-  battle.style.display =
-    "block";
+  /* =========================
+     戦闘突入演出
+  ========================= */
+
+  battleTransition.classList.remove(
+    "active",
+    "flash"
+  );
+
+  void battleTransition.offsetWidth;
+
+  battleTransition.classList.add(
+    "active",
+    "flash"
+  );
+
+  viewport.classList.add(
+    "battleShake"
+  );
 
 
-  requestAnimationFrame(() => {
+  setTimeout(() => {
 
-    battle.classList.add(
+    viewport.classList.remove(
+      "battleShake"
+    );
+
+    battle.style.display =
+      "block";
+
+    battle.classList.remove(
       "show"
     );
 
-  });
+    requestAnimationFrame(() => {
+
+      battle.classList.add(
+        "show"
+      );
+
+    });
+
+  }, 450);
+
+
+  setTimeout(() => {
+
+    battleTransition.classList.remove(
+      "active"
+    );
+
+  }, 700);
 
 
   setLog(
