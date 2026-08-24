@@ -10,7 +10,7 @@ maximum-scale=1,
 minimum-scale=1,
 user-scalable=no">
 
-<title>勇者そらまめ</title>
+<title>勇者そらまめ - エリア1</title>
 
 <style>
 
@@ -148,7 +148,236 @@ button{
 
 
 /* =========================================================
-   ROADS
+   STAGE THEME
+========================================================= */
+
+#world.stageForest{
+  background-color:#376e37;
+}
+
+#world.stageCave{
+  background-color:#333846;
+
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,.05)
+      1px,
+      transparent 1px
+    );
+}
+
+#world.stageSea{
+  background-color:#276c7e;
+
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,.08)
+      1px,
+      transparent 1px
+    );
+}
+
+
+/* =========================================================
+   STAGE DECORATIONS
+========================================================= */
+
+.decor{
+  position:absolute;
+  pointer-events:none;
+}
+
+.forestDecor{
+  width:85px;
+  height:85px;
+
+  border-radius:50%;
+
+  background:#285f31;
+
+  border:9px solid #194725;
+
+  box-shadow:
+    inset 0 0 0 6px #3f8141;
+}
+
+.caveDecor{
+  width:75px;
+  height:52px;
+
+  border-radius:50%;
+
+  background:#626873;
+
+  border:5px solid #414650;
+}
+
+.seaDecor{
+  width:90px;
+  height:90px;
+
+  border-radius:50%;
+
+  background:#3b9bb0;
+
+  border:5px solid #216579;
+}
+
+
+/* =========================================================
+   STAGE SELECT AREA
+========================================================= */
+
+.stageSelectArea{
+  position:absolute;
+
+  z-index:8;
+
+  left:180px;
+  top:250px;
+
+  width:600px;
+  min-height:340px;
+
+  padding:25px;
+
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #365f38,
+      #27492d
+    );
+
+  border:6px solid #203d25;
+
+  box-shadow:
+    0 12px 25px rgba(0,0,0,.3);
+}
+
+.stageSelectTitle{
+  text-align:center;
+
+  color:white;
+
+  font-size:25px;
+
+  font-weight:900;
+
+  letter-spacing:3px;
+
+  text-shadow:
+    0 3px 4px rgba(0,0,0,.5);
+
+  margin-bottom:20px;
+}
+
+.areaLabel{
+  text-align:center;
+
+  color:#ffd866;
+
+  font-size:13px;
+
+  font-weight:bold;
+
+  margin-bottom:14px;
+}
+
+.stageCards{
+  display:flex;
+
+  gap:14px;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+}
+
+.stageCard{
+  width:165px;
+  min-height:115px;
+
+  padding:14px;
+
+  border-radius:17px;
+
+  border:3px solid #aa694a;
+
+  background:#43251c;
+
+  color:white;
+
+  font-weight:bold;
+
+  box-shadow:
+    0 7px 14px rgba(0,0,0,.35);
+
+  transition:
+    transform .1s,
+    filter .1s;
+}
+
+.stageCard:active{
+  transform:scale(.95);
+  filter:brightness(1.2);
+}
+
+.stageCard.locked{
+  background:#252a32;
+
+  border-color:#555d68;
+
+  opacity:.55;
+}
+
+.stageCardTitle{
+  font-size:17px;
+}
+
+.stageCardSmall{
+  display:block;
+
+  margin-top:7px;
+
+  font-size:11px;
+
+  opacity:.75;
+}
+
+.stageCardClear{
+  margin-top:8px;
+
+  font-size:11px;
+
+  color:#ffe66d;
+}
+
+
+/* =========================================================
+   VILLAGE
+========================================================= */
+
+.village{
+  position:absolute;
+
+  left:220px;
+  top:700px;
+
+  width:300px;
+  height:230px;
+
+  background:#548d43;
+
+  border:5px solid #3d6e34;
+
+  border-radius:30px;
+}
+
+
+/* =========================================================
+   ROAD
 ========================================================= */
 
 .road{
@@ -200,238 +429,6 @@ button{
 
 
 /* =========================================================
-   VILLAGE
-========================================================= */
-
-.village{
-  position:absolute;
-
-  left:220px;
-  top:700px;
-
-  width:300px;
-  height:230px;
-
-  background:#548d43;
-
-  border:5px solid #3d6e34;
-
-  border-radius:30px;
-}
-
-
-/* =========================================================
-   STAGE SELECT AREA
-========================================================= */
-
-.stageSelectArea{
-  position:absolute;
-
-  z-index:8;
-
-  left:180px;
-  top:250px;
-
-  width:500px;
-  min-height:270px;
-
-  padding:25px;
-
-  border-radius:30px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #365f38,
-      #27492d
-    );
-
-  border:6px solid #203d25;
-
-  box-shadow:
-    0 12px 25px rgba(0,0,0,.3);
-}
-
-.stageSelectTitle{
-  text-align:center;
-
-  color:white;
-
-  font-size:25px;
-
-  font-weight:900;
-
-  letter-spacing:3px;
-
-  text-shadow:
-    0 3px 4px rgba(0,0,0,.5);
-
-  margin-bottom:20px;
-}
-
-.stageCards{
-  display:flex;
-
-  gap:14px;
-
-  justify-content:center;
-
-  flex-wrap:wrap;
-}
-
-.stageCard{
-  width:180px;
-  min-height:105px;
-
-  padding:14px;
-
-  border-radius:17px;
-
-  border:3px solid #aa694a;
-
-  background:#43251c;
-
-  color:white;
-
-  font-weight:bold;
-
-  box-shadow:
-    0 7px 14px rgba(0,0,0,.35);
-
-  transition:
-    transform .1s,
-    filter .1s;
-}
-
-.stageCard:active{
-  transform:scale(.95);
-  filter:brightness(1.2);
-}
-
-.stageCardTitle{
-  font-size:17px;
-}
-
-.stageCardSmall{
-  display:block;
-
-  margin-top:7px;
-
-  font-size:11px;
-
-  opacity:.75;
-}
-
-.stageCardClear{
-  margin-top:8px;
-
-  font-size:11px;
-
-  color:#ffe66d;
-}
-
-
-/* =========================================================
-   TREES
-========================================================= */
-
-.tree{
-  position:absolute;
-
-  width:70px;
-  height:70px;
-
-  border-radius:50%;
-
-  background:#28612f;
-
-  border:8px solid #1c4824;
-
-  box-shadow:
-    inset 0 0 0 5px #3d8140;
-}
-
-.tree:after{
-  content:"";
-
-  position:absolute;
-
-  left:22px;
-  top:58px;
-
-  width:18px;
-  height:32px;
-
-  background:#704a2b;
-
-  z-index:-1;
-}
-
-.t1{
-  left:300px;
-  top:260px;
-}
-
-.t2{
-  left:700px;
-  top:420px;
-}
-
-.t3{
-  left:830px;
-  top:1280px;
-}
-
-.t4{
-  left:1660px;
-  top:1040px;
-}
-
-.t5{
-  left:2050px;
-  top:1330px;
-}
-
-.t6{
-  left:1900px;
-  top:260px;
-}
-
-
-/* =========================================================
-   ROCKS
-========================================================= */
-
-.rock{
-  position:absolute;
-
-  width:60px;
-  height:42px;
-
-  border-radius:50%;
-
-  background:#6b7279;
-
-  border:4px solid #4d5359;
-}
-
-.r1{
-  left:600px;
-  top:1080px;
-}
-
-.r2{
-  left:1500px;
-  top:800px;
-}
-
-.r3{
-  left:2050px;
-  top:700px;
-}
-
-
-/* =========================================================
    GOAL
 ========================================================= */
 
@@ -443,8 +440,8 @@ button{
   left:1200px;
   top:120px;
 
-  width:180px;
-  height:150px;
+  width:220px;
+  height:180px;
 
   transform:
     translate(-50%,-50%);
@@ -468,7 +465,7 @@ button{
   border-right:72px solid transparent;
 
   border-top:0;
-  border-bottom:52px solid #ffffff;
+  border-bottom:52px solid #777;
 
   filter:
     drop-shadow(
@@ -497,7 +494,7 @@ button{
       0% 100%
     );
 
-  background:#bfc5ca;
+  background:#555;
 
   z-index:-1;
 }
@@ -513,11 +510,19 @@ button{
 
   letter-spacing:8px;
 
-  color:#ffffff;
+  color:#777;
 
   text-shadow:
-    0 3px 0 #555,
+    0 3px 0 #333,
     0 5px 8px rgba(0,0,0,.5);
+}
+
+#goal.unlocked .goalArrow{
+  border-bottom-color:#fff;
+}
+
+#goal.unlocked .goalText{
+  color:#fff;
 }
 
 #goal.reached .goalArrow{
@@ -547,7 +552,6 @@ button{
         rgba(255,255,255,.95)
       );
   }
-
 }
 
 @keyframes goalTextFlash{
@@ -559,53 +563,119 @@ button{
   to{
     transform:scale(1.12);
   }
-
 }
 
 
 /* =========================================================
-   STAGE
+   KEY
 ========================================================= */
 
-.stage{
+.key{
   position:absolute;
 
-  z-index:10;
+  z-index:30;
 
-  width:140px;
-  min-height:65px;
+  width:55px;
+  height:55px;
 
-  padding:10px;
+  display:flex;
 
-  border-radius:16px;
+  align-items:center;
+  justify-content:center;
 
-  background:#43251c;
+  font-size:35px;
 
-  border:3px solid #aa694a;
+  border-radius:50%;
+
+  background:
+    rgba(255,216,102,.15);
+
+  border:3px solid rgba(255,216,102,.6);
+
+  box-shadow:
+    0 0 18px rgba(255,216,102,.25);
+
+  animation:
+    keyFloat 1s infinite alternate;
+}
+
+.key.collected{
+  display:none;
+}
+
+@keyframes keyFloat{
+
+  from{
+    transform:translateY(0);
+  }
+
+  to{
+    transform:translateY(-7px);
+  }
+}
+
+
+/* =========================================================
+   KEY COUNTER
+========================================================= */
+
+#keyCounter{
+  position:fixed;
+
+  z-index:95;
+
+  left:50%;
+  top:68px;
+
+  transform:translateX(-50%);
+
+  padding:7px 13px;
+
+  border-radius:12px;
+
+  background:rgba(15,24,39,.9);
+
+  border:1px solid #7184a2;
 
   color:white;
 
+  font-size:12px;
+
   font-weight:bold;
 
-  text-align:center;
-
-  box-shadow:
-    0 6px 15px rgba(0,0,0,.35);
+  pointer-events:none;
 }
 
-.stage small{
-  display:block;
 
-  margin-top:4px;
+/* =========================================================
+   STAGE INFO
+========================================================= */
 
-  font-size:11px;
+#stageInfo{
+  position:fixed;
 
-  opacity:.75;
-}
+  z-index:95;
 
-#stage1{
-  left:1350px;
-  top:650px;
+  left:50%;
+  bottom:18px;
+
+  transform:translateX(-50%);
+
+  padding:7px 14px;
+
+  border-radius:12px;
+
+  background:rgba(15,24,39,.9);
+
+  border:1px solid #7184a2;
+
+  color:white;
+
+  font-size:12px;
+
+  font-weight:bold;
+
+  pointer-events:none;
 }
 
 
@@ -672,7 +742,7 @@ button{
   z-index:80;
 
   left:50%;
-  top:70px;
+  top:105px;
 
   transform:
     translateX(-50%);
@@ -841,7 +911,6 @@ button{
     background:#080b14;
     opacity:1;
   }
-
 }
 
 #viewport.battleShake{
@@ -874,7 +943,6 @@ button{
   100%{
     transform:translate(0,0);
   }
-
 }
 
 
@@ -1078,7 +1146,6 @@ button{
   100%{
     transform:translateX(0);
   }
-
 }
 
 
@@ -1172,12 +1239,11 @@ button{
       translate(-50%,-75px)
       scale(1);
   }
-
 }
 
 
 /* =========================================================
-   PARTY AREA
+   PARTY
 ========================================================= */
 
 .partyArea{
@@ -1326,7 +1392,7 @@ button{
 
 
 /* =========================================================
-   COMMAND AREA
+   COMMAND
 ========================================================= */
 
 .commandArea{
@@ -1534,7 +1600,6 @@ button{
     transform:scale(1);
     opacity:1;
   }
-
 }
 
 .resultIcon{
@@ -1571,64 +1636,6 @@ button{
   color:white;
 
   font-weight:bold;
-}
-
-
-/* =========================================================
-   WORLD PANEL
-========================================================= */
-
-#worldPanel{
-  position:fixed;
-
-  z-index:300;
-
-  inset:0;
-
-  display:none;
-
-  align-items:center;
-
-  justify-content:center;
-
-  background:rgba(0,0,0,.7);
-}
-
-.panel{
-  width:85%;
-  max-width:350px;
-
-  padding:22px;
-
-  border-radius:18px;
-
-  background:#17243a;
-
-  border:2px solid #657b9c;
-
-  color:white;
-
-  text-align:center;
-}
-
-.panel button{
-  width:100%;
-
-  margin-top:10px;
-
-  padding:12px;
-
-  border:0;
-
-  border-radius:10px;
-
-  background:#304967;
-
-  color:white;
-}
-
-.close{
-  background:#663b3b !important;
 }
 
 
@@ -1701,7 +1708,6 @@ button{
       scale(1)
       translateY(0);
   }
-
 }
 
 .goalResultIcon{
@@ -1760,6 +1766,64 @@ button{
 
 
 /* =========================================================
+   WORLD PANEL
+========================================================= */
+
+#worldPanel{
+  position:fixed;
+
+  z-index:300;
+
+  inset:0;
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:rgba(0,0,0,.7);
+}
+
+.panel{
+  width:85%;
+  max-width:350px;
+
+  padding:22px;
+
+  border-radius:18px;
+
+  background:#17243a;
+
+  border:2px solid #657b9c;
+
+  color:white;
+
+  text-align:center;
+}
+
+.panel button{
+  width:100%;
+
+  margin-top:10px;
+
+  padding:12px;
+
+  border:0;
+
+  border-radius:10px;
+
+  background:#304967;
+
+  color:white;
+}
+
+.close{
+  background:#663b3b !important;
+}
+
+
+/* =========================================================
    RESPONSIVE
 ========================================================= */
 
@@ -1788,14 +1852,14 @@ button{
 @media(max-width:500px){
 
   .stageSelectArea{
-    left:100px;
-    top:250px;
+    left:70px;
+    top:220px;
 
-    width:380px;
+    width:390px;
   }
 
   .stageCard{
-    width:155px;
+    width:145px;
   }
 
   .partyArea{
@@ -1846,16 +1910,11 @@ button{
 
 }
 
-
-/* =========================================================
-   SMALL SCREEN STAGE SELECT
-========================================================= */
-
 @media(max-width:420px){
 
   .stageSelectArea{
-    left:60px;
-    top:250px;
+    left:45px;
+    top:220px;
 
     width:350px;
 
@@ -1867,7 +1926,7 @@ button{
   }
 
   .stageCard{
-    width:145px;
+    width:140px;
   }
 
 }
@@ -1886,7 +1945,7 @@ button{
 
 
 <!-- =====================================================
-     FIELD HUD
+     HUD
 ===================================================== -->
 
 <header id="hud">
@@ -1911,6 +1970,15 @@ button{
 
 
 <!-- =====================================================
+     KEY COUNTER
+===================================================== -->
+
+<div id="keyCounter">
+  🔑 鍵 0 / 0
+</div>
+
+
+<!-- =====================================================
      FIELD
 ===================================================== -->
 
@@ -1926,14 +1994,18 @@ button{
     <div class="village"></div>
 
 
-    <!-- =================================================
-         STAGE SELECT FIELD
-    ================================================= -->
+    <!-- STAGE SELECT -->
 
-    <div class="stageSelectArea">
+    <div
+      class="stageSelectArea"
+      id="stageSelectArea">
 
       <div class="stageSelectTitle">
-        🗺️ ステージ選択
+        🗺️ エリア1
+      </div>
+
+      <div class="areaLabel">
+        森・洞窟・海
       </div>
 
       <div class="stageCards">
@@ -1943,11 +2015,11 @@ button{
           id="stageSelect1">
 
           <div class="stageCardTitle">
-            🚪 ステージ1
+            🌲 ステージ1
           </div>
 
           <span class="stageCardSmall">
-            山道
+            森
           </span>
 
           <div
@@ -1960,14 +2032,58 @@ button{
 
         </button>
 
+
+        <button
+          class="stageCard locked"
+          id="stageSelect2">
+
+          <div class="stageCardTitle">
+            🪨 ステージ2
+          </div>
+
+          <span class="stageCardSmall">
+            洞窟
+          </span>
+
+          <div
+            class="stageCardClear"
+            id="stage2Clear">
+
+            🔒 未解放
+
+          </div>
+
+        </button>
+
+
+        <button
+          class="stageCard locked"
+          id="stageSelect3">
+
+          <div class="stageCardTitle">
+            🌊 ステージ3
+          </div>
+
+          <span class="stageCardSmall">
+            海
+          </span>
+
+          <div
+            class="stageCardClear"
+            id="stage3Clear">
+
+            🔒 未解放
+
+          </div>
+
+        </button>
+
       </div>
 
     </div>
 
 
-    <!-- =================================================
-         GOAL
-    ================================================= -->
+    <!-- GOAL -->
 
     <div id="goal">
 
@@ -1980,45 +2096,31 @@ button{
     </div>
 
 
-    <!-- =================================================
-         TREES
-    ================================================= -->
+    <!-- KEYS -->
 
-    <div class="tree t1"></div>
-    <div class="tree t2"></div>
-    <div class="tree t3"></div>
-    <div class="tree t4"></div>
-    <div class="tree t5"></div>
-    <div class="tree t6"></div>
+    <div
+      class="key"
+      data-key="1"
+      style="left:700px;top:600px;">
+      🔑
+    </div>
 
+    <div
+      class="key"
+      data-key="2"
+      style="left:900px;top:950px;">
+      🔑
+    </div>
 
-    <!-- =================================================
-         ROCKS
-    ================================================= -->
-
-    <div class="rock r1"></div>
-    <div class="rock r2"></div>
-    <div class="rock r3"></div>
-
-
-    <!-- =================================================
-         OLD STAGE BUTTON
-    ================================================= -->
-
-    <button class="stage" id="stage1">
-
-      🚪 ステージ1
-
-      <small>
-        山道
-      </small>
-
-    </button>
+    <div
+      class="key"
+      data-key="3"
+      style="left:1050px;top:500px;">
+      🔑
+    </div>
 
 
-    <!-- =================================================
-         PLAYER
-    ================================================= -->
+    <!-- PLAYER -->
 
     <div id="player">
 
@@ -2046,7 +2148,16 @@ button{
 ===================================================== -->
 
 <div id="message">
-  👣 フィールドを探索しよう！
+  🗺️ ステージを選択しよう！
+</div>
+
+
+<!-- =====================================================
+     STAGE INFO
+===================================================== -->
+
+<div id="stageInfo">
+  エリア1・ステージ選択
 </div>
 
 
@@ -2088,7 +2199,9 @@ button{
 
   <div class="goalResultBox">
 
-    <div class="goalResultIcon">
+    <div
+      class="goalResultIcon"
+      id="goalResultIcon">
       🌟
     </div>
 
@@ -2096,13 +2209,16 @@ button{
       STAGE CLEAR!
     </div>
 
-    <div class="goalResultSub">
-      山道を突破した！
+    <div
+      class="goalResultSub"
+      id="goalResultSub">
+      ステージクリア！
     </div>
 
-    <div class="goalResultText">
-      そらまめたちは<br>
-      新たな冒険への道を切り開いた！
+    <div
+      class="goalResultText"
+      id="goalResultText">
+      次のステージが解放された！
     </div>
 
     <button
@@ -2131,9 +2247,7 @@ button{
       <div
         class="enemyTitle"
         id="battleEnemyName">
-
-        ワイルドウルフ
-
+        敵
       </div>
 
       <div class="enemyHPOuter">
@@ -2177,24 +2291,20 @@ button{
     <div
       class="enemyIcon"
       id="enemyIcon">
-
-      🐺
-
+      👾
     </div>
 
     <div
       class="enemyNameBig"
       id="enemyNameBig">
-
-      ワイルドウルフ
-
+      敵
     </div>
 
   </div>
 
 
   <div id="battleLog">
-    ワイルドウルフが現れた！
+    敵が現れた！
   </div>
 
 
@@ -2215,7 +2325,6 @@ button{
 
       <div class="barLabel">
         <span>HP</span>
-
         <span id="hpText0">
           100/100
         </span>
@@ -2232,7 +2341,6 @@ button{
 
       <div class="barLabel">
         <span>MP</span>
-
         <span id="mpText0">
           50/50
         </span>
@@ -2264,7 +2372,6 @@ button{
 
       <div class="barLabel">
         <span>HP</span>
-
         <span id="hpText1">
           90/90
         </span>
@@ -2281,7 +2388,6 @@ button{
 
       <div class="barLabel">
         <span>MP</span>
-
         <span id="mpText1">
           40/40
         </span>
@@ -2313,7 +2419,6 @@ button{
 
       <div class="barLabel">
         <span>HP</span>
-
         <span id="hpText2">
           80/80
         </span>
@@ -2330,7 +2435,6 @@ button{
 
       <div class="barLabel">
         <span>MP</span>
-
         <span id="mpText2">
           60/60
         </span>
@@ -2355,36 +2459,25 @@ button{
     <button
       class="command attack"
       id="attackButton">
-
       ⚔️ こうげき
-
     </button>
-
 
     <button
       class="command skill"
       id="skillButton">
-
       ✨ スキル
-
     </button>
-
 
     <button
       class="command defend"
       id="defendButton">
-
       🛡️ ぼうぎょ
-
     </button>
-
 
     <button
       class="command run"
       id="runButton">
-
       🏃 にげる
-
     </button>
 
   </div>
@@ -2396,52 +2489,31 @@ button{
       ✨ スキル
     </h3>
 
-
     <button
       class="skillButton"
       data-skill="fire">
-
       🔥 ファイア
-
-      <span>
-        MP 10
-      </span>
-
+      <span>MP 10</span>
     </button>
-
 
     <button
       class="skillButton"
       data-skill="heal">
-
       💚 ヒール
-
-      <span>
-        MP 12
-      </span>
-
+      <span>MP 12</span>
     </button>
-
 
     <button
       class="skillButton"
       data-skill="power">
-
       💥 パワーストライク
-
-      <span>
-        MP 15
-      </span>
-
+      <span>MP 15</span>
     </button>
-
 
     <button
       class="skillClose"
       id="skillClose">
-
       戻る
-
     </button>
 
   </div>
@@ -2454,36 +2526,25 @@ button{
       <div
         class="resultIcon"
         id="resultIcon">
-
         🎉
-
       </div>
-
 
       <div
         class="resultTitle"
         id="resultTitle">
-
         勝利！
-
       </div>
-
 
       <div
         class="resultText"
         id="resultText">
-
-        30ゴールドを手に入れた！
-
+        敵を倒した！
       </div>
-
 
       <button
         class="resultButton"
         id="resultButton">
-
         フィールドへ戻る
-
       </button>
 
     </div>
@@ -2509,23 +2570,18 @@ button{
       行き先を選択
     </p>
 
-
     <button id="surfaceSave">
       🌱 表世界・セーブポイント
     </button>
-
 
     <button id="underSave">
       🌑 裏世界・セーブポイント
     </button>
 
-
     <button
       class="close"
       id="closeWorld">
-
       閉じる
-
     </button>
 
   </div>
@@ -2549,11 +2605,17 @@ const game = {
 
   goalReached:false,
 
-  steps:0,
+  stageMode:false,
+
+  currentStage:0,
 
   currentTurn:0,
 
+  steps:0,
+
   clearedStages:[],
+
+  collectedKeys:[],
 
   player:{
 
@@ -2579,7 +2641,9 @@ const game = {
 
     hp:50,
 
-    maxHp:50
+    maxHp:50,
+
+    boss:false
 
   },
 
@@ -2618,6 +2682,136 @@ const game = {
   ]
 
 };
+
+
+/* =========================================================
+   STAGE DATA
+========================================================= */
+
+const stages = {
+
+  1:{
+    name:"森",
+    icon:"🌲",
+    boss:{
+      name:"カマセキャット",
+      icon:"🐱",
+      hp:90
+    },
+    keys:3,
+    keyPositions:[
+      [700,600],
+      [900,950],
+      [1050,500]
+    ],
+    bg:"stageForest"
+  },
+
+  2:{
+    name:"洞窟",
+    icon:"🪨",
+    boss:{
+      name:"ホドック",
+      icon:"👹",
+      hp:120
+    },
+    keys:4,
+    keyPositions:[
+      [650,450],
+      [850,1050],
+      [1050,650],
+      [900,300]
+    ],
+    bg:"stageCave",
+    soldier:{
+      name:"ヌクレアイス",
+      icon:"❄️",
+      hp:100
+    }
+  },
+
+  3:{
+    name:"海",
+    icon:"🌊",
+    boss:{
+      name:"シャラッシー",
+      icon:"🦑",
+      hp:150
+    },
+    keys:5,
+    keyPositions:[
+      [600,500],
+      [800,900],
+      [1050,450],
+      [850,1150],
+      [1050,800]
+    ],
+    bg:"stageSea",
+    soldier:{
+      name:"ヌクレアイス",
+      icon:"❄️",
+      hp:115
+    }
+  }
+
+};
+
+
+/* =========================================================
+   SAVE / LOAD
+========================================================= */
+
+function saveGame(){
+
+  localStorage.setItem(
+    "soramame_area1_save",
+    JSON.stringify({
+      level:game.level,
+      gold:game.gold,
+      clearedStages:game.clearedStages
+    })
+  );
+
+}
+
+
+function loadGame(){
+
+  try{
+
+    const data =
+      JSON.parse(
+        localStorage.getItem(
+          "soramame_area1_save"
+        )
+      );
+
+    if(!data)
+      return;
+
+    game.level =
+      data.level || 1;
+
+    game.gold =
+      data.gold || 0;
+
+    game.clearedStages =
+      Array.isArray(
+        data.clearedStages
+      )
+        ? data.clearedStages
+        : [];
+
+  }catch(error){
+
+    console.log(
+      "セーブデータを読み込めませんでした。",
+      error
+    );
+
+  }
+
+}
 
 
 /* =========================================================
@@ -2674,6 +2868,21 @@ const goalResult =
     "goalResult"
   );
 
+const keyCounter =
+  document.getElementById(
+    "keyCounter"
+  );
+
+const stageInfo =
+  document.getElementById(
+    "stageInfo"
+  );
+
+const stageSelectArea =
+  document.getElementById(
+    "stageSelectArea"
+  );
+
 
 /* =========================================================
    HUD
@@ -2695,28 +2904,172 @@ function updateHUD(){
 
 
 /* =========================================================
-   STAGE SELECT UI
+   STAGE SELECT
 ========================================================= */
 
 function updateStageSelect(){
 
-  const clearText =
-    document.getElementById(
-      "stage1Clear"
+  for(let i = 1; i <= 3; i++){
+
+    const button =
+      document.getElementById(
+        "stageSelect" + i
+      );
+
+    const text =
+      document.getElementById(
+        "stage" + i + "Clear"
+      );
+
+
+    const unlocked =
+      i === 1 ||
+      game.clearedStages.includes(
+        i - 1
+      );
+
+    const cleared =
+      game.clearedStages.includes(i);
+
+
+    button.classList.toggle(
+      "locked",
+      !unlocked
     );
 
 
+    if(cleared){
+
+      text.textContent =
+        "✓ CLEAR済み";
+
+    }else if(unlocked){
+
+      text.textContent =
+        "プレイ可能";
+
+    }else{
+
+      text.textContent =
+        "🔒 未解放";
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   CLEAR KEYS
+========================================================= */
+
+function clearKeys(){
+
+  document
+    .querySelectorAll(
+      ".key"
+    )
+    .forEach(
+      key =>
+        key.remove()
+    );
+
+}
+
+
+/* =========================================================
+   CREATE STAGE KEYS
+========================================================= */
+
+function createStageKeys(){
+
+  clearKeys();
+
+  game.collectedKeys = [];
+
+  const stage =
+    stages[
+      game.currentStage
+    ];
+
+  if(!stage)
+    return;
+
+
+  stage.keyPositions.forEach(
+    (position,index) => {
+
+      const key =
+        document.createElement(
+          "div"
+        );
+
+      key.className =
+        "key";
+
+      key.dataset.key =
+        index;
+
+      key.style.left =
+        position[0] + "px";
+
+      key.style.top =
+        position[1] + "px";
+
+      key.textContent =
+        "🔑";
+
+      world.appendChild(
+        key
+      );
+
+    }
+  );
+
+
+  updateKeyCounter();
+
+}
+
+
+/* =========================================================
+   KEY COUNTER
+========================================================= */
+
+function updateKeyCounter(){
+
+  const stage =
+    stages[
+      game.currentStage
+    ];
+
+
+  if(!game.stageMode || !stage){
+
+    keyCounter.textContent =
+      "🔑 ステージ選択中";
+
+    return;
+
+  }
+
+
+  keyCounter.textContent =
+
+    "🔑 鍵 " +
+    game.collectedKeys.length +
+    " / " +
+    stage.keys;
+
+
   if(
-    game.clearedStages.includes(1)
+    game.collectedKeys.length >=
+    stage.keys
   ){
 
-    clearText.textContent =
-      "✓ CLEAR済み";
-
-  }else{
-
-    clearText.textContent =
-      "未クリア";
+    keyCounter.textContent =
+      "🔓 🔑 鍵をすべて集めた！";
 
   }
 
@@ -2782,6 +3135,396 @@ function updateCamera(){
 
 
 /* =========================================================
+   DISTANCE
+========================================================= */
+
+function distanceBetween(
+  x1,
+  y1,
+  x2,
+  y2
+){
+
+  const dx =
+    x1 - x2;
+
+  const dy =
+    y1 - y2;
+
+  return Math.sqrt(
+    dx * dx +
+    dy * dy
+  );
+
+}
+
+
+/* =========================================================
+   COLLECT KEYS
+========================================================= */
+
+function checkKeys(){
+
+  if(!game.stageMode)
+    return;
+
+
+  document
+    .querySelectorAll(
+      ".key:not(.collected)"
+    )
+    .forEach(
+      key => {
+
+        const x =
+          parseFloat(
+            key.style.left
+          ) + 27;
+
+        const y =
+          parseFloat(
+            key.style.top
+          ) + 27;
+
+
+        if(
+          distanceBetween(
+            game.player.x,
+            game.player.y,
+            x,
+            y
+          ) <= 65
+        ){
+
+          const id =
+            Number(
+              key.dataset.key
+            );
+
+
+          if(
+            game.collectedKeys.includes(
+              id
+            )
+          ){
+
+            return;
+
+          }
+
+
+          game.collectedKeys.push(
+            id
+          );
+
+
+          key.classList.add(
+            "collected"
+          );
+
+
+          updateKeyCounter();
+
+
+          const stage =
+            stages[
+              game.currentStage
+            ];
+
+
+          showMessage(
+            "🔑 鍵を手に入れた！ " +
+            game.collectedKeys.length +
+            "/" +
+            stage.keys
+          );
+
+
+          if(
+            game.collectedKeys.length >=
+            stage.keys
+          ){
+
+            unlockGoal();
+
+          }
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   GOAL
+========================================================= */
+
+function unlockGoal(){
+
+  goal.classList.add(
+    "unlocked"
+  );
+
+
+  showMessage(
+    "🔓 鍵が全部そろった！ GOALへ向かおう！"
+  );
+
+}
+
+
+function checkGoal(){
+
+  if(
+    !game.stageMode ||
+    game.goalReached
+  ){
+
+    return;
+
+  }
+
+
+  const stage =
+    stages[
+      game.currentStage
+    ];
+
+
+  if(
+    game.collectedKeys.length <
+    stage.keys
+  ){
+
+    const remaining =
+      stage.keys -
+      game.collectedKeys.length;
+
+
+    if(
+      game.steps % 12 === 0
+    ){
+
+      showMessage(
+        "🔒 ゴールは閉じている！ 残り鍵 " +
+        remaining +
+        "個"
+      );
+
+    }
+
+    return;
+
+  }
+
+
+  const distance =
+    distanceBetween(
+      game.player.x,
+      game.player.y,
+      1200,
+      120
+    );
+
+
+  if(distance <= 100){
+
+    reachGoal();
+
+  }
+
+}
+
+
+/* =========================================================
+   REACH GOAL
+========================================================= */
+
+function reachGoal(){
+
+  if(game.goalReached)
+    return;
+
+
+  game.goalReached = true;
+
+
+  goal.classList.add(
+    "reached"
+  );
+
+
+  const stage =
+    stages[
+      game.currentStage
+    ];
+
+
+  showMessage(
+    "🌟 ゴール到達！"
+  );
+
+
+  setTimeout(
+    () => {
+
+      startBossBattle(
+        stage.boss
+      );
+
+    },
+    650
+  );
+
+}
+
+
+/* =========================================================
+   STAGE SELECT MODE
+========================================================= */
+
+function showStageSelect(){
+
+  game.stageMode = false;
+
+  game.currentStage = 0;
+
+  game.goalReached = false;
+
+  game.collectedKeys = [];
+
+
+  goal.classList.remove(
+    "unlocked",
+    "reached"
+  );
+
+
+  clearKeys();
+
+
+  stageSelectArea.style.display =
+    "block";
+
+
+  stageInfo.textContent =
+    "エリア1・ステージ選択";
+
+
+  keyCounter.textContent =
+    "🔑 ステージ選択中";
+
+
+  game.player.x = 420;
+  game.player.y = 620;
+
+
+  updateCamera();
+
+  updateStageSelect();
+
+  updateHUD();
+
+
+  showMessage(
+    "🗺️ エリア1のステージを選択しよう！"
+  );
+
+}
+
+
+/* =========================================================
+   START STAGE
+========================================================= */
+
+function startStage(stageNumber){
+
+  if(game.battle)
+    return;
+
+
+  const unlocked =
+    stageNumber === 1 ||
+    game.clearedStages.includes(
+      stageNumber - 1
+    );
+
+
+  if(!unlocked){
+
+    showMessage(
+      "🔒 まだこのステージには進めない！"
+    );
+
+    return;
+
+  }
+
+
+  const stage =
+    stages[
+      stageNumber
+    ];
+
+
+  game.stageMode = true;
+
+  game.currentStage =
+    stageNumber;
+
+  game.goalReached = false;
+
+  game.steps = 0;
+
+  game.collectedKeys = [];
+
+
+  stageSelectArea.style.display =
+    "none";
+
+
+  world.className =
+    stage.bg;
+
+
+  goal.classList.remove(
+    "unlocked",
+    "reached"
+  );
+
+
+  createStageKeys();
+
+
+  game.player.x = 420;
+  game.player.y = 620;
+
+
+  updateCamera();
+
+  stageInfo.textContent =
+    "エリア1・ステージ" +
+    stageNumber +
+    "「" +
+    stage.name +
+    "」";
+
+
+  showMessage(
+    stage.icon +
+    " ステージ" +
+    stageNumber +
+    "「" +
+    stage.name +
+    "」開始！"
+  );
+
+}
+
+
+/* =========================================================
    RETURN TO STAGE SELECT
 ========================================================= */
 
@@ -2791,24 +3534,24 @@ function returnToStageSelect(){
 
   game.goalReached = false;
 
+  game.stageMode = false;
+
   game.steps = 0;
 
   game.currentTurn = 0;
 
+  game.currentStage = 0;
 
-  /*
-     ステージ選択フィールドへ
-     プレイヤーを移動
-  */
-
-  game.player.x = 420;
-
-  game.player.y = 620;
+  game.collectedKeys = [];
 
 
   goal.classList.remove(
-    "reached"
+    "reached",
+    "unlocked"
   );
+
+
+  clearKeys();
 
 
   battleResult.style.display =
@@ -2833,105 +3576,23 @@ function returnToStageSelect(){
   );
 
 
+  world.className =
+    "stageForest";
+
+
+  stageSelectArea.style.display =
+    "block";
+
+
   updateCamera();
 
   updateStageSelect();
 
-
-  showMessage(
-    "🗺️ ステージ選択フィールドへ戻った！"
-  );
-
-}
-
-
-/* =========================================================
-   GOAL CHECK
-========================================================= */
-
-function checkGoal(){
-
-  if(game.goalReached)
-    return;
-
-
-  const goalX = 1200;
-  const goalY = 120;
-
-
-  const dx =
-    game.player.x -
-    goalX;
-
-  const dy =
-    game.player.y -
-    goalY;
-
-
-  const distance =
-    Math.sqrt(
-      dx * dx +
-      dy * dy
-    );
-
-
-  if(distance <= 90){
-
-    reachGoal();
-
-  }
-
-}
-
-
-/* =========================================================
-   REACH GOAL
-========================================================= */
-
-function reachGoal(){
-
-  if(game.goalReached)
-    return;
-
-
-  game.goalReached = true;
-
-
-  /*
-     ステージ1クリア
-  */
-
-  if(
-    !game.clearedStages.includes(1)
-  ){
-
-    game.clearedStages.push(1);
-
-  }
-
-
-  updateStageSelect();
-
-
-  goal.classList.add(
-    "reached"
-  );
+  updateKeyCounter();
 
 
   showMessage(
-    "🌟 ステージクリア！"
-  );
-
-
-  setTimeout(
-    () => {
-
-      goalResult.classList.add(
-        "show"
-      );
-
-    },
-    500
+    "🗺️ エリア1のステージ選択へ戻った！"
   );
 
 }
@@ -2947,6 +3608,10 @@ function move(direction){
     return;
 
 
+  if(!game.stageMode)
+    return;
+
+
   if(game.goalReached)
     return;
 
@@ -2957,14 +3622,11 @@ function move(direction){
   if(direction === "up")
     game.player.y -= speed;
 
-
   if(direction === "down")
     game.player.y += speed;
 
-
   if(direction === "left")
     game.player.x -= speed;
-
 
   if(direction === "right")
     game.player.x += speed;
@@ -3025,12 +3687,45 @@ function move(direction){
   game.steps++;
 
 
+  checkKeys();
+
   checkGoal();
 
 
   if(game.goalReached)
     return;
 
+
+  /*
+     ステージ2・3では
+     四天王の兵士が低確率で出現
+  */
+
+  const stage =
+    stages[
+      game.currentStage
+    ];
+
+
+  if(
+    stage &&
+    stage.soldier &&
+    game.steps >= 18 &&
+    Math.random() < 0.035
+  ){
+
+    game.steps = 0;
+
+    startSoldierBattle();
+
+    return;
+
+  }
+
+
+  /*
+     通常モンスター
+  */
 
   if(
     game.steps >= 15 &&
@@ -3118,7 +3813,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   ENCOUNTER
+   NORMAL ENCOUNTER
 ========================================================= */
 
 function encounter(){
@@ -3167,10 +3862,62 @@ function encounter(){
 
 
 /* =========================================================
+   SOLDIER BATTLE
+========================================================= */
+
+function startSoldierBattle(){
+
+  const stage =
+    stages[
+      game.currentStage
+    ];
+
+
+  if(!stage || !stage.soldier)
+    return;
+
+
+  showMessage(
+    "⚠️ 四天王の兵士が現れた！"
+  );
+
+
+  setTimeout(
+    () => {
+
+      startBattle(
+        stage.soldier
+      );
+
+    },
+    350
+  );
+
+}
+
+
+/* =========================================================
+   BOSS BATTLE
+========================================================= */
+
+function startBossBattle(boss){
+
+  startBattle(
+    boss,
+    true
+  );
+
+}
+
+
+/* =========================================================
    START BATTLE
 ========================================================= */
 
-function startBattle(enemy){
+function startBattle(
+  enemy,
+  isBoss = false
+){
 
   game.battle = true;
 
@@ -3188,6 +3935,9 @@ function startBattle(enemy){
 
   game.enemy.hp =
     enemy.hp;
+
+  game.enemy.boss =
+    isBoss;
 
 
   game.party.forEach(
@@ -3214,7 +3964,9 @@ function startBattle(enemy){
   document.getElementById(
     "battleEnemyName"
   ).textContent =
-    game.enemy.name;
+    isBoss
+      ? "👑 " + game.enemy.name
+      : game.enemy.name;
 
 
   battleResult.style.display =
@@ -3293,10 +4045,22 @@ function startBattle(enemy){
   );
 
 
-  setLog(
-    game.enemy.name +
-    "が現れた！"
-  );
+  if(isBoss){
+
+    setLog(
+      "👑 " +
+      game.enemy.name +
+      "が立ちはだかった！"
+    );
+
+  }else{
+
+    setLog(
+      game.enemy.name +
+      "が現れた！"
+    );
+
+  }
 
 
   updateTurnUI();
@@ -3608,6 +4372,13 @@ document.getElementById(
       damage;
 
 
+    game.enemy.hp =
+      Math.max(
+        0,
+        game.enemy.hp
+      );
+
+
     enemyHit();
 
 
@@ -3629,16 +4400,10 @@ document.getElementById(
 
     if(game.enemy.hp <= 0){
 
-      game.enemy.hp = 0;
-
-      updateBattleUI();
-
-
       setTimeout(
         victory,
         650
       );
-
 
       return;
 
@@ -3732,6 +4497,10 @@ document
 function useSkill(skill){
 
   if(!game.battle)
+    return;
+
+
+  if(game.currentTurn >= 3)
     return;
 
 
@@ -3895,21 +4664,22 @@ function useSkill(skill){
   }
 
 
+  game.enemy.hp =
+    Math.max(
+      0,
+      game.enemy.hp
+    );
+
+
   updateBattleUI();
 
 
   if(game.enemy.hp <= 0){
 
-    game.enemy.hp = 0;
-
-    updateBattleUI();
-
-
     setTimeout(
       victory,
       650
     );
-
 
     return;
 
@@ -3992,6 +4762,17 @@ document.getElementById(
       return;
 
 
+    if(game.enemy.boss){
+
+      setLog(
+        "⚠️ ボス戦からは逃げられない！"
+      );
+
+      return;
+
+    }
+
+
     if(Math.random() < 0.7){
 
       setLog(
@@ -4000,35 +4781,7 @@ document.getElementById(
 
 
       setTimeout(
-        () => {
-
-          battleResult.style.display =
-            "none";
-
-          battle.classList.remove(
-            "show"
-          );
-
-
-          setTimeout(
-            () => {
-
-              battle.style.display =
-                "none";
-
-              game.battle = false;
-
-              updateCamera();
-
-              showMessage(
-                "🏃 戦闘から逃げた！"
-              );
-
-            },
-            350
-          );
-
-        },
+        closeBattleToField,
         500
       );
 
@@ -4145,10 +4898,15 @@ function enemyTurn(){
     () => {
 
       let damage =
-        10 +
-        Math.floor(
-          Math.random() * 9
-        );
+        game.enemy.boss
+          ? 13 +
+            Math.floor(
+              Math.random() * 10
+            )
+          : 10 +
+            Math.floor(
+              Math.random() * 9
+            );
 
 
       if(target.defend){
@@ -4242,7 +5000,35 @@ function victory(){
     return;
 
 
-  game.gold += 30;
+  const defeatedName =
+    game.enemy.name;
+
+
+  const isBoss =
+    game.enemy.boss;
+
+
+  const isSoldier =
+    (
+      defeatedName ===
+      "ヌクレアイス"
+    );
+
+
+  if(isBoss){
+
+    game.gold += 100;
+
+  }else if(isSoldier){
+
+    game.gold += 60;
+
+  }else{
+
+    game.gold += 30;
+
+  }
+
 
   updateHUD();
 
@@ -4250,20 +5036,34 @@ function victory(){
   document.getElementById(
     "resultIcon"
   ).textContent =
-    "🎉";
+    isBoss ? "👑" : "🎉";
 
 
   document.getElementById(
     "resultTitle"
   ).textContent =
-    "勝利！";
+    isBoss
+      ? "ボス撃破！"
+      : "勝利！";
 
 
-  document.getElementById(
-    "resultText"
-  ).textContent =
-    game.enemy.name +
-    "を倒した！ 30ゴールド獲得！";
+  if(isBoss){
+
+    document.getElementById(
+      "resultText"
+    ).textContent =
+      defeatedName +
+      "を倒した！ 100ゴールド獲得！";
+
+  }else{
+
+    document.getElementById(
+      "resultText"
+    ).textContent =
+      defeatedName +
+      "を倒した！";
+
+  }
 
 
   battleResult.style.display =
@@ -4308,7 +5108,57 @@ function defeat(){
 
 
 /* =========================================================
-   RETURN FIELD
+   CLOSE BATTLE
+========================================================= */
+
+function closeBattleToField(){
+
+  battleResult.style.display =
+    "none";
+
+
+  battle.classList.remove(
+    "show"
+  );
+
+
+  setTimeout(
+    () => {
+
+      battle.style.display =
+        "none";
+
+      game.battle = false;
+
+      game.currentTurn = 0;
+
+
+      game.party.forEach(
+        member => {
+
+          member.defend = false;
+
+        }
+      );
+
+
+      updateBattleUI();
+
+      updateCamera();
+
+      showMessage(
+        "🌱 フィールドへ戻った！"
+      );
+
+    },
+    350
+  );
+
+}
+
+
+/* =========================================================
+   RETURN FIELD BUTTON
 ========================================================= */
 
 document.getElementById(
@@ -4321,51 +5171,137 @@ document.getElementById(
     event.preventDefault();
 
 
-    battleResult.style.display =
-      "none";
+    /*
+       ボスを倒した場合
+       ステージクリア処理へ
+    */
+
+    if(
+      game.enemy.boss
+    ){
+
+      battleResult.style.display =
+        "none";
 
 
-    battle.classList.remove(
-      "show"
-    );
+      battle.classList.remove(
+        "show"
+      );
 
 
-    setTimeout(
-      () => {
+      setTimeout(
+        () => {
 
-        battle.style.display =
-          "none";
+          battle.style.display =
+            "none";
 
+          game.battle = false;
 
-        game.battle = false;
-
-        game.currentTurn = 0;
-
-
-        game.party.forEach(
-          member => {
-
-            member.defend = false;
-
-          }
-        );
+          game.currentTurn = 0;
 
 
-        updateBattleUI();
+          game.party.forEach(
+            member => {
 
-        updateCamera();
+              member.defend = false;
+
+            }
+          );
 
 
-        showMessage(
-          "🌱 フィールドへ戻った！"
-        );
+          completeStage();
 
-      },
-      350
-    );
+        },
+        350
+      );
+
+
+      return;
+
+    }
+
+
+    closeBattleToField();
 
   }
 );
+
+
+/* =========================================================
+   COMPLETE STAGE
+========================================================= */
+
+function completeStage(){
+
+  const stageNumber =
+    game.currentStage;
+
+  const stage =
+    stages[
+      stageNumber
+    ];
+
+
+  if(
+    !game.clearedStages.includes(
+      stageNumber
+    )
+  ){
+
+    game.clearedStages.push(
+      stageNumber
+    );
+
+  }
+
+
+  saveGame();
+
+  updateStageSelect();
+
+
+  document.getElementById(
+    "goalResultIcon"
+  ).textContent =
+    stageNumber === 3
+      ? "🌊"
+      : "🌟";
+
+
+  document.getElementById(
+    "goalResultSub"
+  ).textContent =
+    "ステージ" +
+    stageNumber +
+    "「" +
+    stage.name +
+    "」クリア！";
+
+
+  if(stageNumber < 3){
+
+    document.getElementById(
+      "goalResultText"
+    ).innerHTML =
+      "見事に突破した！<br>" +
+      "次のステージが解放された！";
+
+  }else{
+
+    document.getElementById(
+      "goalResultText"
+    ).innerHTML =
+      "エリア1の3ステージを<br>" +
+      "すべて突破した！ 🎉";
+
+  }
+
+
+  goalResult.classList.add(
+    "show"
+  );
+
+}
 
 
 /* =========================================================
@@ -4381,12 +5317,6 @@ document.getElementById(
 
     event.preventDefault();
 
-
-    /*
-       ここで普通のフィールドではなく
-       ステージ選択フィールドへ戻す
-    */
-
     returnToStageSelect();
 
   }
@@ -4394,107 +5324,29 @@ document.getElementById(
 
 
 /* =========================================================
-   STAGE 1 START
+   STAGE BUTTONS
 ========================================================= */
 
-function startStage1(){
+for(let i = 1; i <= 3; i++){
 
-  if(game.battle)
-    return;
+  document.getElementById(
+    "stageSelect" + i
+  ).addEventListener(
+    "pointerdown",
+    event => {
 
+      event.preventDefault();
 
-  /*
-     ステージ開始時に
-     ゴール判定をリセット
-  */
+      startStage(i);
 
-  game.goalReached = false;
-
-  game.steps = 0;
-
-
-  goal.classList.remove(
-    "reached"
-  );
-
-
-  /*
-     ステージ開始位置
-  */
-
-  game.player.x = 1350;
-
-  game.player.y = 720;
-
-
-  updateCamera();
-
-
-  showMessage(
-    "🚪 ステージ1「山道」開始！"
-  );
-
-
-  /*
-     少し待ってからボス戦
-  */
-
-  setTimeout(
-    () => {
-
-      startBattle({
-
-        icon:"👹",
-
-        name:"山道の魔物",
-
-        hp:80
-
-      });
-
-    },
-    350
+    }
   );
 
 }
 
 
 /* =========================================================
-   STAGE BUTTONS
-========================================================= */
-
-document.getElementById(
-  "stage1"
-)
-.addEventListener(
-  "pointerdown",
-  event => {
-
-    event.preventDefault();
-
-    startStage1();
-
-  }
-);
-
-
-document.getElementById(
-  "stageSelect1"
-)
-.addEventListener(
-  "pointerdown",
-  event => {
-
-    event.preventDefault();
-
-    startStage1();
-
-  }
-);
-
-
-/* =========================================================
-   WORLD MOVE
+   WORLD PANEL
 ========================================================= */
 
 const worldPanel =
@@ -4512,7 +5364,6 @@ document.getElementById(
 
     event.preventDefault();
 
-
     worldPanel.style.display =
       "flex";
 
@@ -4528,7 +5379,6 @@ document.getElementById(
   event => {
 
     event.preventDefault();
-
 
     worldPanel.style.display =
       "none";
@@ -4546,10 +5396,8 @@ document.getElementById(
 
     event.preventDefault();
 
-
     worldPanel.style.display =
       "none";
-
 
     showMessage(
       "🌱 表世界のセーブポイントへ！"
@@ -4568,10 +5416,8 @@ document.getElementById(
 
     event.preventDefault();
 
-
     worldPanel.style.display =
       "none";
-
 
     showMessage(
       "🌑 裏世界のセーブポイントへ！"
@@ -4609,8 +5455,17 @@ function showMessage(text){
     setTimeout(
       () => {
 
-        message.textContent =
-          "👣 フィールドを探索しよう！";
+        if(!game.stageMode){
+
+          message.textContent =
+            "🗺️ ステージを選択しよう！";
+
+        }else{
+
+          message.textContent =
+            "👣 フィールドを探索しよう！";
+
+        }
 
       },
       1800
@@ -4620,7 +5475,7 @@ function showMessage(text){
 
 
 /* =========================================================
-   SAFARI / MOBILE
+   MOBILE / SAFARI
 ========================================================= */
 
 let lastTouch = 0;
@@ -4707,13 +5562,19 @@ window.addEventListener(
    START
 ========================================================= */
 
+loadGame();
+
 updateHUD();
 
 updateStageSelect();
 
+updateKeyCounter();
+
 updateCamera();
 
 updateBattleUI();
+
+showStageSelect();
 
 </script>
 
