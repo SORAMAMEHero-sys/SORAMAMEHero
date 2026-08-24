@@ -327,59 +327,139 @@ button{
 #goal{
   position:absolute;
 
-  z-index:20;
+  z-index:25;
 
-  left:920px;
-  top:650px;
+  left:1200px;
+  top:120px;
 
-  width:200px;
-  height:100px;
+  width:180px;
+  height:150px;
+
+  transform:
+    translate(-50%,-50%);
 
   display:flex;
-  align-items:center;
-  justify-content:center;
+
   flex-direction:column;
 
-  border-radius:20px;
+  align-items:center;
 
-  background:#2d5f3a;
+  justify-content:flex-start;
 
-  border:4px solid #8ee69a;
+  pointer-events:none;
+}
 
-  color:white;
 
-  font-size:22px;
-  font-weight:bold;
+/* 白い三角形 */
 
-  text-align:center;
+.goalArrow{
+  width:0;
+  height:0;
 
-  box-shadow:
-    0 0 20px rgba(120,255,140,.45);
+  border-left:72px solid transparent;
+  border-right:72px solid transparent;
 
+  border-top:0;
+  border-bottom:52px solid #ffffff;
+
+  filter:
+    drop-shadow(
+      0 4px 3px
+      rgba(0,0,0,.35)
+    );
+
+  position:relative;
+}
+
+
+/* 三角形の縁 */
+
+.goalArrow:after{
+  content:"";
+
+  position:absolute;
+
+  left:-76px;
+  top:-56px;
+
+  width:152px;
+  height:58px;
+
+  clip-path:
+    polygon(
+      50% 0%,
+      100% 100%,
+      0% 100%
+    );
+
+  background:#bfc5ca;
+
+  z-index:-1;
+}
+
+
+/* GOAL文字 */
+
+.goalText{
+  margin-top:10px;
+
+  font-family:
+    monospace;
+
+  font-size:27px;
+
+  font-weight:900;
+
+  letter-spacing:8px;
+
+  color:#ffffff;
+
+  text-shadow:
+    0 3px 0 #555,
+    0 5px 8px rgba(0,0,0,.5);
+}
+
+
+/* ゴール発光 */
+
+#goal.reached .goalArrow{
   animation:
-    goalPulse 1.5s ease-in-out infinite;
+    goalFlash .5s infinite alternate;
 }
 
-#goal small{
-  margin-top:5px;
-
-  font-size:12px;
-
-  opacity:.8;
+#goal.reached .goalText{
+  animation:
+    goalTextFlash .5s infinite alternate;
 }
 
-@keyframes goalPulse{
+@keyframes goalFlash{
 
-  0%{
+  from{
+    filter:
+      drop-shadow(
+        0 4px 3px
+        rgba(0,0,0,.35)
+      );
+  }
+
+  to{
+    filter:
+      drop-shadow(
+        0 0 15px
+        rgba(255,255,255,.95)
+      );
+  }
+
+}
+
+@keyframes goalTextFlash{
+
+  from{
     transform:scale(1);
   }
 
-  50%{
-    transform:scale(1.05);
-  }
-
-  100%{
-    transform:scale(1);
+  to{
+    transform:scale(1.12);
   }
 
 }
@@ -604,6 +684,99 @@ button{
   color:white;
 
   font-size:22px;
+}
+
+
+/* =========================================================
+   BATTLE TRANSITION
+========================================================= */
+
+#battleTransition{
+  position:fixed;
+
+  z-index:1000;
+
+  inset:0;
+
+  pointer-events:none;
+
+  background:#080b14;
+
+  opacity:0;
+
+  transition:
+    opacity .25s ease;
+}
+
+#battleTransition.active{
+  opacity:1;
+}
+
+#battleTransition.flash{
+  animation:
+    battleFlash .55s ease;
+}
+
+@keyframes battleFlash{
+
+  0%{
+    background:#ffffff;
+    opacity:0;
+  }
+
+  15%{
+    background:#ffffff;
+    opacity:.95;
+  }
+
+  35%{
+    background:#ffffff;
+    opacity:.15;
+  }
+
+  55%{
+    background:#080b14;
+    opacity:1;
+  }
+
+  100%{
+    background:#080b14;
+    opacity:1;
+  }
+
+}
+
+#viewport.battleShake{
+  animation:
+    battleShake .45s ease;
+}
+
+@keyframes battleShake{
+
+  0%{
+    transform:translate(0,0);
+  }
+
+  20%{
+    transform:translate(-8px,4px);
+  }
+
+  40%{
+    transform:translate(8px,-4px);
+  }
+
+  60%{
+    transform:translate(-5px,2px);
+  }
+
+  80%{
+    transform:translate(4px,-2px);
+  }
+
+  100%{
+    transform:translate(0,0);
+  }
+
 }
 
 
@@ -883,7 +1056,6 @@ button{
 
   0%{
     opacity:0;
-
     transform:
       translate(-50%,0)
       scale(.5);
@@ -891,7 +1063,6 @@ button{
 
   20%{
     opacity:1;
-
     transform:
       translate(-50%,-15px)
       scale(1.2);
@@ -899,7 +1070,6 @@ button{
 
   100%{
     opacity:0;
-
     transform:
       translate(-50%,-75px)
       scale(1);
@@ -976,7 +1146,6 @@ button{
 
 .partyMember.dead{
   opacity:.4;
-
   filter:grayscale(1);
 }
 
@@ -1401,7 +1570,6 @@ button{
 
   .partyMember{
     width:31%;
-
     padding:6px 4px;
   }
 
@@ -1429,19 +1597,142 @@ button{
     font-size:90px;
   }
 
-  #goal{
-    width:180px;
-    height:90px;
-
-    font-size:19px;
+  .goalText{
+    font-size:23px;
+    letter-spacing:6px;
   }
 
+  .goalArrow{
+    border-left-width:60px;
+    border-right-width:60px;
+    border-bottom-width:45px;
+  }
+
+}
+
+
+/* =========================================================
+   GOAL RESULT OVERLAY
+========================================================= */
+
+#goalResult{
+  position:fixed;
+
+  z-index:900;
+
+  inset:0;
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:
+    rgba(5,10,18,.78);
+}
+
+#goalResult.show{
+  display:flex;
+}
+
+.goalResultBox{
+  width:min(86%,390px);
+
+  padding:30px 24px;
+
+  border-radius:22px;
+
+  background:#17243a;
+
+  border:3px solid #e6e6e6;
+
+  color:white;
+
+  text-align:center;
+
+  box-shadow:
+    0 15px 60px
+    rgba(0,0,0,.7);
+
+  animation:
+    goalResultAppear .45s
+    cubic-bezier(.2,1.4,.4,1);
+}
+
+@keyframes goalResultAppear{
+
+  from{
+    opacity:0;
+    transform:
+      scale(.65)
+      translateY(30px);
+  }
+
+  to{
+    opacity:1;
+    transform:
+      scale(1)
+      translateY(0);
+  }
+
+}
+
+.goalResultIcon{
+  font-size:72px;
+
+  margin-bottom:5px;
+}
+
+.goalResultTitle{
+  font-size:30px;
+
+  font-weight:900;
+
+  letter-spacing:3px;
+
+  margin:5px 0 10px;
+}
+
+.goalResultText{
+  font-size:14px;
+
+  opacity:.9;
+
+  line-height:1.7;
+}
+
+.goalResultButton{
+  width:100%;
+
+  margin-top:20px;
+
+  padding:14px;
+
+  border:0;
+
+  border-radius:12px;
+
+  background:#4c754e;
+
+  color:white;
+
+  font-size:15px;
+
+  font-weight:bold;
 }
 
 </style>
 </head>
 
 <body>
+
+
+<!-- =====================================================
+     BATTLE TRANSITION
+===================================================== -->
+
+<div id="battleTransition"></div>
 
 
 <!-- =====================================================
@@ -1478,16 +1769,31 @@ button{
   <div id="world">
 
     <div class="road horizontal"></div>
-
     <div class="road vertical"></div>
-
 
     <div class="water"></div>
 
     <div class="village"></div>
 
 
-    <!-- TREES -->
+    <!-- =================================================
+         GOAL
+    ================================================= -->
+
+    <div id="goal">
+
+      <div class="goalArrow"></div>
+
+      <div class="goalText">
+        GOAL
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TREES
+    ================================================= -->
 
     <div class="tree t1"></div>
     <div class="tree t2"></div>
@@ -1497,7 +1803,9 @@ button{
     <div class="tree t6"></div>
 
 
-    <!-- ROCKS -->
+    <!-- =================================================
+         ROCKS
+    ================================================= -->
 
     <div class="rock r1"></div>
     <div class="rock r2"></div>
@@ -1505,27 +1813,10 @@ button{
 
 
     <!-- =================================================
-         GOAL
-    ================================================== -->
+         STAGE
+    ================================================= -->
 
-    <div id="goal">
-
-      🏁 ゴール
-
-      <small>
-        ステージ1へ
-      </small>
-
-    </div>
-
-
-    <!-- =================================================
-         STAGE 1
-    ================================================== -->
-
-    <button
-      class="stage"
-      id="stage1">
+    <button class="stage" id="stage1">
 
       🚪 ステージ1
 
@@ -1538,7 +1829,7 @@ button{
 
     <!-- =================================================
          PLAYER
-    ================================================== -->
+    ================================================= -->
 
     <div id="player">
 
@@ -1576,36 +1867,20 @@ button{
 
 <div id="controls">
 
-  <button
-    class="control"
-    id="up">
-
+  <button class="control" id="up">
     ▲
-
   </button>
 
-  <button
-    class="control"
-    id="left">
-
+  <button class="control" id="left">
     ◀
-
   </button>
 
-  <button
-    class="control"
-    id="right">
-
+  <button class="control" id="right">
     ▶
-
   </button>
 
-  <button
-    class="control"
-    id="down">
-
+  <button class="control" id="down">
     ▼
-
   </button>
 
 </div>
@@ -1617,13 +1892,47 @@ button{
 
 
 <!-- =====================================================
+     GOAL RESULT
+===================================================== -->
+
+<div id="goalResult">
+
+  <div class="goalResultBox">
+
+    <div class="goalResultIcon">
+      🏆
+    </div>
+
+    <div class="goalResultTitle">
+      ステージクリア！
+    </div>
+
+    <div class="goalResultText">
+      そらまめたちは<br>
+      無事にゴールへたどり着いた！
+    </div>
+
+    <button
+      class="goalResultButton"
+      id="goalResultButton">
+
+      フィールドへ戻る
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
      BATTLE
 ===================================================== -->
 
 <div id="battle">
 
 
-  <!-- BATTLE TOP -->
+  <!-- 敵・ターン情報 -->
 
   <div class="battleTop">
 
@@ -1673,7 +1982,7 @@ button{
   </div>
 
 
-  <!-- ENEMY -->
+  <!-- 敵 -->
 
   <div class="battleEnemy">
 
@@ -1696,16 +2005,14 @@ button{
   </div>
 
 
-  <!-- BATTLE LOG -->
+  <!-- 戦闘ログ -->
 
   <div id="battleLog">
-
     ワイルドウルフが現れた！
-
   </div>
 
 
-  <!-- PARTY -->
+  <!-- 味方 -->
 
   <div class="partyArea">
 
@@ -1723,13 +2030,11 @@ button{
       </div>
 
       <div class="barLabel">
-
         <span>HP</span>
 
         <span id="hpText0">
           100/100
         </span>
-
       </div>
 
       <div class="bar">
@@ -1742,13 +2047,11 @@ button{
       </div>
 
       <div class="barLabel">
-
         <span>MP</span>
 
         <span id="mpText0">
           50/50
         </span>
-
       </div>
 
       <div class="bar">
@@ -1776,13 +2079,11 @@ button{
       </div>
 
       <div class="barLabel">
-
         <span>HP</span>
 
         <span id="hpText1">
           90/90
         </span>
-
       </div>
 
       <div class="bar">
@@ -1795,13 +2096,11 @@ button{
       </div>
 
       <div class="barLabel">
-
         <span>MP</span>
 
         <span id="mpText1">
           40/40
         </span>
-
       </div>
 
       <div class="bar">
@@ -1829,13 +2128,11 @@ button{
       </div>
 
       <div class="barLabel">
-
         <span>HP</span>
 
         <span id="hpText2">
           80/80
         </span>
-
       </div>
 
       <div class="bar">
@@ -1848,13 +2145,11 @@ button{
       </div>
 
       <div class="barLabel">
-
         <span>MP</span>
 
         <span id="mpText2">
           60/60
         </span>
-
       </div>
 
       <div class="bar">
@@ -1871,7 +2166,7 @@ button{
   </div>
 
 
-  <!-- COMMAND -->
+  <!-- コマンド -->
 
   <div class="commandArea">
 
@@ -1883,6 +2178,7 @@ button{
 
     </button>
 
+
     <button
       class="command skill"
       id="skillButton">
@@ -1891,6 +2187,7 @@ button{
 
     </button>
 
+
     <button
       class="command defend"
       id="defendButton">
@@ -1898,6 +2195,7 @@ button{
       🛡️ ぼうぎょ
 
     </button>
+
 
     <button
       class="command run"
@@ -1910,13 +2208,14 @@ button{
   </div>
 
 
-  <!-- SKILL WINDOW -->
+  <!-- スキル -->
 
   <div id="skillWindow">
 
     <h3 class="skillTitle">
       ✨ スキル
     </h3>
+
 
     <button
       class="skillButton"
@@ -1930,6 +2229,7 @@ button{
 
     </button>
 
+
     <button
       class="skillButton"
       data-skill="heal">
@@ -1941,6 +2241,7 @@ button{
       </span>
 
     </button>
+
 
     <button
       class="skillButton"
@@ -1954,6 +2255,7 @@ button{
 
     </button>
 
+
     <button
       class="skillClose"
       id="skillClose">
@@ -1965,7 +2267,7 @@ button{
   </div>
 
 
-  <!-- BATTLE RESULT -->
+  <!-- 戦闘結果 -->
 
   <div id="battleResult">
 
@@ -1979,6 +2281,7 @@ button{
 
       </div>
 
+
       <div
         class="resultTitle"
         id="resultTitle">
@@ -1987,6 +2290,7 @@ button{
 
       </div>
 
+
       <div
         class="resultText"
         id="resultText">
@@ -1994,6 +2298,7 @@ button{
         30ゴールドを手に入れた！
 
       </div>
+
 
       <button
         class="resultButton"
@@ -2026,13 +2331,16 @@ button{
       行き先を選択
     </p>
 
+
     <button id="surfaceSave">
       🌱 表世界・セーブポイント
     </button>
 
+
     <button id="underSave">
       🌑 裏世界・セーブポイント
     </button>
+
 
     <button
       class="close"
@@ -2061,11 +2369,12 @@ const game = {
 
   battle:false,
 
-  steps:0,
-
   goalReached:false,
 
+  steps:0,
+
   currentTurn:0,
+
 
   player:{
 
@@ -2075,6 +2384,7 @@ const game = {
 
   },
 
+
   camera:{
 
     x:0,
@@ -2082,6 +2392,7 @@ const game = {
     y:0
 
   },
+
 
   enemy:{
 
@@ -2094,6 +2405,7 @@ const game = {
     maxHp:50
 
   },
+
 
   party:[
 
@@ -2136,29 +2448,55 @@ const game = {
    ELEMENTS
 ========================================================= */
 
+const battleTransition =
+  document.getElementById(
+    "battleTransition"
+  );
+
 const viewport =
-  document.getElementById("viewport");
+  document.getElementById(
+    "viewport"
+  );
 
 const world =
-  document.getElementById("world");
+  document.getElementById(
+    "world"
+  );
 
 const player =
-  document.getElementById("player");
+  document.getElementById(
+    "player"
+  );
 
 const battle =
-  document.getElementById("battle");
+  document.getElementById(
+    "battle"
+  );
 
 const battleLog =
-  document.getElementById("battleLog");
+  document.getElementById(
+    "battleLog"
+  );
 
 const skillWindow =
-  document.getElementById("skillWindow");
+  document.getElementById(
+    "skillWindow"
+  );
 
 const battleResult =
-  document.getElementById("battleResult");
+  document.getElementById(
+    "battleResult"
+  );
 
 const goal =
-  document.getElementById("goal");
+  document.getElementById(
+    "goal"
+  );
+
+const goalResult =
+  document.getElementById(
+    "goalResult"
+  );
 
 
 /* =========================================================
@@ -2167,12 +2505,14 @@ const goal =
 
 function updateHUD(){
 
-  document.getElementById("level")
-    .textContent =
+  document.getElementById(
+    "level"
+  ).textContent =
     game.level;
 
-  document.getElementById("gold")
-    .textContent =
+  document.getElementById(
+    "gold"
+  ).textContent =
     game.gold;
 
 }
@@ -2246,37 +2586,73 @@ function checkGoal(){
     return;
 
 
-  const goalX = 1020;
-  const goalY = 700;
+  const goalX = 1200;
+  const goalY = 120;
+
+
+  const dx =
+    game.player.x -
+    goalX;
+
+  const dy =
+    game.player.y -
+    goalY;
 
 
   const distance =
-    Math.hypot(
-      game.player.x - goalX,
-      game.player.y - goalY
+    Math.sqrt(
+      dx * dx +
+      dy * dy
     );
 
 
-  if(distance < 100){
+  /*
+     ゴールとの距離が
+     90px以内ならクリア
+  */
 
-    game.goalReached = true;
+  if(distance <= 90){
 
-
-    showMessage(
-      "🏁 ゴールに到着した！"
-    );
-
-
-    goal.style.animation =
-      "none";
-
-    goal.style.transform =
-      "scale(1.1)";
-
-    goal.style.boxShadow =
-      "0 0 35px rgba(255,255,150,.9)";
+    reachGoal();
 
   }
+
+}
+
+
+/* =========================================================
+   REACH GOAL
+========================================================= */
+
+function reachGoal(){
+
+  if(game.goalReached)
+    return;
+
+
+  game.goalReached = true;
+
+
+  goal.classList.add(
+    "reached"
+  );
+
+
+  showMessage(
+    "🏆 ゴールに到着！"
+  );
+
+
+  setTimeout(
+    () => {
+
+      goalResult.classList.add(
+        "show"
+      );
+
+    },
+    500
+  );
 
 }
 
@@ -2291,17 +2667,24 @@ function move(direction){
     return;
 
 
+  if(game.goalReached)
+    return;
+
+
   const speed = 12;
 
 
   if(direction === "up")
     game.player.y -= speed;
 
+
   if(direction === "down")
     game.player.y += speed;
 
+
   if(direction === "left")
     game.player.x -= speed;
+
 
   if(direction === "right")
     game.player.x += speed;
@@ -2333,6 +2716,7 @@ function move(direction){
   player.animate(
 
     [
+
       {
         transform:
           "translate(-50%,-50%) translateY(0)"
@@ -2361,12 +2745,21 @@ function move(direction){
   game.steps++;
 
 
-  /* ゴール判定 */
+  /*
+     ゴール判定
+  */
 
   checkGoal();
 
 
-  /* エンカウント */
+  if(game.goalReached)
+    return;
+
+
+  /*
+     15歩以上歩いたら
+     6%の確率で敵出現
+  */
 
   if(
     game.steps >= 15 &&
@@ -2392,7 +2785,9 @@ function bindControl(
 ){
 
   const button =
-    document.getElementById(id);
+    document.getElementById(
+      id
+    );
 
 
   button.addEventListener(
@@ -2413,10 +2808,25 @@ function bindControl(
 }
 
 
-bindControl("up","up");
-bindControl("down","down");
-bindControl("left","left");
-bindControl("right","right");
+bindControl(
+  "up",
+  "up"
+);
+
+bindControl(
+  "down",
+  "down"
+);
+
+bindControl(
+  "left",
+  "left"
+);
+
+bindControl(
+  "right",
+  "right"
+);
 
 
 /* =========================================================
@@ -2495,7 +2905,9 @@ function encounter(){
     ];
 
 
-  startBattle(enemy);
+  startBattle(
+    enemy
+  );
 
 }
 
@@ -2509,6 +2921,7 @@ function startBattle(enemy){
   game.battle = true;
 
   game.currentTurn = 0;
+
 
   game.enemy.name =
     enemy.name;
@@ -2537,10 +2950,12 @@ function startBattle(enemy){
   ).textContent =
     game.enemy.icon;
 
+
   document.getElementById(
     "enemyNameBig"
   ).textContent =
     game.enemy.name;
+
 
   document.getElementById(
     "battleEnemyName"
@@ -2551,6 +2966,7 @@ function startBattle(enemy){
   battleResult.style.display =
     "none";
 
+
   skillWindow.classList.remove(
     "show"
   );
@@ -2559,21 +2975,72 @@ function startBattle(enemy){
   updateBattleUI();
 
 
-  battle.style.display =
-    "block";
+  /*
+     戦闘突入演出
+  */
 
-  battle.classList.remove(
-    "show"
+  battleTransition.classList.remove(
+    "active",
+    "flash"
   );
 
 
-  requestAnimationFrame(() => {
+  void battleTransition.offsetWidth;
 
-    battle.classList.add(
-      "show"
-    );
 
-  });
+  battleTransition.classList.add(
+    "active",
+    "flash"
+  );
+
+
+  viewport.classList.add(
+    "battleShake"
+  );
+
+
+  setTimeout(
+    () => {
+
+      viewport.classList.remove(
+        "battleShake"
+      );
+
+
+      battle.style.display =
+        "block";
+
+
+      battle.classList.remove(
+        "show"
+      );
+
+
+      requestAnimationFrame(
+        () => {
+
+          battle.classList.add(
+            "show"
+          );
+
+        }
+      );
+
+    },
+    450
+  );
+
+
+  setTimeout(
+    () => {
+
+      battleTransition.classList.remove(
+        "active"
+      );
+
+    },
+    700
+  );
 
 
   setLog(
@@ -2817,7 +3284,7 @@ function showDamage(
 
 
 /* =========================================================
-   ENEMY HIT ANIMATION
+   ENEMY HIT
 ========================================================= */
 
 function enemyHit(){
@@ -2893,6 +3360,7 @@ document.getElementById(
 
     enemyHit();
 
+
     showDamage(
       damage
     );
@@ -2915,10 +3383,12 @@ document.getElementById(
 
       updateBattleUI();
 
+
       setTimeout(
         victory,
         650
       );
+
 
       return;
 
@@ -3064,6 +3534,7 @@ function useSkill(
 
     enemyHit();
 
+
     showDamage(
       damage
     );
@@ -3162,6 +3633,7 @@ function useSkill(
 
     enemyHit();
 
+
     showDamage(
       damage
     );
@@ -3184,10 +3656,12 @@ function useSkill(
 
     updateBattleUI();
 
+
     setTimeout(
       victory,
       650
     );
+
 
     return;
 
@@ -3415,6 +3889,7 @@ function enemyTurn(){
 
           updateTurnUI();
 
+
           setLog(
             "そらまめの番！"
           );
@@ -3534,6 +4009,7 @@ document.getElementById(
         battle.style.display =
           "none";
 
+
         game.battle = false;
 
         game.currentTurn = 0;
@@ -3559,6 +4035,33 @@ document.getElementById(
 
       },
       350
+    );
+
+  }
+);
+
+
+/* =========================================================
+   GOAL RESULT BUTTON
+========================================================= */
+
+document.getElementById(
+  "goalResultButton"
+)
+.addEventListener(
+  "pointerdown",
+  event => {
+
+    event.preventDefault();
+
+
+    goalResult.classList.remove(
+      "show"
+    );
+
+
+    showMessage(
+      "🏆 ステージクリア！"
     );
 
   }
@@ -3616,6 +4119,7 @@ document.getElementById(
 
     event.preventDefault();
 
+
     worldPanel.style.display =
       "flex";
 
@@ -3632,6 +4136,7 @@ document.getElementById(
 
     event.preventDefault();
 
+
     worldPanel.style.display =
       "none";
 
@@ -3647,6 +4152,7 @@ document.getElementById(
   event => {
 
     event.preventDefault();
+
 
     worldPanel.style.display =
       "none";
@@ -3668,6 +4174,7 @@ document.getElementById(
   event => {
 
     event.preventDefault();
+
 
     worldPanel.style.display =
       "none";
