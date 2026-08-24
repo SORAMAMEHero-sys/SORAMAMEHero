@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>勇者そらまめ Prototype v0.1</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    background: #111;
+    color: white;
+    font-family: sans-serif;
+    overflow: hidden;
+    touch-action: none;
+}
+
+#game {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#top {
+    width: 100%;
+    max-width: 600px;
+    padding: 8px;
+    background: #222;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+#map {
+    position: relative;
+    width: min(92vw, 500px);
+    height: min(92vw, 500px);
+    max-height: 60vh;
+    margin: 10px auto;
+    background: #5fa34a;
+    border: 4px solid #333;
+    overflow: hidden;
+}
+
+.tile {
+    position: absolute;
+    width: 10%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(20px, 6vw, 36px);
+}
+
+.wall {
+    background: #38722e;
+}
+
+.water {
+    background: #4a90d9;
+}
+
+.path {
+    background: #c9a86a;
+}
+
+#player {
+    position: absolute;
+    width: 10%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(22px, 7vw, 40px);
+    z-index: 10;
+    transition: left 0.08s, top 0.08s;
+}
+
+#controls {
+    width: min(90vw, 400px);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 5px;
+}
+
+button {
+    border: 0;
+    border-radius: 10px;
+    padding: 12px 8px;
+    background: #333;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+button:active {
+    transform: scale(0.95);
+    background: #555;
+}
+
+#worldButton {
+    width: min(90vw, 400px);
+    margin-top: 8px;
+    background: #5741a8;
+}
+
+#message {
+    width: min(90vw, 500px);
+    min-height: 35px;
+    text-align: center;
+    padding: 6px;
+    font-size: 14px;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.panel {
+    width: min(90vw, 360px);
+    background: #202020;
+    border: 3px solid #777;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+}
+
+.panel h2 {
+    margin-top: 0;
+}
+
+.panel button {
+    width: 100%;
+    margin: 6px 0;
+}
+
+.saveButton {
+    background: #287a42;
+}
+
+.healButton {
+    background: #8a3c3c;
+}
+
+.closeButton {
+    background: #555;
+}
+
+.worldButton {
+    background: #5741a8;
+}
+
+.status {
+    margin: 10px 0;
+    line-height: 1.7;
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <div id="top">
+        <div id="worldName">☀️ 表世界</div>
+        <div id="status">HP 100/100　MP 50/50</div>
+    </div>
+
+    <div id="map"></div>
+
+    <div id="message">💠を探してみよう！</div>
+
+    <div id="controls">
+        <div></div>
+        <button onclick="move(0,-1)">▲</button>
+        <div></div>
+
+        <button onclick="move(-1,0)">◀</button>
+        <button onclick="interact()">💠</button>
+        <button onclick="move(1,0)">▶</button>
+
+        <div></div>
+        <button onclick="move(0,1)">▼</button>
+        <div></div>
+    </div>
+
+    <button id="worldButton" onclick="openWorldMenu()">
+        🌍 世界移動
+    </button>
+
+</div>
+
+
+<!-- セーブポイント画面 -->
+<div id="saveOverlay" class="overlay">
+    <div class="panel">
+
+        <h2>💠 セーブポイント</h2>
+
+        <div class="status">
+            ❤️ HP：<span id="hpText">100</span>/100<br>
+            💙 MP：<span id="mpText">50</span>/50
+        </div>
+
+        <button class="healButton" onclick="heal()">
+            ❤️ HP・MPを回復
+        </button>
+
+        <button class="saveButton" onclick="saveGame()">
+            💾 セーブ
+        </button>
+
+        <button class="closeButton" onclick="closeSaveMenu()">
+            ↩️ 戻る
+        </button>
+
+    </div>
+</div>
+
+
+<!-- 世界移動画面 -->
+<div id="worldOverlay" class="overlay">
+    <div class="panel">
+
+        <h2>🌍 世界移動</h2>
+
+        <button class="worldButton" onclick="travel('surface')">
+            ☀️ 表世界
+        </button>
+
+        <button class="worldButton" onclick="travel('under')">
+            🌑 裏世界
+        </button>
+
+        <button class="closeButton" onclick="closeWorldMenu()">
+            ↩️ 戻る
+        </button>
+
+    </div>
+</div>
+
+
+<script>
+
+/* =========================
+   ゲームデータ
+========================= */
+
+const game = {
+
+    world: "surface",
+
+    hp: 100,
+    maxHp: 100,
+
+    mp: 50,
+    maxMp: 50,
+
+    player: {
+        x: 2,
+        y: 2
+    },
+
+    discovered: {
+        surface: false,
+        under: false
+    }
+};
+
+
+/* =========================
+   マップ
+========================= */
+
+/*
+  0 = 草原
+  1 = 木
+  2 = 水
+  3 = 道
+  4 = セーブポイント
+*/
+
+const maps = {
+
+    surface: [
+        [1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,1],
+        [1,0,0,3,3,3,0,0,0,1],
+        [1,0,0,3,0,3,0,0,0,1],
+        [1,0,0,3,0,3,0,0,0,1],
+        [1,0,0,3,0,3,0,0,0,1],
+        [1,0,0,3,3,3,0,0,0,1],
+        [1,0,0,0,0,0,0,0,4,1],
+        [1,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1]
+    ],
+
+    under: [
+        [1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,2,2,0,0,1],
+        [1,0,0,0,0,2,2,0,0,1],
+        [1,0,0,3,3,3,3,0,0,1],
+        [1,0,0,3,0,0,3,0,0,1],
+        [1,0,0,3,0,0,3,0,0,1],
+        [1,0,0,3,3,3,3,0,0,1],
+        [1,0,0,0,0,0,0,0,4,1],
+        [1,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1]
+    ]
+};
+
+
+/* =========================
+   マップ描画
+========================= */
+
+function renderMap() {
+
+    const mapElement = document.getElementById("map");
+
+    mapElement.innerHTML = "";
+
+    const currentMap = maps[game.world];
+
+    for (let y = 0; y < currentMap.length; y++) {
+
+        for (let x = 0; x < currentMap[y].length; x++) {
+
+            const tile = document.createElement("div");
+
+            tile.className = "tile";
+
+            tile.style.left = `${x * 10}%`;
+            tile.style.top = `${y * 10}%`;
+
+            const value = currentMap[y][x];
+
+            if (value === 1) {
+                tile.classList.add("wall");
+                tile.textContent = "🌲";
+            }
+
+            else if (value === 2) {
+                tile.classList.add("water");
+                tile.textContent = "🌊";
+            }
+
+            else if (value === 3) {
+                tile.classList.add("path");
+            }
+
+            else if (value === 4) {
+                tile.textContent = "💠";
+            }
+
+            mapElement.appendChild(tile);
+        }
+    }
+
+    drawPlayer();
+
+    document.getElementById("worldName").textContent =
+        game.world === "surface"
+            ? "☀️ 表世界"
+            : "🌑 裏世界";
+
+    updateStatus();
+}
+
+
+/* =========================
+   プレイヤー
+========================= */
+
+function drawPlayer() {
+
+    let player = document.getElementById("player");
+
+    if (!player) {
+
+        player = document.createElement("div");
+
+        player.id = "player";
+
+        player.textContent = "🧑";
+
+        document.getElementById("map").appendChild(player);
+    }
+
+    player.style.left = `${game.player.x * 10}%`;
+    player.style.top = `${game.player.y * 10}%`;
+}
+
+
+/* =========================
+   移動
+========================= */
+
+function move(dx, dy) {
+
+    const newX = game.player.x + dx;
+    const newY = game.player.y + dy;
+
+    const currentMap = maps[game.world];
+
+    if (
+        newY < 0 ||
+        newY >= currentMap.length ||
+        newX < 0 ||
+        newX >= currentMap[0].length
+    ) {
+        return;
+    }
+
+    // 木・水は通れない
+    if (
+        currentMap[newY][newX] === 1 ||
+        currentMap[newY][newX] === 2
+    ) {
+        return;
+    }
+
+    game.player.x = newX;
+    game.player.y = newY;
+
+    drawPlayer();
+
+    checkSavePoint();
+}
+
+
+/* =========================
+   セーブポイント判定
+========================= */
+
+function checkSavePoint() {
+
+    const tile =
+        maps[game.world][game.player.y][game.player.x];
+
+    if (tile === 4) {
+
+        game.discovered[game.world] = true;
+
+        showMessage(
+            game.world === "surface"
+                ? "☀️ 表世界のセーブポイントを発見！"
+                : "🌑 裏世界のセーブポイントを発見！"
+        );
+
+        openSaveMenu();
+    }
+}
+
+
+/* =========================
+   💠 操作
+========================= */
+
+function interact() {
+
+    const tile =
+        maps[game.world][game.player.y][game.player.x];
+
+    if (tile === 4) {
+
+        openSaveMenu();
+
+    } else {
+
+        showMessage("ここでは何も起こらない……");
+    }
+}
+
+
+/* =========================
+   セーブポイント
+========================= */
+
+function openSaveMenu() {
+
+    document.getElementById("hpText").textContent = game.hp;
+    document.getElementById("mpText").textContent = game.mp;
+
+    document.getElementById("saveOverlay").style.display = "flex";
+}
+
+
+function closeSaveMenu() {
+
+    document.getElementById("saveOverlay").style.display = "none";
+}
+
+
+function heal() {
+
+    game.hp = game.maxHp;
+    game.mp = game.maxMp;
+
+    updateStatus();
+
+    document.getElementById("hpText").textContent = game.hp;
+    document.getElementById("mpText").textContent = game.mp;
+
+    showMessage("❤️ HPとMPが全回復した！");
+}
+
+
+function saveGame() {
+
+    localStorage.setItem(
+        "soramameRPG_save",
+        JSON.stringify(game)
+    );
+
+    showMessage("💾 セーブしました！");
+
+    closeSaveMenu();
+}
+
+
+/* =========================
+   ロード
+========================= */
+
+function loadGame() {
+
+    const data =
+        localStorage.getItem("soramameRPG_save");
+
+    if (!data) {
+        return;
+    }
+
+    try {
+
+        const loaded =
+            JSON.parse(data);
+
+        Object.assign(game, loaded);
+
+        showMessage("💾 セーブデータを読み込みました！");
+
+    } catch {
+
+        console.log("セーブデータを読み込めませんでした。");
+    }
+}
+
+
+/* =========================
+   🌍 世界移動
+========================= */
+
+function openWorldMenu() {
+
+    document.getElementById("worldOverlay").style.display = "flex";
+}
+
+
+function closeWorldMenu() {
+
+    document.getElementById("worldOverlay").style.display = "none";
+}
+
+
+function travel(world) {
+
+    /*
+      セーブポイントを発見した世界だけ
+      ワープ可能にする。
+    */
+
+    if (!game.discovered[world]) {
+
+        showMessage(
+            world === "surface"
+                ? "☀️ 表世界のセーブポイントをまだ発見していません。"
+                : "🌑 裏世界のセーブポイントをまだ発見していません。"
+        );
+
+        return;
+    }
+
+    game.world = world;
+
+    /*
+      セーブポイントへ移動
+    */
+
+    game.player.x = 8;
+    game.player.y = 7;
+
+    closeWorldMenu();
+
+    renderMap();
+
+    showMessage(
+        world === "surface"
+            ? "☀️ 表世界へ移動した！"
+            : "🌑 裏世界へ移動した！"
+    );
+}
+
+
+/* =========================
+   ステータス
+========================= */
+
+function updateStatus() {
+
+    document.getElementById("status").textContent =
+        `HP ${game.hp}/${game.maxHp}　MP ${game.mp}/${game.maxMp}`;
+}
+
+
+/* =========================
+   メッセージ
+========================= */
+
+function showMessage(text) {
+
+    document.getElementById("message").textContent = text;
+}
+
+
+/* =========================
+   キーボード操作
+========================= */
+
+document.addEventListener("keydown", event => {
+
+    switch (event.key) {
+
+        case "ArrowUp":
+        case "w":
+            move(0,-1);
+            break;
+
+        case "ArrowDown":
+        case "s":
+            move(0,1);
+            break;
+
+        case "ArrowLeft":
+        case "a":
+            move(-1,0);
+            break;
+
+        case "ArrowRight":
+        case "d":
+            move(1,0);
+            break;
+    }
+});
+
+
+/* =========================
+   ゲーム開始
+========================= */
+
+loadGame();
+
+renderMap();
+
+</script>
+
+</body>
+</html>
