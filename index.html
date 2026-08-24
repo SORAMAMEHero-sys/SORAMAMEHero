@@ -1,624 +1,308 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>勇者そらまめ Prototype</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>勇者そらまめ - RPG試作</title>
 <style>
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    font-family: system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-    background: #101522;
-    color: #fff;
-}
-button { font: inherit; }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#0b1220;color:#fff;font-family:system-ui,-apple-system,"Yu Gothic",sans-serif}
+button{font:inherit}
+#app{height:100%;display:flex;flex-direction:column;overflow:hidden}
+header{height:68px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#121b2e;border-bottom:2px solid #34435f;z-index:10}
+.logo{font-size:20px;font-weight:900;white-space:nowrap}
+.hud{display:flex;gap:6px;font-size:13px;font-weight:800}
+.hud span{background:#202c43;border:1px solid #526481;border-radius:10px;padding:7px 8px}
+#screen{flex:1;overflow:auto;position:relative}
+.screen{min-height:100%;padding:12px}
+.btn{border:0;border-radius:13px;padding:11px 15px;margin:4px;font-weight:900;color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.28)}
+.blue{background:#147ddd}.green{background:#319b5b}.red{background:#c73a4d}.gray{background:#4b5870}.gold{background:#b98413}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.3)}
+.card{background:#121d31;border:2px solid #43536f;border-radius:17px;padding:14px;max-width:720px;margin:0 auto;box-shadow:0 12px 35px #0005}
+h1,h2,h3{margin:0 0 8px}.sub{color:#b8c5da;font-size:13px}.center{text-align:center}
+.notice{background:#182944;border:1px solid #456b99;border-radius:12px;padding:10px;margin:10px 0}
+.actions{text-align:center;padding:8px 0}
+.badge{display:inline-block;background:#273650;border-radius:999px;padding:4px 8px;margin:2px;font-size:12px;font-weight:800}
 
-#app {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(#17253d, #0d1423);
-}
+/* field */
+.field{min-height:100%;position:relative;overflow:hidden;background:
+radial-gradient(circle at 20% 30%,#fff3 0 2px,transparent 3px),
+radial-gradient(circle at 70% 65%,#fff2 0 2px,transparent 3px),
+linear-gradient(135deg,#4aa9d8 0 43%,#68b85d 43% 100%)}
+.field:after{content:"";position:absolute;inset:0;background:linear-gradient(150deg,transparent 0 46%,#fff1 46% 48%,transparent 48%);pointer-events:none}
+.field-title{position:absolute;top:12px;left:12px;background:#000a;padding:8px 12px;border-radius:12px;font-weight:900;z-index:3}
+.map-note{position:absolute;right:12px;top:12px;background:#0009;padding:8px 10px;border-radius:12px;font-size:11px;z-index:3}
+.fpath{position:absolute;height:8px;background:#fff;box-shadow:0 1px 3px #0007;border-radius:8px;transform-origin:left center;z-index:1}
+.fnode{position:absolute;width:64px;height:64px;border-radius:50%;border:4px solid #155174;background:radial-gradient(circle at 35% 30%,#9defff,#1a9dd8 65%,#0870aa);z-index:4;font-weight:900;color:#082b43;box-shadow:0 7px 0 #0005}
+.fnode.village{background:#6bc55f;border-color:#296d2b;color:#fff}
+.fnode.boss{background:#d43a4b;border-color:#741526;color:#fff}
+.fnode.locked{filter:grayscale(1);opacity:.55}
+.flabel{position:absolute;left:50%;transform:translateX(-50%);top:66px;white-space:nowrap;color:#fff;text-shadow:0 2px 3px #000;font-size:11px}
 
-.topbar {
-    flex: 0 0 auto;
-    padding: 10px 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    background: #111827;
-    border-bottom: 2px solid #39465f;
-    box-shadow: 0 3px 12px rgba(0,0,0,.35);
-    z-index: 10;
-}
-.title {
-    font-weight: 900;
-    font-size: clamp(17px, 5vw, 25px);
-    white-space: nowrap;
-}
-.stats {
-    display: flex;
-    gap: 8px;
-    font-size: clamp(11px, 3vw, 15px);
-    font-weight: 800;
-}
-.stat {
-    background: #202b41;
-    border: 1px solid #52627e;
-    border-radius: 10px;
-    padding: 6px 8px;
-}
+/* stage */
+.stage{min-height:100%;background:linear-gradient(145deg,#335d36,#78984d 55%,#304f37);position:relative;overflow:hidden;border-radius:16px}
+.stage:before{content:"";position:absolute;inset:0;opacity:.22;background-image:linear-gradient(45deg,transparent 48%,#fff 49% 51%,transparent 52%);background-size:36px 36px}
+.stitle{position:relative;z-index:5;display:inline-block;margin:12px;background:#000b;padding:8px 12px;border-radius:11px;font-weight:900}
+.spath{position:absolute;height:8px;background:#fff;border-radius:8px;transform-origin:left center;z-index:2;box-shadow:0 1px 3px #0006}
+.snode{position:absolute;width:68px;height:68px;border-radius:20px;border:4px solid #203c27;background:#e8f1dd;color:#17261b;z-index:4;font-weight:900;box-shadow:0 6px 0 #0005}
+.snode.enemy{background:#b93445;color:#fff;border-color:#6e1724;border-radius:50%}
+.snode.key{background:#ffd94d;color:#5b4200;border-color:#947000;border-radius:50%}
+.snode.heal{background:#71d8d2;border-color:#237e80}
+.snode.locked{background:#5d6268;color:#ddd;border-color:#36393d}
+.stage-info{position:absolute;left:10px;right:10px;bottom:10px;background:#000b;border:1px solid #fff3;border-radius:13px;padding:9px;z-index:6;font-size:12px}
+.back{position:relative;z-index:10}
 
-#screen {
-    position: relative;
-    flex: 1;
-    overflow: auto;
-    padding: 14px;
-}
-
-.panel {
-    max-width: 760px;
-    margin: 0 auto;
-    background: rgba(15, 23, 42, .94);
-    border: 2px solid #52627e;
-    border-radius: 18px;
-    padding: 16px;
-    box-shadow: 0 10px 35px rgba(0,0,0,.35);
-}
-
-h1, h2, h3 { margin: 0 0 10px; }
-p { line-height: 1.6; }
-
-.primary, .secondary, .danger {
-    border: 0;
-    border-radius: 13px;
-    padding: 12px 18px;
-    color: #fff;
-    font-weight: 900;
-    cursor: pointer;
-    box-shadow: 0 5px 0 rgba(0,0,0,.25);
-    margin: 4px;
-}
-.primary { background: linear-gradient(#28a9ff, #1475db); }
-.secondary { background: linear-gradient(#68758d, #465269); }
-.danger { background: linear-gradient(#ef5a67, #ba3040); }
-.primary:active, .secondary:active, .danger:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
-
-.world {
-    min-height: 100%;
-    border-radius: 18px;
-    position: relative;
-    overflow: hidden;
-    background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.08) 0 2px, transparent 3px),
-        radial-gradient(circle at 70% 65%, rgba(255,255,255,.06) 0 2px, transparent 3px),
-        linear-gradient(135deg, #2c8fdb, #57b6ea 42%, #6cc66e 42%, #56b85e 100%);
-}
-.world:before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(135deg, transparent 0 45%, rgba(255,255,255,.16) 45% 47%, transparent 47% 100%);
-    opacity: .5;
-}
-.world-card {
-    position: relative;
-    min-height: 620px;
-    padding: 20px;
-}
-.world-title {
-    display: inline-block;
-    background: rgba(0,0,0,.6);
-    padding: 8px 14px;
-    border-radius: 12px;
-    font-weight: 900;
-    z-index: 2;
-}
-.world-tip {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    background: rgba(0,0,0,.55);
-    padding: 8px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    z-index: 2;
-}
-.path {
-    position: absolute;
-    background: #fff;
-    height: 6px;
-    border-radius: 10px;
-    opacity: .9;
-    transform-origin: left center;
-    z-index: 1;
-}
-.node {
-    position: absolute;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    border: 4px solid #0c4770;
-    background: radial-gradient(circle at 35% 30%, #8fe8ff, #1b9de0 65%, #0d6fac);
-    color: #06243a;
-    font-weight: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3;
-    cursor: pointer;
-    box-shadow: 0 7px 0 rgba(0,0,0,.25);
-}
-.node.locked {
-    filter: grayscale(1);
-    opacity: .6;
-    cursor: not-allowed;
-}
-.node.village {
-    background: linear-gradient(#9be66f, #45a84b);
-    border-color: #235f2a;
-    color: #fff;
-}
-.node.boss {
-    background: radial-gradient(circle, #ff7c88, #bd2638);
-    border-color: #711321;
-    color: #fff;
-    font-size: 24px;
-}
-.node.key {
-    background: radial-gradient(circle, #ffe982, #e2a30b);
-    border-color: #8a5b00;
-    color: #5d3a00;
-    font-size: 24px;
-}
-.node-label {
-    position: absolute;
-    transform: translateY(39px);
-    white-space: nowrap;
-    font-size: 11px;
-    font-weight: 900;
-    color: #fff;
-    text-shadow: 0 2px 3px #000;
-}
-
-.stage-map {
-    min-height: 620px;
-    position: relative;
-    border-radius: 18px;
-    overflow: hidden;
-    background:
-        radial-gradient(circle at 20% 15%, rgba(255,255,255,.08) 0 2px, transparent 3px),
-        linear-gradient(135deg, #315f37, #6e9a49 50%, #355d3b);
-}
-.stage-map:before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    opacity: .22;
-    background-image:
-      linear-gradient(45deg, transparent 48%, #fff 49% 51%, transparent 52%);
-    background-size: 38px 38px;
-}
-.stage-title {
-    position: relative;
-    z-index: 5;
-    display: inline-block;
-    margin: 15px;
-    padding: 9px 13px;
-    background: rgba(0,0,0,.65);
-    border-radius: 12px;
-    font-weight: 900;
-}
-.stage-node {
-    position: absolute;
-    width: 76px;
-    height: 76px;
-    border-radius: 22px;
-    border: 4px solid #203b28;
-    background: #e8f4dd;
-    color: #17251a;
-    z-index: 4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-weight: 1000;
-    cursor: pointer;
-    box-shadow: 0 7px 0 rgba(0,0,0,.25);
-}
-.stage-node.boss {
-    border-radius: 50%;
-    background: #d72f43;
-    color: #fff;
-    border-color: #721827;
-}
-.stage-node.key {
-    border-radius: 50%;
-    background: #ffd84d;
-    color: #5b4100;
-    border-color: #946b00;
-}
-.stage-node.locked {
-    background: #60656c;
-    color: #ddd;
-    border-color: #34383d;
-    cursor: not-allowed;
-}
-.stage-node.done {
-    background: #70d887;
-}
-.stage-node small {
-    display: block;
-    font-size: 11px;
-}
-.stage-path {
-    position: absolute;
-    height: 8px;
-    background: #fff;
-    border-radius: 10px;
-    z-index: 2;
-    transform-origin: left center;
-    box-shadow: 0 1px 2px rgba(0,0,0,.4);
-}
-.info {
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    bottom: 14px;
-    z-index: 8;
-    background: rgba(0,0,0,.72);
-    border: 1px solid rgba(255,255,255,.2);
-    border-radius: 14px;
-    padding: 10px 12px;
-    font-size: 13px;
-}
-.actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 5px;
-    padding-top: 10px;
-}
-.badge {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 999px;
-    background: #283852;
-    margin: 2px;
-    font-size: 12px;
-    font-weight: 800;
-}
-.notice {
-    background: #162d45;
-    border: 1px solid #3c78a5;
-    border-radius: 12px;
-    padding: 10px;
-    margin: 10px 0;
-}
-.lock-text { color: #ffd86b; font-weight: 900; }
-
-@media (max-width: 600px) {
-    .world-card, .stage-map { min-height: 560px; }
-    .node { width: 56px; height: 56px; }
-    .stage-node { width: 68px; height: 68px; }
-    .stats .stat:nth-child(2) { display: none; }
-}
+/* battle */
+.battle{min-height:100%;background:radial-gradient(circle at 50% 30%,#384b6c,#11192b 65%);padding:12px}
+.enemy-box{max-width:500px;margin:5px auto 12px;text-align:center}
+.enemy-sprite{font-size:72px;line-height:1}
+.hpbar{height:14px;background:#27141a;border:2px solid #667089;border-radius:10px;overflow:hidden}
+.hpfill{height:100%;background:#4fc75b;transition:.25s}
+.battle-log{height:120px;overflow:auto;background:#09101d;border:1px solid #3c4a61;border-radius:12px;padding:9px;font-size:13px}
+.party{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px auto;max-width:600px}
+.member{background:#17243a;border:2px solid #43536f;border-radius:12px;padding:7px;font-size:12px}
+.member.dead{opacity:.45}
+.skill-grid{display:grid;grid-template-columns:1fr 1fr;max-width:600px;margin:auto}
+.skill{min-height:55px}
+@media(max-width:500px){.party{grid-template-columns:1fr 1fr}.logo{font-size:17px}.hud span{padding:6px}.fnode{width:58px;height:58px}.flabel{top:60px}}
 </style>
 </head>
 <body>
 <div id="app">
-    <div class="topbar">
-        <div class="title">🌱 勇者そらまめ</div>
-        <div class="stats">
-            <div class="stat">Lv. <span id="level">1</span></div>
-            <div class="stat">❤️ <span id="hp">100</span>/100</div>
-            <div class="stat">💰 <span id="gold">0</span></div>
-        </div>
-    </div>
-    <main id="screen"></main>
+<header>
+  <div class="logo">🌱 勇者そらまめ</div>
+  <div class="hud">
+    <span>Lv.<b id="level">1</b></span>
+    <span>💰<b id="gold">0</b></span>
+  </div>
+</header>
+<div id="screen"></div>
 </div>
 
 <script>
 "use strict";
 
-/*
-  勇者そらまめ Prototype
-  - フィールドからステージへ入る
-  - ステージ1: 一本道 → ボス
-  - ステージ2: 鍵1・鍵2を集める → ボスステージ解放
-  - ステージ3: 鍵2つを集める → 村の上のルート解放 → ボス
-*/
-
-const state = {
-    level: 1,
-    hp: 100,
-    gold: 0,
-    currentScreen: "world",
-    currentStage: null,
-    stage2Keys: new Set(),
-    stage3Keys: new Set(),
-    stageCleared: new Set()
+const game = {
+  level: 1,
+  gold: 0,
+  exp: 0,
+  keys: {1:false,2:false},
+  party: [
+    {name:"そらまめ", role:"勇者", hp:120, maxHp:120, mp:35, maxMp:35, atk:24, alive:true},
+    {name:"えんどう", role:"戦士", hp:145, maxHp:145, mp:20, maxMp:20, atk:28, alive:true},
+    {name:"えだまめ", role:"魔法使い", hp:90, maxHp:90, mp:50, maxMp:50, atk:18, alive:true},
+    {name:"ひよこ", role:"僧侶", hp:105, maxHp:105, mp:45, maxMp:45, atk:15, alive:true}
+  ],
+  enemy: null,
+  battleLog: [],
+  currentStage: 1,
+  cleared: new Set()
 };
 
 const screen = document.getElementById("screen");
-
-function updateTop() {
-    document.getElementById("level").textContent = state.level;
-    document.getElementById("hp").textContent = state.hp;
-    document.getElementById("gold").textContent = state.gold;
+function hud(){document.getElementById("level").textContent=game.level;document.getElementById("gold").textContent=game.gold;}
+function render(html){screen.innerHTML=html;hud();screen.scrollTop=0;}
+function line(x1,y1,x2,y2,cls){
+  const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)*180/Math.PI;
+  return '<div class="'+cls+'" style="left:'+x1+'px;top:'+y1+'px;width:'+len+'px;transform:rotate('+ang+'deg)"></div>';
 }
 
-function setScreen(html) {
-    screen.innerHTML = html;
-    updateTop();
-    screen.scrollTop = 0;
+function world(){
+  render(`
+  <div class="field">
+    <div class="field-title">☀️ 表世界・はじまりの地方</div>
+    <div class="map-note">🗺️ ステージを選んで冒険！</div>
+    ${line(145,500,145,410,"fpath")}
+    ${line(145,410,145,315,"fpath")}
+    ${line(145,315,290,245,"fpath")}
+    ${line(290,245,430,175,"fpath")}
+    ${line(430,175,555,105,"fpath")}
+    <button class="fnode village" style="left:116px;top:470px" onclick="village()">🏘️<span class="flabel">そらまめ村</span></button>
+    <button class="fnode" style="left:116px;top:380px" onclick="stage(1)">1<span class="flabel">はじまりの道</span></button>
+    <button class="fnode" style="left:116px;top:285px" onclick="stage(2)">2<span class="flabel">二つの鍵</span></button>
+    <button class="fnode" style="left:260px;top:215px" onclick="stage(3)">3<span class="flabel">開かれる道</span></button>
+    <button class="fnode locked" style="left:400px;top:145px" onclick="alert('ここはまだ封鎖されている…')">🔒<span class="flabel">？？？</span></button>
+    <button class="fnode boss locked" style="left:525px;top:75px" onclick="alert('魔王城はまだ遠い…')">👿<span class="flabel">魔王城</span></button>
+  </div>`);
 }
 
-function path(x1, y1, x2, y2, cls="path") {
-    const dx = x2 - x1, dy = y2 - y1;
-    const len = Math.sqrt(dx*dx + dy*dy);
-    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-    return `<div class="${cls}" style="left:${x1}px;top:${y1}px;width:${len}px;transform:rotate(${angle}deg)"></div>`;
+function village(){
+  render(`
+  <div class="screen"><div class="card">
+    <h2>🏘️ そらまめ村</h2>
+    <p class="sub">旅の拠点。ここで仲間を休ませることができる。</p>
+    <div class="notice">💠 <b>セーブポイント</b><br>HP・MPが全回復した！</div>
+    <div class="actions">
+      <button class="btn green" onclick="healAll()">💚 全回復</button>
+      <button class="btn blue" onclick="world()">🗺️ フィールドへ</button>
+    </div>
+  </div></div>`);
+}
+function healAll(){game.party.forEach(p=>{p.hp=p.maxHp;p.mp=p.maxMp;p.alive=true});alert("💠 HP・MPが全回復した！");village();}
+
+function stage(n){
+  game.currentStage=n;
+  if(n===1) stage1();
+  if(n===2) stage2();
+  if(n===3) stage3();
 }
 
-function node(x, y, text, cls, onclick="", label="") {
-    const locked = cls.includes("locked") ? " disabled" : "";
-    return `<button class="node ${cls}" style="left:${x}px;top:${y}px" ${locked} ${onclick ? `onclick="${onclick}"` : ""}>
-        ${text}${label ? `<span class="node-label">${label}</span>` : ""}
-    </button>`;
+function stage1(){
+  render(`
+  <div class="stage">
+    <div class="stitle">🌲 ステージ1「はじまりの道」</div>
+    ${line(370,500,370,390,"spath")}
+    ${line(370,390,370,280,"spath")}
+    ${line(370,280,370,170,"spath")}
+    <button class="snode" style="left:336px;top:465px">🏁<small>入口</small></button>
+    <button class="snode enemy" style="left:336px;top:355px" onclick="encounter('スライム', '🟢', 70, 14, 40)">👾<small>敵</small></button>
+    <button class="snode heal" style="left:336px;top:245px" onclick="healAtPoint()">💠<small>回復</small></button>
+    <button class="snode enemy" style="left:336px;top:135px" onclick="encounter('森の番人','🌳',150,20,120)">👹<small>ボス</small></button>
+    <div class="stage-info">敵を倒しながら進め！ 💠ではHP・MPを回復できる。</div>
+  </div>
+  <div class="actions"><button class="btn gray back" onclick="world()">🗺️ フィールド</button></div>`);
 }
 
-function showWorld() {
-    state.currentScreen = "world";
-    setScreen(`
-        <div class="world">
-          <div class="world-card">
-            <div class="world-title">☀️ 表世界・エリア1〜3</div>
-            <div class="world-tip">🔵 ステージ入口をタップ</div>
+function healAtPoint(){healAll();}
 
-            ${path(160, 505, 160, 430)}
-            ${path(160, 430, 160, 350)}
-            ${path(160, 350, 285, 270)}
-            ${path(285, 270, 415, 200)}
-            ${path(415, 200, 535, 125)}
+function stage2(){
+  const k1=game.keys[1],k2=game.keys[2],open=k1&&k2;
+  render(`
+  <div class="stage">
+    <div class="stitle">🔑 ステージ2「二つの鍵」</div>
+    ${line(370,500,370,390,"spath")}
+    ${line(370,390,205,270,"spath")}
+    ${line(370,390,535,270,"spath")}
+    ${line(370,390,370,245,"spath")}
+    <button class="snode" style="left:336px;top:465px">🏁<small>入口</small></button>
+    <button class="snode key" style="left:170px;top:235px" onclick="getKey(1)">🔑<small>${k1?"取得済":"鍵1"}</small></button>
+    <button class="snode key" style="left:500px;top:235px" onclick="getKey(2)">🔑<small>${k2?"取得済":"鍵2"}</small></button>
+    <button class="snode ${open?"enemy":"locked"}" style="left:336px;top:210px" onclick="${open ? 'stage2Boss()' : 'lockedBoss()'}">${open?"👿":"🔒"}<small>${open?"ボス":"鍵2つ必要"}</small></button>
+    <div class="stage-info">🔑 鍵1 ${k1?"✅":"⬜"}　🔑 鍵2 ${k2?"✅":"⬜"}　${open?"👿 ボス解放！":"鍵を2つ集めると中央のボスが解放される。"}</div>
+  </div>
+  <div class="actions"><button class="btn gray" onclick="world()">🗺️ フィールド</button></div>`);
+}
+function getKey(n){game.keys[n]=true;game.gold+=30;alert("🔑 鍵"+n+"を手に入れた！");stage2();}
+function stage2Boss(){encounter("鍵守の騎士","🛡️",210,24,180);}
+function openUpperRoute(){alert("🔓 村の上の隠し道が開いた！");}
+function stage3Boss(){encounter("異世界の番人","🌀",260,28,250);}
+function lockedBoss(){alert("🔒 まだボスへ進めない。鍵を2つ集めよう！");}
 
-            ${node(128, 475, "🏘️", "village", "", "そらまめ村")}
-            ${node(128, 400, "1", "", "openStage(1)", "ステージ1")}
-            ${node(128, 320, "2", "", "openStage(2)", "ステージ2")}
-            ${node(253, 240, "3", "", "openStage(3)", "ステージ3")}
-            ${node(383, 170, "?", "locked", "", "次のエリア")}
-            ${node(503, 95, "👿", "boss locked", "", "魔王軍領")}
-
-            <div class="info">
-              <b>現在地：そらまめ村</b><br>
-              ステージをクリアして、次の冒険先を開放しよう！
-            </div>
-          </div>
-        </div>
-    `);
+function stage3(){
+  const open=game.keys[1]&&game.keys[2];
+  render(`
+  <div class="stage">
+    <div class="stitle">🌿 ステージ3「開かれる道」</div>
+    ${line(370,510,370,410,"spath")}
+    ${line(370,410,200,410,"spath")}
+    ${line(370,410,540,410,"spath")}
+    ${line(370,410,370,300,"spath")}
+    ${line(370,300,370,190,"spath")}
+    ${line(370,190,205,100,"spath")}
+    <button class="snode" style="left:336px;top:475px">🏘️<small>村</small></button>
+    <button class="snode key" style="left:165px;top:375px" onclick="getKey(1)">🔑<small>${game.keys[1]?"取得済":"鍵1"}</small></button>
+    <button class="snode key" style="left:505px;top:375px" onclick="getKey(2)">🔑<small>${game.keys[2]?"取得済":"鍵2"}</small></button>
+    <button class="snode ${open?"":"locked"}" style="left:336px;top:265px" onclick="${open ? 'openUpperRoute()' : 'lockedBoss()'}">${open?"🔓":"🔒"}<small>上の道</small></button>
+    <button class="snode ${open?"enemy":"locked"}" style="left:170px;top:65px" onclick="${open ? 'stage3Boss()' : 'lockedBoss()'}">${open?"👿":"🔒"}<small>ボス</small></button>
+    <div class="stage-info">${open?"🔓 二つの鍵が揃い、上の道が開いた！":"🔑 鍵を2つ集めると村の上の道が開く。"}</div>
+  </div>
+  <div class="actions"><button class="btn gray" onclick="world()">🗺️ フィールド</button></div>`);
 }
 
-function openStage(stage) {
-    state.currentStage = stage;
-    if (stage === 1) showStage1();
-    if (stage === 2) showStage2();
-    if (stage === 3) showStage3();
+/* battle */
+function encounter(name,sprite,hp,atk,reward){
+  game.enemy={name,sprite,hp,maxHp:hp,atk,reward};
+  game.battleLog=["⚔️ "+name+"が現れた！"];
+  battle();
 }
-
-function backToWorld() {
-    state.currentStage = null;
-    showWorld();
+function aliveMembers(){return game.party.filter(p=>p.alive&&p.hp>0)}
+function battle(){
+  const e=game.enemy;
+  render(`
+  <div class="battle">
+    <div class="enemy-box">
+      <div class="sub">ENEMY</div>
+      <div class="enemy-sprite">${e.sprite}</div>
+      <h2>${e.name}</h2>
+      <div class="hpbar"><div class="hpfill" style="width:${Math.max(0,e.hp/e.maxHp*100)}%"></div></div>
+      <div>HP ${Math.max(0,e.hp)} / ${e.maxHp}</div>
+    </div>
+    <div class="party">${game.party.map((p,i)=>`
+      <div class="member ${p.alive?"":"dead"}">
+        <b>${p.name}</b> <span class="sub">${p.role}</span><br>
+        ❤️ ${Math.max(0,p.hp)}/${p.maxHp}　💙 ${p.mp}/${p.maxMp}
+      </div>`).join("")}</div>
+    <div class="battle-log">${game.battleLog.slice(-7).map(x=>"<div>"+x+"</div>").join("")}</div>
+    <div class="skill-grid">
+      <button class="btn blue skill" onclick="attack()">⚔️ こうげき</button>
+      <button class="btn gold skill" onclick="fire()">🔥 ファイア<br><small>MP 8</small></button>
+      <button class="btn green skill" onclick="healSkill()">✨ ヒール<br><small>MP 6</small></button>
+      <button class="btn gray skill" onclick="defend()">🛡️ ぼうぎょ</button>
+    </div>
+    <div class="actions"><button class="btn gray" onclick="runBattle()">🏃 逃げる</button></div>
+  </div>`);
 }
-
-/* ---------------- Stage 1 ---------------- */
-function showStage1() {
-    setScreen(`
-      <div class="panel">
-        <h2>🌱 ステージ1「はじまりの道」</h2>
-        <p>そらまめが初めて村の外へ出る、最初のステージ。</p>
-        <div class="notice">一本道を進んで、最後に待つボスを倒そう！</div>
-        <div class="actions">
-          <button class="primary" onclick="startStage1Battle()">⚔️ ボスへ進む</button>
-          <button class="secondary" onclick="backToWorld()">🗺️ フィールドへ戻る</button>
-        </div>
-      </div>
-    `);
+function addLog(t){game.battleLog.push(t)}
+function playerAction(kind){
+  if(!game.enemy||game.enemy.hp<=0)return;
+  const p=aliveMembers()[0];
+  if(!p){gameOver();return}
+  if(kind==="attack"){
+    const dmg=p.atk+Math.floor(Math.random()*8);
+    game.enemy.hp-=dmg;addLog("⚔️ "+p.name+"の攻撃！ "+dmg+"ダメージ！");
+  }
+  if(kind==="fire"){
+    if(p.mp<8){addLog("💙 MPが足りない！");battle();return}
+    p.mp-=8;const dmg=35+Math.floor(Math.random()*15);
+    game.enemy.hp-=dmg;addLog("🔥 "+p.name+"のファイア！ "+dmg+"ダメージ！");
+  }
+  if(kind==="heal"){
+    if(p.mp<6){addLog("💙 MPが足りない！");battle();return}
+    p.mp-=6;
+    const target=game.party.find(x=>x.alive&&x.hp<x.maxHp);
+    if(target){target.hp=Math.min(target.maxHp,target.hp+45);addLog("✨ "+p.name+"のヒール！ "+target.name+"が回復！")}
+    else addLog("✨ しかし回復する必要はなかった！");
+  }
+  if(kind==="defend"){addLog("🛡️ "+p.name+"は身を守った！");}
+  if(game.enemy.hp<=0){winBattle();return}
+  enemyTurn(kind==="defend");
 }
-
-function startStage1Battle() {
-    state.stageCleared.add(1);
-    state.gold += 50;
-    state.level = 2;
-    state.hp = 100;
-    setScreen(`
-      <div class="panel">
-        <h2>⚔️ ステージ1・ボス</h2>
-        <div class="notice">
-          <h3>👹 魔王軍の隊長</h3>
-          <p>「ここから先へは行かせん！」</p>
-          <p>※試作品では演出用にボタン1つで撃破します。</p>
-        </div>
-        <button class="primary" onclick="finishStage(1)">🔥 攻撃して倒す</button>
-      </div>
-    `);
+function attack(){playerAction("attack")}
+function fire(){playerAction("fire")}
+function healSkill(){playerAction("heal")}
+function defend(){playerAction("defend")}
+function enemyTurn(defending){
+  const targets=aliveMembers();
+  if(!targets.length){gameOver();return}
+  const target=targets[Math.floor(Math.random()*targets.length)];
+  let dmg=game.enemy.atk+Math.floor(Math.random()*7);
+  if(defending)dmg=Math.max(1,Math.floor(dmg/2));
+  target.hp-=dmg;
+  addLog("👿 "+game.enemy.name+"の攻撃！ "+target.name+"に "+dmg+"ダメージ！");
+  if(target.hp<=0){target.hp=0;target.alive=false;addLog("💥 "+target.name+"は倒れた…")}
+  battle();
 }
-
-function finishStage(stage) {
-    state.stageCleared.add(stage);
-    state.gold += stage * 100;
-    showClear(stage);
+function winBattle(){
+  const e=game.enemy;
+  game.gold+=e.reward;
+  game.exp+=e.reward;
+  game.level=1+Math.floor(game.exp/150);
+  game.party.forEach(p=>{if(p.alive)p.hp=Math.min(p.maxHp,p.hp+15)});
+  game.cleared.add(game.currentStage);
+  render(`
+  <div class="screen"><div class="card center">
+    <h1>🎉 勝利！</h1>
+    <div style="font-size:70px">${e.sprite}</div>
+    <h2>${e.name}を倒した！</h2>
+    <p><span class="badge">💰 +${e.reward}</span><span class="badge">✨ 経験値 +${e.reward}</span></p>
+    <button class="btn blue" onclick="world()">🗺️ フィールドへ戻る</button>
+  </div></div>`);
 }
-
-function showClear(stage) {
-    setScreen(`
-      <div class="panel">
-        <h2>🎉 ステージ${stage} クリア！</h2>
-        <p>冒険が一歩進んだ！</p>
-        <div class="badge">💰 ゴールド +${stage * 100}</div>
-        <div class="actions">
-          <button class="primary" onclick="backToWorld()">🗺️ フィールドへ</button>
-        </div>
-      </div>
-    `);
+function runBattle(){game.enemy=null;world()}
+function gameOver(){
+  render(`<div class="screen"><div class="card center"><h1>💀 全滅…</h1><p>そらまめたちは力尽きた。</p><button class="btn green" onclick="healAll()">🏘️ 村へ戻る</button></div></div>`);
 }
-
-/* ---------------- Stage 2 ---------------- */
-function showStage2() {
-    const k1 = state.stage2Keys.has(1);
-    const k2 = state.stage2Keys.has(2);
-    const unlocked = k1 && k2;
-
-    setScreen(`
-      <div class="stage-map">
-        <div class="stage-title">🔑 ステージ2「二つの鍵」</div>
-
-        ${path(380, 510, 380, 405, "stage-path")}
-        ${path(380, 405, 380, 300, "stage-path")}
-        ${path(380, 300, 205, 205, "stage-path")}
-        ${path(380, 300, 555, 205, "stage-path")}
-        ${path(380, 300, 380, 145, "stage-path")}
-
-        <button class="stage-node" style="left:342px;top:475px" onclick="stage2Middle()">🔵<small>入口</small></button>
-        <button class="stage-node key ${k1 ? "done" : ""}" style="left:167px;top:170px" onclick="getStage2Key(1)">🔑<small>${k1 ? "取得済み" : "鍵1"}</small></button>
-        <button class="stage-node key ${k2 ? "done" : ""}" style="left:517px;top:170px" onclick="getStage2Key(2)">🔑<small>${k2 ? "取得済み" : "鍵2"}</small></button>
-        <button class="stage-node ${unlocked ? "boss" : "locked"}" style="left:342px;top:110px" ${unlocked ? 'onclick="stage2Boss()"' : 'onclick="showLockMessage(2)"'}>
-            ${unlocked ? "👿" : "🔒"}<small>${unlocked ? "ボス" : "鍵2つ必要"}</small>
-        </button>
-
-        <div class="info">
-          🔑 鍵1：${k1 ? "✅" : "未取得"}　
-          🔑 鍵2：${k2 ? "✅" : "未取得"}　
-          ${unlocked ? "<b>👿 ボスステージ解放！</b>" : "<span class='lock-text'>鍵を2つ集めるとボスステージが解放されます。</span>"}
-        </div>
-      </div>
-      <div class="actions">
-        <button class="secondary" onclick="backToWorld()">🗺️ フィールドへ</button>
-        <button class="secondary" onclick="resetStage2()">🔄 ステージ2をリセット</button>
-      </div>
-    `);
-}
-
-function stage2Middle() {
-    alert("ここから左右の鍵ステージへ分岐できます！");
-}
-
-function getStage2Key(n) {
-    if (state.stage2Keys.has(n)) {
-        alert(`鍵${n}はすでに取得済みです。`);
-        return;
-    }
-    state.stage2Keys.add(n);
-    alert(`🔑 鍵${n}を手に入れた！`);
-    showStage2();
-}
-
-function stage2Boss() {
-    finishStage(2);
-}
-
-function resetStage2() {
-    state.stage2Keys.clear();
-    showStage2();
-}
-
-function showLockMessage(stage) {
-    alert(`🔒 ステージ${stage}のボスは、必要な鍵をすべて集めるまで解放されません！`);
-}
-
-/* ---------------- Stage 3 ---------------- */
-function showStage3() {
-    const k1 = state.stage3Keys.has(1);
-    const k2 = state.stage3Keys.has(2);
-    const unlocked = k1 && k2;
-
-    setScreen(`
-      <div class="stage-map">
-        <div class="stage-title">🌳 ステージ3「開かれる道」</div>
-
-        ${path(380, 520, 380, 410, "stage-path")}
-        ${path(380, 410, 200, 410, "stage-path")}
-        ${path(380, 410, 560, 410, "stage-path")}
-        ${path(380, 410, 380, 300, "stage-path")}
-        ${path(380, 300, 380, 190, "stage-path")}
-        ${path(380, 190, 215, 100, "stage-path")}
-        ${path(380, 190, 545, 100, "stage-path")}
-
-        <button class="stage-node" style="left:342px;top:485px">🏘️<small>村</small></button>
-
-        <button class="stage-node key ${k1 ? "done" : ""}" style="left:162px;top:375px" onclick="getStage3Key(1)">
-            🔑<small>${k1 ? "取得済み" : "鍵1"}</small>
-        </button>
-
-        <button class="stage-node key ${k2 ? "done" : ""}" style="left:522px;top:375px" onclick="getStage3Key(2)">
-            🔑<small>${k2 ? "取得済み" : "鍵2"}</small>
-        </button>
-
-        <button class="stage-node ${unlocked ? "" : "locked"}" style="left:342px;top:265px" ${unlocked ? 'onclick="stage3UpperRoute()"' : 'onclick="showLockMessage(3)"'}>
-            ${unlocked ? "🔓" : "🔒"}<small>${unlocked ? "開通" : "封鎖中"}</small>
-        </button>
-
-        <button class="stage-node ${unlocked ? "boss" : "locked"}" style="left:177px;top:65px" ${unlocked ? 'onclick="stage3Boss()"' : 'onclick="showLockMessage(3)"'}>
-            ${unlocked ? "👿" : "🔒"}<small>${unlocked ? "ボス" : "未解放"}</small>
-        </button>
-
-        <button class="stage-node ${unlocked ? "" : "locked"}" style="left:507px;top:65px" ${unlocked ? 'onclick="stage3UpperRoute()"' : 'onclick="showLockMessage(3)"'}>
-            ${unlocked ? "🔵" : "🔒"}<small>${unlocked ? "奥へ" : "封鎖中"}</small>
-        </button>
-
-        <div class="info">
-          🔑 鍵1：${k1 ? "✅" : "未取得"}　
-          🔑 鍵2：${k2 ? "✅" : "未取得"}　
-          ${unlocked ? "<b>🔓 村の上のルートが開いた！</b>" : "<span class='lock-text'>鍵を2つ集めると村の上の道が開きます。</span>"}
-        </div>
-      </div>
-      <div class="actions">
-        <button class="secondary" onclick="backToWorld()">🗺️ フィールドへ</button>
-        <button class="secondary" onclick="resetStage3()">🔄 ステージ3をリセット</button>
-      </div>
-    `);
-}
-
-function getStage3Key(n) {
-    if (state.stage3Keys.has(n)) {
-        alert(`鍵${n}はすでに取得済みです。`);
-        return;
-    }
-    state.stage3Keys.add(n);
-    alert(`🔑 鍵${n}を手に入れた！`);
-    showStage3();
-}
-
-function stage3UpperRoute() {
-    alert("🔓 新しい道が開いた！この先にボスが待っている！");
-}
-
-function stage3Boss() {
-    setScreen(`
-      <div class="panel">
-        <h2>👿 ステージ3・ボス</h2>
-        <div class="notice">
-          <h3>⚔️ 魔王軍の強敵</h3>
-          <p>「よくぞここまで辿り着いたな、勇者そらまめ！」</p>
-          <p>鍵を2つ集めた者だけが、この場所へ来られる。</p>
-        </div>
-        <button class="primary" onclick="finishStage(3)">🔥 攻撃して倒す</button>
-      </div>
-    `);
-}
-
-function resetStage3() {
-    state.stage3Keys.clear();
-    showStage3();
-}
-
-showWorld();
+world();
 </script>
 </body>
 </html>
