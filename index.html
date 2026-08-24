@@ -2,171 +2,847 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>勇者そらまめ - フィールド試作9</title>
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<title>勇者そらまめ</title>
+
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;touch-action:none;overscroll-behavior:none;-webkit-text-size-adjust:100%;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;background:#102039;color:#fff}
-button{font:inherit;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none;outline:none;-webkit-appearance:none;appearance:none}
-#game{position:relative;width:100%;height:100%;overflow:hidden;background:#47753b}
-#hud{position:absolute;z-index:20;top:0;left:0;right:0;height:58px;background:#101b2c;border-bottom:2px solid #41526e;display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-weight:800}
-.title{font-size:15px}.stats{display:flex;gap:7px}.badge{padding:7px 10px;border-radius:12px;background:#263650;border:1px solid #617392;font-size:13px}
-#notice{position:absolute;z-index:21;top:63px;left:8px;right:8px;text-align:center;background:rgba(10,39,17,.82);border-radius:12px;padding:7px;font-size:11px;color:#d9f4dc}
-#world{position:absolute;touch-action:none;overscroll-behavior:none;inset:58px 0 0;overflow:hidden;background:
-radial-gradient(circle at 52% 45%,rgba(116,204,93,.75),transparent 30%),
-linear-gradient(155deg,#376b35 0 58%,#80643e 58% 77%,#2f6b7f 77%);}
-#mapLayer{
- position:absolute;left:50%;top:50%;width:2400px;height:1800px;
- will-change:transform;pointer-events:none;
- background:#376b35;
- background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1px);
- background-size:42px 42px;
+*{
+  box-sizing:border-box;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color:transparent;
 }
-#path{position:absolute;left:0;top:720px;width:2400px;height:210px;background:#8d7048;border-top:7px solid #725a3a;border-bottom:7px solid #725a3a;border-radius:30px}
-#path2{position:absolute;left:1080px;top:0;width:180px;height:1800px;background:#8d7048;border-left:7px solid #725a3a;border-right:7px solid #725a3a}
-.water{position:absolute;left:1450px;top:180px;width:700px;height:420px;background:#21637b;border:7px solid #17485b;border-radius:40px}
-.grass{position:absolute;left:180px;top:180px;width:420px;height:330px;background:#4b823e;border-radius:45px;opacity:.9}
-#player{position:absolute;z-index:8;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:86px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.player-body{font-size:48px;filter:drop-shadow(0 3px 2px #17351a)}
-#playerName{margin-top:-3px;background:#142b18;padding:3px 9px;border-radius:10px;font-size:12px;font-weight:900}
-#playerMarker{position:absolute;z-index:7;left:50%;top:calc(50% + 37px);transform:translateX(-50%);font-size:23px;filter:drop-shadow(0 2px 2px #17351a)}
-.landmark{position:absolute;pointer-events:none;z-index:4;font-size:38px;filter:drop-shadow(0 3px 2px #17351a)}
-.t1{left:300px;top:300px}.t2{left:700px;top:1120px}.t3{left:1700px;top:900px}.t4{left:2050px;top:1350px}
-.r1{left:820px;top:300px}.r2{left:1450px;top:1050px}.r3{left:430px;top:1280px}.r4{left:1850px;top:420px}
-.sign{position:absolute;left:980px;top:650px;z-index:4;font-weight:900;background:#17361b;padding:10px 14px;border-radius:12px}
-.stage{left:1320px;top:640px}
-.mountain{left:1080px;top:480px}
-.node{position:absolute;pointer-events:none;z-index:5;padding:9px 13px;border-radius:14px;background:#16261a;color:#fff;border:2px solid #4d7654;font-weight:900;box-shadow:0 4px 8px #18351a66}
-.stage{background:#3d241b;border-color:#a76d45}
-.mountain{left:49%;top:43%;font-size:14px}
-.stage{pointer-events:auto;cursor:pointer;touch-action:manipulation}
-.stage:active{transform:scale(.96)}
-#worldBtn{position:absolute;z-index:30;right:9px;top:54px;border:0;border-radius:13px;background:#d79b1e;color:white;padding:11px 14px;font-weight:900;box-shadow:0 3px 0 #8b5e0c}
-#dpad{position:absolute;touch-action:none;user-select:none;-webkit-user-select:none;z-index:30;left:10px;bottom:22px;width:158px;height:150px}
-.pad{position:absolute;width:55px;height:55px;border-radius:13px;border:2px solid #7184a5;background:#233652;color:#fff;box-shadow:0 4px 0 #142239;font-size:25px;font-weight:900}
-.pad:active{transform:translateY(3px);box-shadow:0 1px 0 #142239}
-.up{left:52px;top:0}.left{left:0;top:52px}.right{right:0;top:52px}.down{left:52px;bottom:0}
-#menu{position:absolute;z-index:30;right:10px;bottom:25px;width:58px;height:58px;border-radius:50%;border:2px solid #8799b7;background:#263752;color:#fff;font-size:24px}
-#fade{position:absolute;z-index:100;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .45s ease}
-#encounter{position:absolute;z-index:110;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.78);opacity:0;pointer-events:none}
-.enc-card{transform:scale(.82);text-align:center;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
-.enc-flash{font-size:58px}.enc-title{font-size:27px;font-weight:1000;letter-spacing:3px}.enc-sub{margin-top:8px;color:#ddd}
-.show{opacity:1!important}.show .enc-card{transform:scale(1)}
-#battle{position:absolute;z-index:120;inset:0;display:none;background:linear-gradient(#101a2c,#17233a);padding:70px 18px 20px}
-.enemy{font-size:74px;text-align:center;margin:60px 0 20px}.battleTitle{text-align:center;font-size:22px;font-weight:1000}
-.battleBox{position:absolute;left:18px;right:18px;bottom:25px;background:#0c1422;border:2px solid #4d607d;border-radius:18px;padding:15px}
-.battleBox button{padding:12px 20px;margin:4px;border:0;border-radius:12px;background:#395274;color:#fff;font-weight:900}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#102033;
+  font-family:sans-serif;
+  touch-action:none;
+}
+
+button{
+  font:inherit;
+  user-select:none;
+  -webkit-user-select:none;
+  touch-action:manipulation;
+}
+
+/* =========================
+   HUD
+========================= */
+
+#hud{
+  position:fixed;
+  z-index:50;
+  top:0;
+  left:0;
+  width:100%;
+  height:58px;
+  background:#101827;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 12px;
+  border-bottom:2px solid #536b8b;
+}
+
+#title{
+  font-weight:bold;
+  font-size:15px;
+}
+
+#status{
+  display:flex;
+  gap:8px;
+}
+
+.badge{
+  background:#1d2a42;
+  border:1px solid #637899;
+  border-radius:12px;
+  padding:7px 10px;
+  font-weight:bold;
+}
+
+/* =========================
+   WORLD
+========================= */
+
+#world{
+  position:absolute;
+  left:0;
+  top:58px;
+  width:100%;
+  height:calc(100% - 58px);
+  overflow:hidden;
+  background:#326d32;
+}
+
+/* 固定されたフィールド */
+#field{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 48%,
+      rgba(130,220,90,.35),
+      transparent 28%),
+    #326d32;
+}
+
+/* 道 */
+.road{
+  position:absolute;
+  background:#927044;
+  border:3px solid rgba(70,45,25,.25);
+}
+
+.road.main{
+  left:-10%;
+  top:52%;
+  width:120%;
+  height:180px;
+  transform:rotate(-2deg);
+}
+
+.road.side{
+  left:55%;
+  top:50%;
+  width:170px;
+  height:60%;
+}
+
+/* 水 */
+.water{
+  position:absolute;
+  background:#28758c;
+  border-top:3px solid rgba(255,255,255,.12);
+}
+
+.water.bottom{
+  left:0;
+  bottom:0;
+  width:100%;
+  height:110px;
+}
+
+/* =========================
+   scenery
+========================= */
+
+.tree{
+  position:absolute;
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:#245b2b;
+  border:8px solid #1b4823;
+  box-shadow:inset 0 0 0 5px #397d3c;
+}
+
+.tree:after{
+  content:"";
+  position:absolute;
+  width:20px;
+  height:30px;
+  background:#704b2c;
+  left:17px;
+  top:58px;
+  z-index:-1;
+}
+
+.rock{
+  position:absolute;
+  width:55px;
+  height:40px;
+  background:#697078;
+  border-radius:50% 45% 35% 40%;
+  border:4px solid #454b51;
+}
+
+.tree.t1{left:7%;top:18%}
+.tree.t2{right:8%;top:13%}
+.tree.t3{left:15%;bottom:15%}
+.tree.t4{right:18%;bottom:21%}
+
+.rock.r1{left:27%;top:29%}
+.rock.r2{right:27%;top:36%}
+.rock.r3{left:43%;bottom:13%}
+
+/* =========================
+   Stage
+========================= */
+
+.stage{
+  position:absolute;
+  z-index:10;
+  width:125px;
+  min-height:58px;
+  padding:10px;
+  border-radius:16px;
+  background:#48251d;
+  border:2px solid #a86448;
+  color:white;
+  text-align:center;
+  font-weight:bold;
+  box-shadow:0 5px 15px rgba(0,0,0,.35);
+}
+
+.stage small{
+  display:block;
+  font-size:11px;
+  opacity:.75;
+  margin-top:3px;
+}
+
+#stage1{
+  left:67%;
+  top:48%;
+}
+
+/* =========================
+   Player
+========================= */
+
+#player{
+  position:absolute;
+  z-index:20;
+  left:50%;
+  top:50%;
+  width:80px;
+  height:90px;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  pointer-events:none;
+}
+
+#hero{
+  font-size:43px;
+  line-height:50px;
+}
+
+#name{
+  display:inline-block;
+  background:#101010;
+  color:white;
+  padding:3px 9px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+#marker{
+  font-size:22px;
+  margin-top:-2px;
+}
+
+/* =========================
+   message
+========================= */
+
+#message{
+  position:absolute;
+  z-index:30;
+  top:8px;
+  left:8px;
+  right:8px;
+  padding:7px;
+  border-radius:10px;
+  background:rgba(10,45,20,.88);
+  color:#d8ffd8;
+  text-align:center;
+  font-size:12px;
+}
+
+/* =========================
+   controls
+========================= */
+
+#controls{
+  position:absolute;
+  z-index:40;
+  left:15px;
+  bottom:18px;
+  width:170px;
+  height:170px;
+}
+
+.ctrl{
+  position:absolute;
+  width:55px;
+  height:55px;
+  border-radius:13px;
+  border:2px solid #607a9e;
+  background:#1d304d;
+  color:white;
+  font-size:24px;
+  box-shadow:0 4px 8px rgba(0,0,0,.3);
+}
+
+.ctrl:active{
+  background:#38577e;
+  transform:scale(.94);
+}
+
+#up{left:58px;top:0}
+#left{left:0;top:58px}
+#right{right:0;top:58px}
+#down{left:58px;bottom:0}
+
+/* =========================
+   menu
+========================= */
+
+#menu{
+  position:absolute;
+  z-index:40;
+  right:15px;
+  bottom:22px;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  border:2px solid #687e9e;
+  background:#1d304d;
+  color:white;
+  font-size:22px;
+}
+
+/* =========================
+   Battle
+========================= */
+
+#battle{
+  position:fixed;
+  z-index:100;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(5,8,15,.0);
+  opacity:0;
+  transition:opacity .45s,background .45s;
+}
+
+#battle.show{
+  display:flex;
+  opacity:1;
+  background:rgba(5,8,15,.92);
+}
+
+.battleBox{
+  width:min(90%,430px);
+  padding:25px;
+  border-radius:20px;
+  background:#172237;
+  border:2px solid #647b9e;
+  color:white;
+  text-align:center;
+  box-shadow:0 10px 40px rgba(0,0,0,.5);
+}
+
+.enemy{
+  font-size:70px;
+  margin:10px;
+}
+
+.hp{
+  height:18px;
+  background:#351a1a;
+  border-radius:10px;
+  overflow:hidden;
+  margin:12px 0;
+}
+
+.hpbar{
+  height:100%;
+  width:100%;
+  background:#dc4c4c;
+  transition:width .25s;
+}
+
+.attack{
+  margin-top:15px;
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:12px;
+  background:#d46b39;
+  color:white;
+  font-weight:bold;
+}
+
+/* =========================
+   responsive
+========================= */
+
+@media(min-width:700px){
+  #world{
+    max-width:700px;
+    left:50%;
+    transform:translateX(-50%);
+    border-left:2px solid #222;
+    border-right:2px solid #222;
+  }
+
+  #hud{
+    left:50%;
+    transform:translateX(-50%);
+    max-width:700px;
+  }
+}
 </style>
 </head>
+
 <body>
-<div id="game">
-  <div id="hud"><div class="title">🌱 勇者そらまめ</div><div class="stats"><div class="badge">Lv.3</div><div class="badge">💰 375</div></div></div>
-  <div id="notice">👣 しばらく歩くと敵が突然あらわれる！　敵はフィールドには表示されません</div>
-  <div id="world"><div id="mapLayer">
-    <div class="grass"></div><div id="path"></div><div id="path2"></div><div class="water"></div>
-    <div class="node mountain">⛰️ 山道</div>
-    <div class="node stage">🚪 ステージ1</div>
-    <div class="landmark tree t1">🌳</div><div class="landmark tree t2">🌳</div>
-    <div class="landmark tree t3">🌳</div><div class="landmark tree t4">🌳</div>
-    <div class="landmark rock r1">🪨</div><div class="landmark rock r2">🪨</div>
-    <div class="landmark rock r3">🪨</div><div class="landmark rock r4">🪨</div>
-    <div class="sign">🌱 村への道</div>
-    </div><button id="worldBtn">🌎 世界移動</button><div id="player"><div class="player-body">🧑‍🌾</div><div id="playerName">そらまめ</div></div>
-    <div id="playerMarker">🌱</div>
+
+<!-- HUD -->
+<header id="hud">
+  <div id="title">🌱 勇者そらまめ</div>
+
+  <div id="status">
+    <div class="badge">Lv.<span id="level">1</span></div>
+    <div class="badge">💰 <span id="gold">0</span></div>
   </div>
-  <div id="dpad">
-    <button class="pad up" data-dir="up">▲</button><button class="pad left" data-dir="left">◀</button>
-    <button class="pad right" data-dir="right">▶</button><button class="pad down" data-dir="down">▼</button>
-  </div>
-  <button id="menu">☰</button>
-  <div id="fade"></div>
-  <div id="encounter"><div class="enc-card"><div class="enc-flash">⚡👾⚡</div><div class="enc-title">てきが あらわれた！</div><div class="enc-sub">戦闘準備中……</div></div></div>
-  <div id="battle">
-    <div class="battleTitle">⚔️ バトル</div><div class="enemy">👾</div>
-    <div class="battleBox"><b>そらまめ Lv.3</b><br><br>
-      <button onclick="attack()">こうげき</button><button onclick="endBattle()">にげる</button>
+</header>
+
+<!-- WORLD -->
+<main id="world">
+
+  <div id="field">
+
+    <div id="message">
+      👣 歩いていると敵が突然あらわれる！
+      敵はフィールドには表示されません
     </div>
+
+    <!-- 地形 -->
+    <div class="road main"></div>
+    <div class="road side"></div>
+    <div class="water bottom"></div>
+
+    <!-- 景色 -->
+    <div class="tree t1"></div>
+    <div class="tree t2"></div>
+    <div class="tree t3"></div>
+    <div class="tree t4"></div>
+
+    <div class="rock r1"></div>
+    <div class="rock r2"></div>
+    <div class="rock r3"></div>
+
+    <!-- ステージ -->
+    <button class="stage" id="stage1">
+      🚪 ステージ1
+      <small>山道</small>
+    </button>
+
+    <!-- プレイヤー -->
+    <div id="player">
+      <div id="hero">🧑‍🌾</div>
+      <div id="name">そらまめ</div>
+      <div id="marker">🌱</div>
+    </div>
+
   </div>
+
+  <!-- 操作 -->
+  <div id="controls">
+    <button class="ctrl" id="up">▲</button>
+    <button class="ctrl" id="left">◀</button>
+    <button class="ctrl" id="right">▶</button>
+    <button class="ctrl" id="down">▼</button>
+  </div>
+
+  <button id="menu">☰</button>
+
+</main>
+
+<!-- Battle -->
+<div id="battle">
+
+  <div class="battleBox">
+
+    <h2>⚔️ 敵が現れた！</h2>
+
+    <div class="enemy" id="enemyIcon">👾</div>
+
+    <div id="enemyName">スライム</div>
+
+    <div class="hp">
+      <div class="hpbar" id="enemyHP"></div>
+    </div>
+
+    <div>
+      HP:
+      <span id="enemyHPText">30 / 30</span>
+    </div>
+
+    <button class="attack" id="attackButton">
+      ⚔️ こうげき
+    </button>
+
+  </div>
+
 </div>
+
 <script>
-let x=0,y=0,moving=false,steps=0,inBattle=false;
-window.addEventListener('load',()=>{document.getElementById('mapLayer').style.transform='translate(-50%,-50%)'});
-const world=document.getElementById('world');
-function move(dir){
-  if(inBattle)return;
-  const dx={left:-1,right:1,up:0,down:0}[dir];
-  const dy={left:0,right:0,up:-1,down:1}[dir];
-  x+=dx;y+=dy;steps++;
-  // そらまめは画面中央に固定。地形・ステージだけがカメラに合わせて動く。
-  const map=document.getElementById('mapLayer');
-  map.style.transform =
-    `translate(calc(-50% + ${-x*64}px), calc(-50% + ${-y*64}px))`;
-  // 歩くたびに主人公が少し上下して「移動している」感を出す
-  const p=document.getElementById('player');
-  p.animate(
-    [{transform:'translate(-50%,-50%) translateY(0)'},
-     {transform:'translate(-50%,-50%) translateY(-7px)'},
-     {transform:'translate(-50%,-50%) translateY(0)'}],
-    {duration:180,easing:'ease-out'}
+
+/* =========================
+   Game Data
+========================= */
+
+let level = 1;
+let gold = 0;
+
+let playerX = 50;
+let playerY = 50;
+
+let steps = 0;
+let battle = false;
+
+let enemyHP = 30;
+let enemyMaxHP = 30;
+
+
+/* =========================
+   UI
+========================= */
+
+const player = document.getElementById("player");
+const battleScreen = document.getElementById("battle");
+
+function updatePlayer(){
+
+  player.style.left = playerX + "%";
+  player.style.top = playerY + "%";
+
+}
+
+
+/* =========================
+   Movement
+========================= */
+
+function move(direction){
+
+  if(battle) return;
+
+  const speed = 4;
+
+  if(direction === "up"){
+    playerY -= speed;
+  }
+
+  if(direction === "down"){
+    playerY += speed;
+  }
+
+  if(direction === "left"){
+    playerX -= speed;
+  }
+
+  if(direction === "right"){
+    playerX += speed;
+  }
+
+  /* 画面外へ出ない */
+  playerX = Math.max(8,Math.min(92,playerX));
+  playerY = Math.max(12,Math.min(88,playerY));
+
+  updatePlayer();
+
+  /* 歩行アニメーション */
+  player.animate(
+    [
+      {transform:"translate(-50%,-50%) translateY(0)"},
+      {transform:"translate(-50%,-50%) translateY(-5px)"},
+      {transform:"translate(-50%,-50%) translateY(0)"}
+    ],
+    {
+      duration:150,
+      easing:"ease-out"
+    }
   );
-  if(steps>=8 && Math.random()<0.10){steps=0;encounter();}
+
+  steps++;
+
+  /*
+     エンカウントはかなり低め。
+     15歩以上歩いてから抽選。
+  */
+  if(steps >= 15){
+
+    if(Math.random() < 0.06){
+
+      steps = 0;
+      encounter();
+
+    }
+
+  }
+
 }
 
-// iPhone/iPad Safari対策：ダブルタップ・ピンチズーム・ジェスチャーをゲーム内で無効化
-let lastTouchEnd = 0;
-document.addEventListener('touchend', e => {
-  const now = Date.now();
-  if (now - lastTouchEnd <= 320) e.preventDefault();
-  lastTouchEnd = now;
-}, {passive:false});
-['gesturestart','gesturechange','gestureend'].forEach(type => {
-  document.addEventListener(type, e => e.preventDefault(), {passive:false});
-});
-document.addEventListener('touchmove', e => {
-  if (e.touches.length > 1) e.preventDefault();
-}, {passive:false});
 
+/* =========================
+   Controls
+========================= */
 
-const stage = document.querySelector('.stage');
-if(stage){
-  stage.addEventListener('pointerdown', e=>{
-    e.preventDefault();
-    e.stopPropagation();
-    stage.textContent='🚪 ステージ1 開始！';
-    setTimeout(()=>stage.textContent='🚪 ステージ1',700);
-  });
+function setupButton(id,direction){
+
+  const button = document.getElementById(id);
+
+  button.addEventListener(
+    "pointerdown",
+    function(e){
+
+      e.preventDefault();
+      move(direction);
+
+    },
+    {passive:false}
+  );
+
 }
 
-document.querySelectorAll('.pad').forEach(b=>{
-  b.addEventListener('pointerdown',e=>{
+setupButton("up","up");
+setupButton("down","down");
+setupButton("left","left");
+setupButton("right","right");
+
+
+/* =========================
+   Keyboard
+========================= */
+
+document.addEventListener("keydown",function(e){
+
+  if(
+    e.key === "ArrowUp" ||
+    e.key === "ArrowDown" ||
+    e.key === "ArrowLeft" ||
+    e.key === "ArrowRight"
+  ){
+
     e.preventDefault();
-    e.stopPropagation();
-    if(e.pointerType==='mouse'&&e.button!==0)return;
-    move(b.dataset.dir);
-  });
-  b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation()});
-  b.addEventListener('dblclick',e=>e.preventDefault());
+
+  }
+
+  if(e.key === "ArrowUp") move("up");
+  if(e.key === "ArrowDown") move("down");
+  if(e.key === "ArrowLeft") move("left");
+  if(e.key === "ArrowRight") move("right");
+
 });
+
+
+/* =========================
+   Encounter
+========================= */
+
 function encounter(){
-  if(inBattle)return;
-  inBattle=true;
-  const enc=document.getElementById('encounter'),fade=document.getElementById('fade');
-  enc.classList.add('show');
-  setTimeout(()=>fade.classList.add('show'),260);
-  setTimeout(()=>{
-    enc.classList.remove('show');fade.classList.remove('show');
-    document.getElementById('battle').style.display='block';
-  },1050);
+
+  battle = true;
+
+  const enemies = [
+    ["👾","グリーンスライム",30],
+    ["🐺","ワイルドウルフ",40],
+    ["🦇","ダークバット",35]
+  ];
+
+  const enemy =
+    enemies[Math.floor(Math.random()*enemies.length)];
+
+  document.getElementById("enemyIcon").textContent = enemy[0];
+  document.getElementById("enemyName").textContent = enemy[1];
+
+  enemyMaxHP = enemy[2];
+  enemyHP = enemyMaxHP;
+
+  updateEnemy();
+
+  /*
+     フェードイン
+  */
+  battleScreen.style.display = "flex";
+
+  requestAnimationFrame(function(){
+
+    battleScreen.classList.add("show");
+
+  });
+
 }
-function attack(){
-  document.querySelector('.enemy').textContent='💥';
-  setTimeout(()=>endBattle(),450);
+
+
+/* =========================
+   Battle
+========================= */
+
+function updateEnemy(){
+
+  document.getElementById("enemyHP").style.width =
+    (enemyHP / enemyMaxHP * 100) + "%";
+
+  document.getElementById("enemyHPText").textContent =
+    enemyHP + " / " + enemyMaxHP;
+
 }
-function endBattle(){
-  document.getElementById('battle').style.display='none';inBattle=false;
+
+
+document.getElementById("attackButton")
+.addEventListener("pointerdown",function(e){
+
+  e.preventDefault();
+
+  if(!battle) return;
+
+  /* 攻撃 */
+  const damage = 10 + Math.floor(Math.random()*8);
+
+  enemyHP -= damage;
+
+  if(enemyHP <= 0){
+
+    enemyHP = 0;
+
+    updateEnemy();
+
+    setTimeout(function(){
+
+      gold += 50;
+
+      document.getElementById("gold").textContent = gold;
+
+      closeBattle();
+
+    },500);
+
+    return;
+
+  }
+
+  updateEnemy();
+
+});
+
+
+/* =========================
+   Close Battle
+========================= */
+
+function closeBattle(){
+
+  battleScreen.classList.remove("show");
+
+  setTimeout(function(){
+
+    battleScreen.style.display = "none";
+    battle = false;
+
+  },450);
+
 }
-document.getElementById('worldBtn').onclick=()=>alert('表世界・裏世界のセーブポイントを選択できます！');
-document.getElementById('menu').onclick=()=>alert('メニュー（試作）');
+
+
+/* =========================
+   Stage 1
+========================= */
+
+document.getElementById("stage1")
+.addEventListener("pointerdown",function(e){
+
+  e.preventDefault();
+
+  if(battle) return;
+
+  stageBattle();
+
+});
+
+
+function stageBattle(){
+
+  battle = true;
+
+  document.getElementById("enemyIcon").textContent = "👹";
+  document.getElementById("enemyName").textContent = "山道の魔物";
+
+  enemyMaxHP = 60;
+  enemyHP = 60;
+
+  updateEnemy();
+
+  battleScreen.style.display = "flex";
+
+  requestAnimationFrame(function(){
+
+    battleScreen.classList.add("show");
+
+  });
+
+}
+
+
+/* =========================
+   Disable unwanted gestures
+========================= */
+
+document.addEventListener(
+  "gesturestart",
+  e => e.preventDefault(),
+  {passive:false}
+);
+
+document.addEventListener(
+  "gesturechange",
+  e => e.preventDefault(),
+  {passive:false}
+);
+
+document.addEventListener(
+  "gestureend",
+  e => e.preventDefault(),
+  {passive:false}
+);
+
+
+/* ダブルタップズーム対策 */
+let lastTouch = 0;
+
+document.addEventListener(
+  "touchend",
+  function(e){
+
+    const now = Date.now();
+
+    if(now - lastTouch < 350){
+
+      e.preventDefault();
+
+    }
+
+    lastTouch = now;
+
+  },
+  {passive:false}
+);
+
+
+/* =========================
+   Start
+========================= */
+
+updatePlayer();
+
 </script>
+
 </body>
 </html>
