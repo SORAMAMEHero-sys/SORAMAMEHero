@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>勇者そらまめ - フィールド試作7</title>
+<title>勇者そらまめ - フィールド試作8</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;touch-action:none;overscroll-behavior:none;-webkit-text-size-adjust:100%;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;background:#102039;color:#fff}
@@ -28,6 +28,8 @@ linear-gradient(155deg,#376b35 0 58%,#80643e 58% 77%,#2f6b7f 77%);}
 .node{position:absolute;pointer-events:none;z-index:5;padding:9px 13px;border-radius:14px;background:#16261a;color:#fff;border:2px solid #4d7654;font-weight:900;box-shadow:0 4px 8px #18351a66}
 .stage{left:57%;top:56%;background:#3d241b;border-color:#a76d45}
 .mountain{left:49%;top:43%;font-size:14px}
+.stage{pointer-events:auto;cursor:pointer;touch-action:manipulation}
+.stage:active{transform:scale(.96)}
 #worldBtn{position:absolute;z-index:30;right:9px;top:54px;border:0;border-radius:13px;background:#d79b1e;color:white;padding:11px 14px;font-weight:900;box-shadow:0 3px 0 #8b5e0c}
 #dpad{position:absolute;touch-action:none;user-select:none;-webkit-user-select:none;z-index:30;left:10px;bottom:22px;width:158px;height:150px}
 .pad{position:absolute;width:55px;height:55px;border-radius:13px;border:2px solid #7184a5;background:#233652;color:#fff;box-shadow:0 4px 0 #142239;font-size:25px;font-weight:900}
@@ -45,7 +47,7 @@ linear-gradient(155deg,#376b35 0 58%,#80643e 58% 77%,#2f6b7f 77%);}
 .battleBox button{padding:12px 20px;margin:4px;border:0;border-radius:12px;background:#395274;color:#fff;font-weight:900}
 </style>
 </head>
-<body ontouchstart="return false;" ontouchmove="return false;">
+<body>
 <div id="game">
   <div id="hud"><div class="title">🌱 勇者そらまめ</div><div class="stats"><div class="badge">Lv.3</div><div class="badge">💰 375</div></div></div>
   <div id="notice">👣 しばらく歩くと敵が突然あらわれる！　敵はフィールドには表示されません</div>
@@ -57,8 +59,7 @@ linear-gradient(155deg,#376b35 0 58%,#80643e 58% 77%,#2f6b7f 77%);}
     <div class="landmark tree t2">🌳</div>
     <div class="landmark rock r1">🪨</div>
     <div class="landmark rock r2">🪨</div>
-    <button id="worldBtn">🌎 世界移動</button>
-    </div><div id="player"><div class="player-body">🧑‍🌾</div><div id="playerName">そらまめ</div></div>
+    </div><button id="worldBtn">🌎 世界移動</button><div id="player"><div class="player-body">🧑‍🌾</div><div id="playerName">そらまめ</div></div>
     <div id="playerMarker">🌱</div>
   </div>
   <div id="dpad">
@@ -85,7 +86,7 @@ function move(dir){
   x+=dx;y+=dy;steps++;
   // そらまめは画面中央に固定。地形・ステージだけがカメラに合わせて動く。
   document.getElementById('mapLayer').style.transform =
-    `translate(${-x*52}px,${-y*52}px)`;
+    `translate(${-x*70}px,${-y*70}px)`;
   if(steps>=8 && Math.random()<0.10){steps=0;encounter();}
 }
 
@@ -103,8 +104,25 @@ document.addEventListener('touchmove', e => {
   if (e.touches.length > 1) e.preventDefault();
 }, {passive:false});
 
+
+const stage = document.querySelector('.stage');
+if(stage){
+  stage.addEventListener('pointerdown', e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    stage.textContent='🚪 ステージ1 開始！';
+    setTimeout(()=>stage.textContent='🚪 ステージ1',700);
+  });
+}
+
 document.querySelectorAll('.pad').forEach(b=>{
-  b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(e.pointerType==='mouse'&&e.button!==0)return;move(b.dataset.dir)});
+  b.addEventListener('pointerdown',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    move(b.dataset.dir);
+  });
+  b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation()});
   b.addEventListener('dblclick',e=>e.preventDefault());
 });
 function encounter(){
