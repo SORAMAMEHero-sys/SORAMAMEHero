@@ -8,99 +8,169 @@ content="width=device-width,
 initial-scale=1,
 maximum-scale=1,
 minimum-scale=1,
-user-scalable=no">
+user-scalable=no,
+viewport-fit=cover">
 
 <title>勇者そらまめ</title>
 
 <style>
+
+/* =====================================================
+   基本
+===================================================== */
+
 *{
   box-sizing:border-box;
+
   -webkit-user-select:none;
   user-select:none;
+
   -webkit-touch-callout:none;
   -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,
+body{
   margin:0;
   width:100%;
   height:100%;
+
   overflow:hidden;
+
   background:#172033;
-  font-family:sans-serif;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
   touch-action:none;
+  overscroll-behavior:none;
 }
 
-/* =========================
+/* ボタン */
+button{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+
+  touch-action:manipulation;
+
+  cursor:pointer;
+}
+
+
+/* =====================================================
    HUD
-========================= */
+===================================================== */
 
 #hud{
+
   position:fixed;
-  z-index:100;
+
+  z-index:1000;
+
   top:0;
   left:0;
+
   width:100%;
   height:58px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:8px 12px;
+
+  padding:
+    8px
+    12px;
+
   color:white;
+
   background:#101827;
-  border-bottom:2px solid #4d6380;
+
+  border-bottom:
+    2px solid #4d6380;
+
+  pointer-events:none;
 }
 
 #title{
+
   font-size:15px;
+
   font-weight:bold;
 }
 
 .stats{
+
   display:flex;
+
   gap:7px;
 }
 
 .stat{
-  padding:6px 9px;
+
+  padding:
+    6px
+    9px;
+
   border-radius:10px;
+
   background:#202e46;
-  border:1px solid #596d8d;
+
+  border:
+    1px solid #596d8d;
+
   font-size:13px;
+
   font-weight:bold;
 }
 
-/* =========================
+
+/* =====================================================
    VIEWPORT
-========================= */
+===================================================== */
 
 #viewport{
+
   position:absolute;
+
   left:0;
   top:58px;
+
   width:100%;
   height:calc(100% - 58px);
+
   overflow:hidden;
+
   background:#376e37;
+
+  touch-action:none;
+
+  overscroll-behavior:none;
 }
 
-/* =========================
+
+/* =====================================================
    WORLD
-========================= */
+===================================================== */
 
 #world{
+
   position:absolute;
-  width:2400px;
-  height:1800px;
+
   left:0;
   top:0;
-  transform-origin:0 0;
+
+  width:2400px;
+  height:1800px;
+
+  transform-origin:
+    0 0;
+
   will-change:transform;
-}
 
-/* 草原 */
-
-#world{
   background-color:#376e37;
 
   background-image:
@@ -110,77 +180,120 @@ html,body{
       transparent 1px
     );
 
-  background-size:35px 35px;
+  background-size:
+    35px 35px;
 }
 
-/* =========================
-   MAP
-========================= */
+
+/* =====================================================
+   ROAD
+===================================================== */
 
 .road{
+
   position:absolute;
+
   background:#927247;
-  border:6px solid #765a37;
+
+  border:
+    6px solid #765a37;
+
   border-radius:35px;
 }
 
 .road.horizontal{
+
   left:-100px;
   top:760px;
+
   width:2600px;
   height:190px;
 }
 
 .road.vertical{
+
   left:1120px;
   top:-100px;
+
   width:190px;
   height:2000px;
 }
 
+
+/* =====================================================
+   WATER
+===================================================== */
+
 .water{
+
   position:absolute;
+
   left:1450px;
   top:170px;
+
   width:650px;
   height:390px;
 
   background:#286f88;
-  border:7px solid #1d5367;
+
+  border:
+    7px solid #1d5367;
+
   border-radius:50px;
 }
 
+
+/* =====================================================
+   VILLAGE
+===================================================== */
+
 .village{
+
   position:absolute;
+
   left:220px;
   top:700px;
+
   width:300px;
   height:230px;
 
   background:#548d43;
-  border:5px solid #3d6e34;
+
+  border:
+    5px solid #3d6e34;
+
   border-radius:30px;
 }
 
-/* =========================
+
+/* =====================================================
    TREES
-========================= */
+===================================================== */
 
 .tree{
+
   position:absolute;
+
   width:70px;
   height:70px;
 
   border-radius:50%;
+
   background:#28612f;
-  border:8px solid #1c4824;
+
+  border:
+    8px solid #1c4824;
 
   box-shadow:
-    inset 0 0 0 5px #3d8140;
+    inset
+    0 0 0 5px
+    #3d8140;
 }
 
-.tree:after{
+.tree::after{
+
   content:"";
+
   position:absolute;
 
   left:22px;
@@ -224,11 +337,13 @@ html,body{
   top:260px;
 }
 
-/* =========================
-   ROCKS
-========================= */
+
+/* =====================================================
+   ROCK
+===================================================== */
 
 .rock{
+
   position:absolute;
 
   width:60px;
@@ -237,7 +352,9 @@ html,body{
   border-radius:50%;
 
   background:#6b7279;
-  border:4px solid #4d5359;
+
+  border:
+    4px solid #4d5359;
 }
 
 .r1{
@@ -255,13 +372,16 @@ html,body{
   top:700px;
 }
 
-/* =========================
+
+/* =====================================================
    STAGE
-========================= */
+===================================================== */
 
 .stage{
+
   position:absolute;
-  z-index:10;
+
+  z-index:20;
 
   width:140px;
   min-height:65px;
@@ -271,129 +391,199 @@ html,body{
   border-radius:16px;
 
   background:#43251c;
-  border:3px solid #aa694a;
+
+  border:
+    3px solid #aa694a;
 
   color:white;
 
   font-weight:bold;
+
   text-align:center;
 
   box-shadow:
-    0 6px 15px rgba(0,0,0,.35);
+    0 6px 15px
+    rgba(0,0,0,.35);
+
+  touch-action:manipulation;
+}
+
+.stage:active{
+
+  transform:scale(.96);
 }
 
 .stage small{
+
   display:block;
+
   margin-top:4px;
+
   font-size:11px;
+
   opacity:.75;
 }
 
 #stage1{
+
   left:1350px;
   top:650px;
 }
 
-/* =========================
+
+/* =====================================================
    PLAYER
-========================= */
+===================================================== */
+
+/*
+  ★重要★
+
+  プレイヤーは world の中に存在する。
+
+  カメラ移動時に world が動くので、
+  プレイヤーにカメラ座標を足さない。
+*/
 
 #player{
+
   position:absolute;
 
-  z-index:50;
+  z-index:100;
 
   width:80px;
-  height:90px;
+  height:100px;
+
+  left:1200px;
+  top:900px;
+
+  transform:
+    translate(-50%,-50%);
 
   pointer-events:none;
 
-  transform:translate(-50%,-50%);
+  text-align:center;
+
+  will-change:
+    left,
+    top,
+    transform;
 }
 
 #hero{
-  text-align:center;
+
   font-size:44px;
+
   line-height:50px;
+
+  filter:
+    drop-shadow(
+      0 3px 2px
+      rgba(0,0,0,.35)
+    );
 }
 
 #playerName{
+
   display:block;
 
   width:max-content;
 
-  margin:auto;
+  margin:
+    0 auto;
 
-  padding:3px 9px;
+  padding:
+    3px 9px;
 
   border-radius:10px;
 
   background:#111;
+
   color:white;
 
   font-size:12px;
+
   font-weight:bold;
 }
 
 #marker{
-  text-align:center;
+
+  margin-top:1px;
+
   font-size:20px;
+
+  line-height:20px;
 }
 
-/* =========================
+
+/* =====================================================
    MESSAGE
-========================= */
+===================================================== */
 
 #message{
+
   position:fixed;
 
-  z-index:80;
+  z-index:900;
 
   left:50%;
   top:70px;
 
-  transform:translateX(-50%);
+  transform:
+    translateX(-50%);
 
   width:max-content;
   max-width:90%;
 
-  padding:7px 12px;
+  padding:
+    7px 12px;
 
   border-radius:12px;
 
-  background:rgba(15,40,20,.88);
+  background:
+    rgba(15,40,20,.88);
+
   color:#d9ffd9;
 
   font-size:12px;
 
   pointer-events:none;
+
+  text-align:center;
 }
 
-/* =========================
+
+/* =====================================================
    CONTROLS
-========================= */
+===================================================== */
 
 #controls{
+
   position:fixed;
 
-  z-index:90;
+  z-index:950;
 
   left:15px;
   bottom:18px;
 
   width:175px;
   height:175px;
+
+  touch-action:none;
 }
 
 .control{
+
   position:absolute;
 
   width:56px;
   height:56px;
 
+  padding:0;
+
   border-radius:14px;
 
-  border:2px solid #617895;
+  border:
+    2px solid #617895;
 
   background:#1d304d;
 
@@ -402,42 +592,56 @@ html,body{
   font-size:24px;
 
   box-shadow:
-    0 5px 10px rgba(0,0,0,.3);
+    0 5px 10px
+    rgba(0,0,0,.3);
+
+  touch-action:none;
+
+  -webkit-user-select:none;
+  user-select:none;
 }
 
 .control:active{
+
   background:#3a587e;
+
   transform:scale(.93);
 }
 
 #up{
+
   left:59px;
   top:0;
 }
 
 #left{
+
   left:0;
   top:59px;
 }
 
 #right{
+
   right:0;
   top:59px;
 }
 
 #down{
+
   left:59px;
   bottom:0;
 }
 
-/* =========================
+
+/* =====================================================
    WORLD BUTTON
-========================= */
+===================================================== */
 
 #worldButton{
+
   position:fixed;
 
-  z-index:90;
+  z-index:950;
 
   right:15px;
   bottom:85px;
@@ -445,25 +649,32 @@ html,body{
   width:58px;
   height:58px;
 
+  padding:0;
+
   border-radius:50%;
 
-  border:2px solid #647b9c;
+  border:
+    2px solid #647b9c;
 
   background:#1d304d;
 
   color:white;
 
   font-size:22px;
+
+  touch-action:none;
 }
 
-/* =========================
+
+/* =====================================================
    BATTLE
-========================= */
+===================================================== */
 
 #battle{
+
   position:fixed;
 
-  z-index:200;
+  z-index:2000;
 
   inset:0;
 
@@ -472,21 +683,30 @@ html,body{
   align-items:center;
   justify-content:center;
 
-  background:rgba(4,7,14,0);
+  background:
+    rgba(4,7,14,0);
 
   opacity:0;
 
   transition:
     opacity .45s,
     background .45s;
+
+  pointer-events:none;
 }
 
 #battle.show{
+
   opacity:1;
-  background:rgba(4,7,14,.94);
+
+  background:
+    rgba(4,7,14,.94);
+
+  pointer-events:auto;
 }
 
 .battleBox{
+
   width:min(90%,430px);
 
   padding:25px;
@@ -495,27 +715,46 @@ html,body{
 
   background:#18243a;
 
-  border:2px solid #667b9c;
+  border:
+    2px solid #667b9c;
 
   color:white;
 
   text-align:center;
 
   box-shadow:
-    0 10px 40px rgba(0,0,0,.5);
+    0 10px 40px
+    rgba(0,0,0,.5);
+
+  transform:
+    scale(.92);
+
+  transition:
+    transform .45s;
+}
+
+#battle.show .battleBox{
+
+  transform:
+    scale(1);
 }
 
 .enemy{
+
   font-size:75px;
+
   margin:10px;
 }
 
 .enemyName{
+
   font-size:18px;
+
   font-weight:bold;
 }
 
 .hp{
+
   height:18px;
 
   margin:12px 0;
@@ -528,15 +767,18 @@ html,body{
 }
 
 .hpBar{
+
   width:100%;
   height:100%;
 
   background:#df4d4d;
 
-  transition:width .25s;
+  transition:
+    width .25s;
 }
 
 .attack{
+
   width:100%;
 
   margin-top:15px;
@@ -552,16 +794,70 @@ html,body{
   color:white;
 
   font-weight:bold;
+
+  font-size:15px;
+
+  touch-action:manipulation;
 }
 
-/* =========================
-   WORLD MOVE PANEL
-========================= */
+.attack:active{
+
+  transform:scale(.97);
+}
+
+
+/* =====================================================
+   ENEMY APPEAR EFFECT
+===================================================== */
+
+#battle.show .enemy{
+
+  animation:
+    enemyAppear
+    .45s
+    ease-out;
+}
+
+@keyframes enemyAppear{
+
+  0%{
+
+    opacity:0;
+
+    transform:
+      scale(.3)
+      translateY(25px);
+  }
+
+  60%{
+
+    opacity:1;
+
+    transform:
+      scale(1.08)
+      translateY(-5px);
+  }
+
+  100%{
+
+    opacity:1;
+
+    transform:
+      scale(1)
+      translateY(0);
+  }
+}
+
+
+/* =====================================================
+   WORLD PANEL
+===================================================== */
 
 #worldPanel{
+
   position:fixed;
 
-  z-index:300;
+  z-index:1500;
 
   inset:0;
 
@@ -570,10 +866,12 @@ html,body{
   align-items:center;
   justify-content:center;
 
-  background:rgba(0,0,0,.7);
+  background:
+    rgba(0,0,0,.7);
 }
 
 .panel{
+
   width:85%;
   max-width:350px;
 
@@ -583,14 +881,21 @@ html,body{
 
   background:#17243a;
 
-  border:2px solid #657b9c;
+  border:
+    2px solid #657b9c;
 
   color:white;
 
   text-align:center;
 }
 
+.panel h2{
+
+  margin-top:0;
+}
+
 .panel button{
+
   width:100%;
 
   margin-top:10px;
@@ -604,34 +909,53 @@ html,body{
   background:#304967;
 
   color:white;
+
+  font-size:14px;
 }
 
 .close{
+
   background:#663b3b !important;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+
+/* =====================================================
+   DESKTOP
+===================================================== */
 
 @media(min-width:700px){
 
   #viewport{
+
     width:700px;
+
     left:50%;
-    transform:translateX(-50%);
+
+    transform:
+      translateX(-50%);
   }
 
   #hud{
+
     width:700px;
+
     left:50%;
-    transform:translateX(-50%);
+
+    transform:
+      translateX(-50%);
   }
 }
+
 </style>
 </head>
 
+
 <body>
+
+
+<!-- =====================================================
+     HUD
+===================================================== -->
 
 <header id="hud">
 
@@ -654,16 +978,34 @@ html,body{
 </header>
 
 
+<!-- =====================================================
+     VIEWPORT
+===================================================== -->
+
 <div id="viewport">
+
+
+  <!-- ===================================================
+       WORLD
+  ==================================================== -->
 
   <div id="world">
 
-    <!-- 地形 -->
+
+    <!-- 道 -->
 
     <div class="road horizontal"></div>
+
     <div class="road vertical"></div>
 
+
+    <!-- 水 -->
+
     <div class="water"></div>
+
+
+    <!-- 村 -->
+
     <div class="village"></div>
 
 
@@ -686,7 +1028,9 @@ html,body{
 
     <!-- ステージ -->
 
-    <button class="stage" id="stage1">
+    <button
+      class="stage"
+      id="stage1">
 
       🚪 ステージ1
 
@@ -697,7 +1041,15 @@ html,body{
     </button>
 
 
-    <!-- プレイヤー -->
+    <!-- =================================================
+         PLAYER
+
+         ★ここが重要★
+
+         left / top はワールド座標。
+
+         カメラ座標はここでは計算しない。
+    ================================================== -->
 
     <div id="player">
 
@@ -715,47 +1067,64 @@ html,body{
 
     </div>
 
+
   </div>
 
 </div>
 
+
+<!-- =====================================================
+     MESSAGE
+===================================================== -->
 
 <div id="message">
   👣 フィールドを探索しよう！
 </div>
 
 
-<!-- 十字キー -->
+<!-- =====================================================
+     CONTROLS
+===================================================== -->
 
 <div id="controls">
 
-  <button class="control" id="up">
+  <button
+    class="control"
+    id="up">
     ▲
   </button>
 
-  <button class="control" id="left">
+  <button
+    class="control"
+    id="left">
     ◀
   </button>
 
-  <button class="control" id="right">
+  <button
+    class="control"
+    id="right">
     ▶
   </button>
 
-  <button class="control" id="down">
+  <button
+    class="control"
+    id="down">
     ▼
   </button>
 
 </div>
 
 
+<!-- 世界移動 -->
+
 <button id="worldButton">
   🌎
 </button>
 
 
-<!-- =========================
+<!-- =====================================================
      BATTLE
-========================= -->
+===================================================== -->
 
 <div id="battle">
 
@@ -765,11 +1134,15 @@ html,body{
       ⚔️ 敵が現れた！
     </h2>
 
-    <div class="enemy" id="enemyIcon">
+    <div
+      class="enemy"
+      id="enemyIcon">
       👾
     </div>
 
-    <div class="enemyName" id="enemyName">
+    <div
+      class="enemyName"
+      id="enemyName">
       スライム
     </div>
 
@@ -783,10 +1156,12 @@ html,body{
     </div>
 
     <div>
+
       HP:
       <span id="enemyHPText">
         30 / 30
       </span>
+
     </div>
 
     <button
@@ -802,9 +1177,9 @@ html,body{
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      WORLD MOVE
-========================= -->
+===================================================== -->
 
 <div id="worldPanel">
 
@@ -842,7 +1217,7 @@ html,body{
 <script>
 
 /* =====================================================
-   GAME
+   GAME DATA
 ===================================================== */
 
 const game = {
@@ -858,12 +1233,12 @@ const game = {
   player:{
 
     /*
-      ワールド座標。
+      ★完全なワールド座標★
 
-      ここが今回の重要部分。
+      画面座標ではない。
 
-      プレイヤーは世界の中に存在する。
-      カメラがプレイヤーを見る。
+      ここを変更すると
+      プレイヤーがワールド内を移動する。
     */
 
     x:1200,
@@ -892,33 +1267,59 @@ const game = {
 
 
 /* =====================================================
-   ELEMENTS
+   WORLD SIZE
 ===================================================== */
 
-const viewport =
-  document.getElementById("viewport");
+const WORLD_WIDTH = 2400;
 
-const world =
-  document.getElementById("world");
-
-const player =
-  document.getElementById("player");
-
-const battle =
-  document.getElementById("battle");
+const WORLD_HEIGHT = 1800;
 
 
 /* =====================================================
-   UPDATE HUD
+   ELEMENT
+===================================================== */
+
+const viewport =
+  document.getElementById(
+    "viewport"
+  );
+
+const world =
+  document.getElementById(
+    "world"
+  );
+
+const player =
+  document.getElementById(
+    "player"
+  );
+
+const battle =
+  document.getElementById(
+    "battle"
+  );
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+
+/* =====================================================
+   HUD
 ===================================================== */
 
 function updateHUD(){
 
-  document.getElementById("level")
-    .textContent = game.level;
+  document.getElementById(
+    "level"
+  ).textContent =
+    game.level;
 
-  document.getElementById("gold")
-    .textContent = game.gold;
+  document.getElementById(
+    "gold"
+  ).textContent =
+    game.gold;
 
 }
 
@@ -937,58 +1338,84 @@ function updateCamera(){
 
 
   /*
-    プレイヤーを画面中央へ。
+    プレイヤーを
+    画面中央にする。
 
-    ワールド自体は巨大な固定マップ。
-
-    ここでは「カメラ位置」を変更して
-    ワールドを表示している。
+    camera = プレイヤーのワールド座標
+              - 画面半分
   */
 
-  game.camera.x =
-    game.player.x - width / 2;
+  let cameraX =
+    game.player.x -
+    width / 2;
 
-  game.camera.y =
-    game.player.y - height / 2;
-
-
-  /* マップ端 */
-
-  game.camera.x =
-    Math.max(
-      0,
-      Math.min(
-        game.camera.x,
-        2400 - width
-      )
-    );
-
-
-  game.camera.y =
-    Math.max(
-      0,
-      Math.min(
-        game.camera.y,
-        1800 - height
-      )
-    );
-
-
-  world.style.transform =
-    `translate(${-game.camera.x}px,${-game.camera.y}px)`;
+  let cameraY =
+    game.player.y -
+    height / 2;
 
 
   /*
-    プレイヤーの画面位置。
+    マップ端で止める
+  */
 
-    カメラ端では中央から少しズレる。
+  cameraX =
+    Math.max(
+      0,
+      Math.min(
+        cameraX,
+        WORLD_WIDTH - width
+      )
+    );
+
+
+  cameraY =
+    Math.max(
+      0,
+      Math.min(
+        cameraY,
+        WORLD_HEIGHT - height
+      )
+    );
+
+
+  game.camera.x =
+    cameraX;
+
+  game.camera.y =
+    cameraY;
+
+
+  /*
+    ★重要★
+
+    ワールドだけを動かす。
+
+    プレイヤーは world の中にいるため、
+    player.style.left/top を
+    画面座標に書き換えない。
+  */
+
+  world.style.transform =
+    "translate(" +
+    (-cameraX) +
+    "px," +
+    (-cameraY) +
+    "px)";
+
+
+  /*
+    プレイヤーのワールド座標を
+    そのままCSSへ反映。
+
+    これでステージ・背景・プレイヤーが
+    完全に同じ座標系になる。
   */
 
   player.style.left =
-    (game.player.x - game.camera.x) + "px";
+    game.player.x + "px";
 
   player.style.top =
-    (game.player.y - game.camera.y) + "px";
+    game.player.y + "px";
 
 }
 
@@ -1006,28 +1433,43 @@ function move(direction){
   const speed = 12;
 
 
-  if(direction === "up")
+  if(direction === "up"){
+
     game.player.y -= speed;
 
-  if(direction === "down")
+  }
+
+
+  if(direction === "down"){
+
     game.player.y += speed;
 
-  if(direction === "left")
+  }
+
+
+  if(direction === "left"){
+
     game.player.x -= speed;
 
-  if(direction === "right")
+  }
+
+
+  if(direction === "right"){
+
     game.player.x += speed;
+
+  }
 
 
   /*
-    ワールドから出ない
+    マップ外へ出ない
   */
 
   game.player.x =
     Math.max(
       40,
       Math.min(
-        2360,
+        WORLD_WIDTH - 40,
         game.player.x
       )
     );
@@ -1035,9 +1477,9 @@ function move(direction){
 
   game.player.y =
     Math.max(
-      40,
+      50,
       Math.min(
-        1760,
+        WORLD_HEIGHT - 50,
         game.player.y
       )
     );
@@ -1046,30 +1488,40 @@ function move(direction){
   updateCamera();
 
 
-  /* 歩行アニメーション */
+  /*
+    歩行アニメーション
+
+    player自体のtransformを
+    カメラ移動には使わない。
+  */
 
   player.animate(
 
     [
+
       {
         transform:
-          "translate(-50%,-50%) translateY(0)"
+          "translate(-50%,-50%)"
       },
 
       {
         transform:
-          "translate(-50%,-50%) translateY(-7px)"
+          "translate(-50%,-57%)"
       },
 
       {
         transform:
-          "translate(-50%,-50%) translateY(0)"
+          "translate(-50%,-50%)"
       }
+
     ],
 
     {
+
       duration:150,
+
       easing:"ease-out"
+
     }
 
   );
@@ -1081,14 +1533,19 @@ function move(direction){
   /*
     エンカウント。
 
-    最低15歩歩いてから。
+    以前よりかなり低くする。
 
-    その後は6%。
+    最低20歩。
+
+    その後4%。
   */
 
   if(
-    game.steps >= 15 &&
-    Math.random() < 0.06
+
+    game.steps >= 20 &&
+
+    Math.random() < 0.04
+
   ){
 
     game.steps = 0;
@@ -1101,7 +1558,7 @@ function move(direction){
 
 
 /* =====================================================
-   CONTROLS
+   CONTROL
 ===================================================== */
 
 function bindControl(
@@ -1113,6 +1570,13 @@ function bindControl(
     document.getElementById(id);
 
 
+  /*
+    pointerdown
+
+    touch / mouse / stylus
+    全部まとめて処理。
+  */
+
   button.addEventListener(
 
     "pointerdown",
@@ -1120,7 +1584,29 @@ function bindControl(
     event => {
 
       event.preventDefault();
+
       event.stopPropagation();
+
+
+      /*
+        他の操作と
+        ポインターを奪い合わない。
+      */
+
+      if(
+        button.setPointerCapture
+      ){
+
+        try{
+
+          button.setPointerCapture(
+            event.pointerId
+          );
+
+        }catch(e){}
+
+      }
+
 
       move(direction);
 
@@ -1135,10 +1621,25 @@ function bindControl(
 }
 
 
-bindControl("up","up");
-bindControl("down","down");
-bindControl("left","left");
-bindControl("right","right");
+bindControl(
+  "up",
+  "up"
+);
+
+bindControl(
+  "down",
+  "down"
+);
+
+bindControl(
+  "left",
+  "left"
+);
+
+bindControl(
+  "right",
+  "right"
+);
 
 
 /* =====================================================
@@ -1146,28 +1647,47 @@ bindControl("right","right");
 ===================================================== */
 
 document.addEventListener(
+
   "keydown",
+
   event => {
 
     const keys = {
 
       ArrowUp:"up",
+
       ArrowDown:"down",
+
       ArrowLeft:"left",
-      ArrowRight:"right"
+
+      ArrowRight:"right",
+
+      w:"up",
+      s:"down",
+      a:"left",
+      d:"right"
 
     };
 
 
-    if(keys[event.key]){
+    const direction =
+      keys[event.key];
+
+
+    if(direction){
 
       event.preventDefault();
 
-      move(keys[event.key]);
+      move(direction);
 
     }
 
+  },
+
+  {
+    passive:false
   }
+
 );
 
 
@@ -1176,6 +1696,10 @@ document.addEventListener(
 ===================================================== */
 
 function encounter(){
+
+  if(game.battle)
+    return;
+
 
   game.battle = true;
 
@@ -1206,7 +1730,8 @@ function encounter(){
   const enemy =
     enemies[
       Math.floor(
-        Math.random() * enemies.length
+        Math.random() *
+        enemies.length
       )
     ];
 
@@ -1234,7 +1759,7 @@ function encounter(){
 
 
   /*
-    フェードイン
+    フィードイン開始
   */
 
   battle.style.display =
@@ -1243,7 +1768,13 @@ function encounter(){
 
   requestAnimationFrame(() => {
 
-    battle.classList.add("show");
+    requestAnimationFrame(() => {
+
+      battle.classList.add(
+        "show"
+      );
+
+    });
 
   });
 
@@ -1251,12 +1782,13 @@ function encounter(){
 
 
 /* =====================================================
-   ENEMY
+   ENEMY HP
 ===================================================== */
 
 function updateEnemy(){
 
   const percent =
+
     Math.max(
       0,
       game.enemy.hp /
@@ -1297,12 +1829,15 @@ document.getElementById(
 
     event.preventDefault();
 
+    event.stopPropagation();
+
 
     if(!game.battle)
       return;
 
 
     const damage =
+
       8 +
       Math.floor(
         Math.random() * 9
@@ -1313,7 +1848,9 @@ document.getElementById(
       damage;
 
 
-    if(game.enemy.hp <= 0){
+    if(
+      game.enemy.hp <= 0
+    ){
 
       game.enemy.hp = 0;
 
@@ -1328,6 +1865,10 @@ document.getElementById(
 
         closeBattle();
 
+        showMessage(
+          "✨ 敵を倒した！ +30G"
+        );
+
       },500);
 
 
@@ -1338,6 +1879,10 @@ document.getElementById(
 
     updateEnemy();
 
+  },
+
+  {
+    passive:false
   }
 
 );
@@ -1349,7 +1894,9 @@ document.getElementById(
 
 function closeBattle(){
 
-  battle.classList.remove("show");
+  battle.classList.remove(
+    "show"
+  );
 
 
   setTimeout(() => {
@@ -1379,20 +1926,25 @@ document.getElementById(
 
     event.preventDefault();
 
+    event.stopPropagation();
+
+
     if(game.battle)
       return;
 
 
     /*
-      ステージ1では
-      とりあえず固定ボス戦。
+      ステージ戦闘
     */
 
     game.battle = true;
 
 
-    game.enemy.maxHp = 60;
-    game.enemy.hp = 60;
+    game.enemy.maxHp =
+      60;
+
+    game.enemy.hp =
+      60;
 
 
     document.getElementById(
@@ -1416,17 +1968,27 @@ document.getElementById(
 
     requestAnimationFrame(() => {
 
-      battle.classList.add("show");
+      requestAnimationFrame(() => {
+
+        battle.classList.add(
+          "show"
+        );
+
+      });
 
     });
 
+  },
+
+  {
+    passive:false
   }
 
 );
 
 
 /* =====================================================
-   WORLD MOVE
+   WORLD PANEL
 ===================================================== */
 
 const worldPanel =
@@ -1446,15 +2008,24 @@ document.getElementById(
 
     event.preventDefault();
 
+    event.stopPropagation();
+
+
     worldPanel.style.display =
       "flex";
 
+  },
+
+  {
+    passive:false
   }
 
 );
 
 
-/* 閉じる */
+/* =====================================================
+   CLOSE WORLD PANEL
+===================================================== */
 
 document.getElementById(
   "closeWorld"
@@ -1467,19 +2038,24 @@ document.getElementById(
 
     event.preventDefault();
 
+    event.stopPropagation();
+
+
     worldPanel.style.display =
       "none";
 
+  },
+
+  {
+    passive:false
   }
 
 );
 
 
-/*
-  まだ試作なので、
-  セーブポイントを押したら
-  パネルを閉じるだけ。
-*/
+/* =====================================================
+   WORLD SAVE
+===================================================== */
 
 document.getElementById(
   "surfaceSave"
@@ -1492,13 +2068,21 @@ document.getElementById(
 
     event.preventDefault();
 
+    event.stopPropagation();
+
+
     worldPanel.style.display =
       "none";
+
 
     showMessage(
       "🌱 表世界のセーブポイントへ！"
     );
 
+  },
+
+  {
+    passive:false
   }
 
 );
@@ -1515,13 +2099,21 @@ document.getElementById(
 
     event.preventDefault();
 
+    event.stopPropagation();
+
+
     worldPanel.style.display =
       "none";
+
 
     showMessage(
       "🌑 裏世界のセーブポイントへ！"
     );
 
+  },
+
+  {
+    passive:false
   }
 
 );
@@ -1531,21 +2123,18 @@ document.getElementById(
    MESSAGE
 ===================================================== */
 
-let messageTimer;
+let messageTimer = null;
+
 
 function showMessage(text){
-
-  const message =
-    document.getElementById(
-      "message"
-    );
-
 
   message.textContent =
     text;
 
 
-  clearTimeout(messageTimer);
+  clearTimeout(
+    messageTimer
+  );
 
 
   messageTimer =
@@ -1560,14 +2149,15 @@ function showMessage(text){
 
 
 /* =====================================================
-   SAFARI / MOBILE
+   ZOOM BLOCK
 ===================================================== */
 
 /*
   ダブルタップズーム防止
 */
 
-let lastTouch = 0;
+let lastTouchTime = 0;
+
 
 document.addEventListener(
 
@@ -1580,7 +2170,7 @@ document.addEventListener(
 
 
     if(
-      now - lastTouch <
+      now - lastTouchTime <
       350
     ){
 
@@ -1589,7 +2179,8 @@ document.addEventListener(
     }
 
 
-    lastTouch = now;
+    lastTouchTime =
+      now;
 
   },
 
@@ -1611,6 +2202,7 @@ document.addEventListener(
   event => {
 
     if(
+      event.touches &&
       event.touches.length > 1
     ){
 
@@ -1635,14 +2227,18 @@ document.addEventListener(
   "gesturestart",
   "gesturechange",
   "gestureend"
+
 ].forEach(type => {
 
   document.addEventListener(
 
     type,
 
-    event =>
-      event.preventDefault(),
+    event => {
+
+      event.preventDefault();
+
+    },
 
     {
       passive:false
@@ -1654,16 +2250,86 @@ document.addEventListener(
 
 
 /* =====================================================
-   START
+   TOUCH SAFETY
+===================================================== */
+
+/*
+  body上での長押し・選択を防止。
+*/
+
+document.addEventListener(
+
+  "contextmenu",
+
+  event => {
+
+    event.preventDefault();
+
+  }
+
+);
+
+
+/*
+  スクロール防止
+*/
+
+document.addEventListener(
+
+  "touchmove",
+
+  event => {
+
+    if(
+      event.target.closest(
+        "#viewport"
+      ) ||
+      event.target.closest(
+        "#controls"
+      )
+    ){
+
+      event.preventDefault();
+
+    }
+
+  },
+
+  {
+    passive:false
+  }
+
+);
+
+
+/* =====================================================
+   RESIZE
 ===================================================== */
 
 window.addEventListener(
+
   "resize",
-  updateCamera
+
+  () => {
+
+    updateCamera();
+
+  }
+
 );
 
+
+/* =====================================================
+   START
+===================================================== */
+
 updateHUD();
+
 updateCamera();
+
+showMessage(
+  "👣 フィールドを探索しよう！"
+);
 
 </script>
 
