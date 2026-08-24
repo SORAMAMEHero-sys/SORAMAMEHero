@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>勇者そらまめ - フィールド試作3</title>
+<title>勇者そらまめ - フィールド試作6</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;touch-action:none;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;background:#102039;color:#fff}
@@ -15,7 +15,7 @@ button{font:inherit;-webkit-user-select:none;user-select:none;-webkit-touch-call
 #world{position:absolute;touch-action:none;overscroll-behavior:none;inset:58px 0 0;overflow:hidden;background:
 radial-gradient(circle at 52% 45%,rgba(116,204,93,.75),transparent 30%),
 linear-gradient(155deg,#376b35 0 58%,#80643e 58% 77%,#2f6b7f 77%);}
-#mapLayer{position:absolute;inset:-35%;width:170%;height:170%;will-change:transform;pointer-events:none;}
+#mapLayer{position:absolute;left:-120%;top:-120%;width:340%;height:340%;will-change:transform;pointer-events:none;}
 #path{position:absolute;left:-10%;top:52%;width:120%;height:25%;background:#8d7048;border-top:5px solid #725a3a;border-bottom:5px solid #725a3a;border-radius:20px;transform:rotate(1deg)}
 .water{position:absolute;right:-10%;bottom:-4%;width:58%;height:24%;background:#21637b;border-top:5px solid #17485b}
 .grass{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1px);background-size:25px 25px;opacity:.55}
@@ -24,8 +24,8 @@ linear-gradient(155deg,#376b35 0 58%,#80643e 58% 77%,#2f6b7f 77%);}
 #playerName{margin-top:-3px;background:#142b18;padding:3px 9px;border-radius:10px;font-size:12px;font-weight:900}
 #playerMarker{position:absolute;z-index:7;left:50%;top:calc(50% + 37px);transform:translateX(-50%);font-size:23px;filter:drop-shadow(0 2px 2px #17351a)}
 .node{position:absolute;pointer-events:none;z-index:5;padding:9px 13px;border-radius:14px;background:#16261a;color:#fff;border:2px solid #4d7654;font-weight:900;box-shadow:0 4px 8px #18351a66}
-.stage{right:10%;top:58%;background:#3d241b;border-color:#a76d45}
-.mountain{left:45%;top:45%;font-size:14px}
+.stage{left:57%;top:56%;background:#3d241b;border-color:#a76d45}
+.mountain{left:49%;top:43%;font-size:14px}
 #worldBtn{position:absolute;z-index:30;right:9px;top:54px;border:0;border-radius:13px;background:#d79b1e;color:white;padding:11px 14px;font-weight:900;box-shadow:0 3px 0 #8b5e0c}
 #dpad{position:absolute;touch-action:none;user-select:none;-webkit-user-select:none;z-index:30;left:10px;bottom:22px;width:158px;height:150px}
 .pad{position:absolute;width:55px;height:55px;border-radius:13px;border:2px solid #7184a5;background:#233652;color:#fff;box-shadow:0 4px 0 #142239;font-size:25px;font-weight:900}
@@ -46,7 +46,7 @@ linear-gradient(155deg,#376b35 0 58%,#80643e 58% 77%,#2f6b7f 77%);}
 <body>
 <div id="game">
   <div id="hud"><div class="title">🌱 勇者そらまめ</div><div class="stats"><div class="badge">Lv.3</div><div class="badge">💰 375</div></div></div>
-  <div id="notice">👣 歩いていると敵が突然あらわれる！　敵はフィールドには表示されません</div>
+  <div id="notice">👣 しばらく歩くと敵が突然あらわれる！　敵はフィールドには表示されません</div>
   <div id="world"><div id="mapLayer">
     <div class="grass"></div><div id="path"></div><div class="water"></div>
     <div class="node mountain">⛰️ 山道</div>
@@ -80,7 +80,7 @@ function move(dir){
   // そらまめは画面中央に固定。地形・ステージだけがカメラに合わせて動く。
   document.getElementById('mapLayer').style.transform =
     `translate(${-x*34}px,${-y*34}px)`;
-  if(steps>=4 && Math.random()<0.23){steps=0;encounter();}
+  if(steps>=8 && Math.random()<0.10){steps=0;encounter();}
 }
 document.querySelectorAll('.pad').forEach(b=>{
   b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(e.pointerType==='mouse'&&e.button!==0)return;move(b.dataset.dir)});
