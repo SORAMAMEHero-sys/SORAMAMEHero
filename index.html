@@ -321,6 +321,71 @@ button{
 
 
 /* =========================================================
+   GOAL
+========================================================= */
+
+#goal{
+  position:absolute;
+
+  z-index:20;
+
+  left:920px;
+  top:650px;
+
+  width:200px;
+  height:100px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+
+  border-radius:20px;
+
+  background:#2d5f3a;
+
+  border:4px solid #8ee69a;
+
+  color:white;
+
+  font-size:22px;
+  font-weight:bold;
+
+  text-align:center;
+
+  box-shadow:
+    0 0 20px rgba(120,255,140,.45);
+
+  animation:
+    goalPulse 1.5s ease-in-out infinite;
+}
+
+#goal small{
+  margin-top:5px;
+
+  font-size:12px;
+
+  opacity:.8;
+}
+
+@keyframes goalPulse{
+
+  0%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.05);
+  }
+
+  100%{
+    transform:scale(1);
+  }
+
+}
+
+
+/* =========================================================
    STAGE
 ========================================================= */
 
@@ -818,6 +883,7 @@ button{
 
   0%{
     opacity:0;
+
     transform:
       translate(-50%,0)
       scale(.5);
@@ -825,6 +891,7 @@ button{
 
   20%{
     opacity:1;
+
     transform:
       translate(-50%,-15px)
       scale(1.2);
@@ -832,6 +899,7 @@ button{
 
   100%{
     opacity:0;
+
     transform:
       translate(-50%,-75px)
       scale(1);
@@ -908,6 +976,7 @@ button{
 
 .partyMember.dead{
   opacity:.4;
+
   filter:grayscale(1);
 }
 
@@ -1332,6 +1401,7 @@ button{
 
   .partyMember{
     width:31%;
+
     padding:6px 4px;
   }
 
@@ -1351,7 +1421,7 @@ button{
     font-size:12px;
   }
 
-  .battleLog{
+  #battleLog{
     bottom:285px;
   }
 
@@ -1359,342 +1429,11 @@ button{
     font-size:90px;
   }
 
-}
-
-よっしゃ！！😎🔥
-じゃあ**戦闘画面に入るときの「フィールドイン演出」**を追加しよう！
-
-今の戦闘UIは触らず、戦闘開始前に演出を挟む方式にするのが安全。
-追加するのは主にCSSと startBattle() の処理だけでOK。
-
-🎬 演出の流れ
-
-フィールド
-→ ⚡ 一瞬フラッシュ
-→ 📳 画面がガクッと揺れる
-→ 🌑 暗転
-→ ⚔️ 戦闘画面がフェードイン
-→ 👹「○○が現れた！」
-
-① CSSに追加
-
-</style> の直前に追加👇
-
-/* =========================================================
-   BATTLE TRANSITION
-========================================================= */
-
-#battleTransition{
-  position:fixed;
-  z-index:1000;
-  inset:0;
-
-  pointer-events:none;
-
-  background:#080b14;
-
-  opacity:0;
-
-  transition:
-    opacity .25s ease;
-}
-
-#battleTransition.active{
-  opacity:1;
-}
-
-#battleTransition.flash{
-  animation:
-    battleFlash .55s ease;
-}
-
-@keyframes battleFlash{
-
-  0%{
-    background:#ffffff;
-    opacity:0;
-  }
-
-  15%{
-    background:#ffffff;
-    opacity:.95;
-  }
-
-  35%{
-    background:#ffffff;
-    opacity:.15;
-  }
-
-  55%{
-    background:#080b14;
-    opacity:1;
-  }
-
-  100%{
-    background:#080b14;
-    opacity:1;
-  }
-
-}
-
-#viewport.battleShake{
-  animation:
-    battleShake .45s ease;
-}
-
-@keyframes battleShake{
-
-  0%{
-    transform:translate(0,0);
-  }
-
-  20%{
-    transform:translate(-8px,4px);
-  }
-
-  40%{
-    transform:translate(8px,-4px);
-  }
-
-  60%{
-    transform:translate(-5px,2px);
-  }
-
-  80%{
-    transform:translate(4px,-2px);
-  }
-
-  100%{
-    transform:translate(0,0);
-  }
-
-}
-
-② HTMLに追加
-
-<body> の中、#battle の前あたりに👇
-
-<div id="battleTransition"></div>
-
-③ JavaScriptに追加
-
-ELEMENTSのところに👇
-
-const battleTransition =
-  document.getElementById(
-    "battleTransition"
-  );
-
-④ startBattle() を少し変更
-
-今の
-
-function startBattle(enemy){
-
-から始まる処理を、こういう流れにする。
-
-function startBattle(enemy){
-
-  game.battle = true;
-
-  game.currentTurn = 0;
-
-  game.enemy.name =
-    enemy.name;
-
-  game.enemy.icon =
-    enemy.icon;
-
-  game.enemy.maxHp =
-    enemy.hp;
-
-  game.enemy.hp =
-    enemy.hp;
-
-
-  game.party.forEach(
-    member => {
-      member.defend = false;
-    }
-  );
-
-
-  document.getElementById(
-    "enemyIcon"
-  ).textContent =
-    game.enemy.icon;
-
-  document.getElementById(
-    "enemyNameBig"
-  ).textContent =
-    game.enemy.name;
-
-  document.getElementById(
-    "battleEnemyName"
-  ).textContent =
-    game.enemy.name;
-
-
-  battleResult.style.display =
-    "none";
-
-  skillWindow.classList.remove(
-    "show"
-  );
-
-
-  updateBattleUI();
-
-
-  /* =========================
-     戦闘突入演出
-  ========================= */
-
-  battleTransition.classList.remove(
-    "active",
-    "flash"
-  );
-
-  void battleTransition.offsetWidth;
-
-  battleTransition.classList.add(
-    "flash"
-  );
-
-  viewport.classList.add(
-    "battleShake"
-  );
-
-
-  setTimeout(() => {
-
-    viewport.classList.remove(
-      "battleShake"
-    );
-
-    battle.style.display =
-      "block";
-
-    battle.classList.remove(
-      "show"
-    );
-
-    requestAnimationFrame(() => {
-
-      battle.classList.add(
-        "show"
-      );
-
-    });
-
-  }, 450);
-
-
-  setTimeout(() => {
-
-    battleTransition.classList.remove(
-      "active"
-    );
-
-  }, 700);
-
-
-  setLog(
-    game.enemy.name +
-    "が現れた！"
-  );
-
-
-  updateTurnUI();
-
-}
-
-/* =========================================================
-   BATTLE TRANSITION
-========================================================= */
-
-#battleTransition{
-  position:fixed;
-  z-index:1000;
-  inset:0;
-
-  pointer-events:none;
-
-  background:#080b14;
-
-  opacity:0;
-
-  transition:
-    opacity .25s ease;
-}
-
-#battleTransition.active{
-  opacity:1;
-}
-
-#battleTransition.flash{
-  animation:
-    battleFlash .55s ease;
-}
-
-@keyframes battleFlash{
-
-  0%{
-    background:#ffffff;
-    opacity:0;
-  }
-
-  15%{
-    background:#ffffff;
-    opacity:.95;
-  }
-
-  35%{
-    background:#ffffff;
-    opacity:.15;
-  }
-
-  55%{
-    background:#080b14;
-    opacity:1;
-  }
-
-  100%{
-    background:#080b14;
-    opacity:1;
-  }
-
-}
-
-#viewport.battleShake{
-  animation:
-    battleShake .45s ease;
-}
-
-@keyframes battleShake{
-
-  0%{
-    transform:translate(0,0);
-  }
-
-  20%{
-    transform:translate(-8px,4px);
-  }
-
-  40%{
-    transform:translate(8px,-4px);
-  }
-
-  60%{
-    transform:translate(-5px,2px);
-  }
-
-  80%{
-    transform:translate(4px,-2px);
-  }
-
-  100%{
-    transform:translate(0,0);
+  #goal{
+    width:180px;
+    height:90px;
+
+    font-size:19px;
   }
 
 }
@@ -1704,7 +1443,6 @@ function startBattle(enemy){
 
 <body>
 
-<div id="battleTransition"></div>
 
 <!-- =====================================================
      FIELD HUD
@@ -1740,12 +1478,16 @@ function startBattle(enemy){
   <div id="world">
 
     <div class="road horizontal"></div>
+
     <div class="road vertical"></div>
+
 
     <div class="water"></div>
 
     <div class="village"></div>
 
+
+    <!-- TREES -->
 
     <div class="tree t1"></div>
     <div class="tree t2"></div>
@@ -1755,12 +1497,35 @@ function startBattle(enemy){
     <div class="tree t6"></div>
 
 
+    <!-- ROCKS -->
+
     <div class="rock r1"></div>
     <div class="rock r2"></div>
     <div class="rock r3"></div>
 
 
-    <button class="stage" id="stage1">
+    <!-- =================================================
+         GOAL
+    ================================================== -->
+
+    <div id="goal">
+
+      🏁 ゴール
+
+      <small>
+        ステージ1へ
+      </small>
+
+    </div>
+
+
+    <!-- =================================================
+         STAGE 1
+    ================================================== -->
+
+    <button
+      class="stage"
+      id="stage1">
 
       🚪 ステージ1
 
@@ -1770,6 +1535,10 @@ function startBattle(enemy){
 
     </button>
 
+
+    <!-- =================================================
+         PLAYER
+    ================================================== -->
 
     <div id="player">
 
@@ -1807,20 +1576,36 @@ function startBattle(enemy){
 
 <div id="controls">
 
-  <button class="control" id="up">
+  <button
+    class="control"
+    id="up">
+
     ▲
+
   </button>
 
-  <button class="control" id="left">
+  <button
+    class="control"
+    id="left">
+
     ◀
+
   </button>
 
-  <button class="control" id="right">
+  <button
+    class="control"
+    id="right">
+
     ▶
+
   </button>
 
-  <button class="control" id="down">
+  <button
+    class="control"
+    id="down">
+
     ▼
+
   </button>
 
 </div>
@@ -1838,15 +1623,18 @@ function startBattle(enemy){
 <div id="battle">
 
 
-  <!-- 敵・ターン情報 -->
+  <!-- BATTLE TOP -->
 
   <div class="battleTop">
 
     <div class="enemyInfo">
 
-      <div class="enemyTitle"
-           id="battleEnemyName">
+      <div
+        class="enemyTitle"
+        id="battleEnemyName">
+
         ワイルドウルフ
+
       </div>
 
       <div class="enemyHPOuter">
@@ -1885,33 +1673,39 @@ function startBattle(enemy){
   </div>
 
 
-  <!-- 敵 -->
+  <!-- ENEMY -->
 
   <div class="battleEnemy">
 
     <div
       class="enemyIcon"
       id="enemyIcon">
+
       🐺
+
     </div>
 
     <div
       class="enemyNameBig"
       id="enemyNameBig">
+
       ワイルドウルフ
+
     </div>
 
   </div>
 
 
-  <!-- 戦闘ログ -->
+  <!-- BATTLE LOG -->
 
   <div id="battleLog">
+
     ワイルドウルフが現れた！
+
   </div>
 
 
-  <!-- 味方 -->
+  <!-- PARTY -->
 
   <div class="partyArea">
 
@@ -1929,10 +1723,13 @@ function startBattle(enemy){
       </div>
 
       <div class="barLabel">
+
         <span>HP</span>
+
         <span id="hpText0">
           100/100
         </span>
+
       </div>
 
       <div class="bar">
@@ -1945,10 +1742,13 @@ function startBattle(enemy){
       </div>
 
       <div class="barLabel">
+
         <span>MP</span>
+
         <span id="mpText0">
           50/50
         </span>
+
       </div>
 
       <div class="bar">
@@ -1976,10 +1776,13 @@ function startBattle(enemy){
       </div>
 
       <div class="barLabel">
+
         <span>HP</span>
+
         <span id="hpText1">
           90/90
         </span>
+
       </div>
 
       <div class="bar">
@@ -1992,10 +1795,13 @@ function startBattle(enemy){
       </div>
 
       <div class="barLabel">
+
         <span>MP</span>
+
         <span id="mpText1">
           40/40
         </span>
+
       </div>
 
       <div class="bar">
@@ -2023,10 +1829,13 @@ function startBattle(enemy){
       </div>
 
       <div class="barLabel">
+
         <span>HP</span>
+
         <span id="hpText2">
           80/80
         </span>
+
       </div>
 
       <div class="bar">
@@ -2039,10 +1848,13 @@ function startBattle(enemy){
       </div>
 
       <div class="barLabel">
+
         <span>MP</span>
+
         <span id="mpText2">
           60/60
         </span>
+
       </div>
 
       <div class="bar">
@@ -2059,7 +1871,7 @@ function startBattle(enemy){
   </div>
 
 
-  <!-- コマンド -->
+  <!-- COMMAND -->
 
   <div class="commandArea">
 
@@ -2071,7 +1883,6 @@ function startBattle(enemy){
 
     </button>
 
-
     <button
       class="command skill"
       id="skillButton">
@@ -2080,7 +1891,6 @@ function startBattle(enemy){
 
     </button>
 
-
     <button
       class="command defend"
       id="defendButton">
@@ -2088,7 +1898,6 @@ function startBattle(enemy){
       🛡️ ぼうぎょ
 
     </button>
-
 
     <button
       class="command run"
@@ -2101,7 +1910,7 @@ function startBattle(enemy){
   </div>
 
 
-  <!-- スキル -->
+  <!-- SKILL WINDOW -->
 
   <div id="skillWindow">
 
@@ -2156,7 +1965,7 @@ function startBattle(enemy){
   </div>
 
 
-  <!-- 戦闘結果 -->
+  <!-- BATTLE RESULT -->
 
   <div id="battleResult">
 
@@ -2165,19 +1974,25 @@ function startBattle(enemy){
       <div
         class="resultIcon"
         id="resultIcon">
+
         🎉
+
       </div>
 
       <div
         class="resultTitle"
         id="resultTitle">
+
         勝利！
+
       </div>
 
       <div
         class="resultText"
         id="resultText">
+
         30ゴールドを手に入れた！
+
       </div>
 
       <button
@@ -2247,6 +2062,8 @@ const game = {
   battle:false,
 
   steps:0,
+
+  goalReached:false,
 
   currentTurn:0,
 
@@ -2319,11 +2136,6 @@ const game = {
    ELEMENTS
 ========================================================= */
 
-const battleTransition =
-  document.getElementById(
-    "battleTransition"
-  );
-
 const viewport =
   document.getElementById("viewport");
 
@@ -2344,6 +2156,9 @@ const skillWindow =
 
 const battleResult =
   document.getElementById("battleResult");
+
+const goal =
+  document.getElementById("goal");
 
 
 /* =========================================================
@@ -2413,10 +2228,55 @@ function updateCamera(){
 
 
   player.style.left =
-  game.player.x + "px";
+    game.player.x + "px";
 
-player.style.top =
-  game.player.y + "px";
+  player.style.top =
+    game.player.y + "px";
+
+}
+
+
+/* =========================================================
+   GOAL CHECK
+========================================================= */
+
+function checkGoal(){
+
+  if(game.goalReached)
+    return;
+
+
+  const goalX = 1020;
+  const goalY = 700;
+
+
+  const distance =
+    Math.hypot(
+      game.player.x - goalX,
+      game.player.y - goalY
+    );
+
+
+  if(distance < 100){
+
+    game.goalReached = true;
+
+
+    showMessage(
+      "🏁 ゴールに到着した！"
+    );
+
+
+    goal.style.animation =
+      "none";
+
+    goal.style.transform =
+      "scale(1.1)";
+
+    goal.style.boxShadow =
+      "0 0 35px rgba(255,255,150,.9)";
+
+  }
 
 }
 
@@ -2500,6 +2360,13 @@ function move(direction){
 
   game.steps++;
 
+
+  /* ゴール判定 */
+
+  checkGoal();
+
+
+  /* エンカウント */
 
   if(
     game.steps >= 15 &&
@@ -2628,9 +2495,7 @@ function encounter(){
     ];
 
 
-  startBattle(
-    enemy
-  );
+  startBattle(enemy);
 
 }
 
@@ -2660,7 +2525,9 @@ function startBattle(enemy){
 
   game.party.forEach(
     member => {
+
       member.defend = false;
+
     }
   );
 
@@ -2692,58 +2559,21 @@ function startBattle(enemy){
   updateBattleUI();
 
 
-  /* =========================
-     戦闘突入演出
-  ========================= */
+  battle.style.display =
+    "block";
 
-  battleTransition.classList.remove(
-    "active",
-    "flash"
-  );
-
-  void battleTransition.offsetWidth;
-
-  battleTransition.classList.add(
-    "active",
-    "flash"
-  );
-
-  viewport.classList.add(
-    "battleShake"
+  battle.classList.remove(
+    "show"
   );
 
 
-  setTimeout(() => {
+  requestAnimationFrame(() => {
 
-    viewport.classList.remove(
-      "battleShake"
-    );
-
-    battle.style.display =
-      "block";
-
-    battle.classList.remove(
+    battle.classList.add(
       "show"
     );
 
-    requestAnimationFrame(() => {
-
-      battle.classList.add(
-        "show"
-      );
-
-    });
-
-  }, 450);
-
-
-  setTimeout(() => {
-
-    battleTransition.classList.remove(
-      "active"
-    );
-
-  }, 700);
+  });
 
 
   setLog(
@@ -3026,6 +2856,7 @@ document.getElementById(
 
     event.preventDefault();
 
+
     if(!game.battle)
       return;
 
@@ -3116,8 +2947,10 @@ document.getElementById(
 
     event.preventDefault();
 
+
     if(!game.battle)
       return;
+
 
     if(game.currentTurn >= 3)
       return;
@@ -3240,7 +3073,6 @@ function useSkill(
       member.name +
       "はファイアを使った！"
     );
-
 
   }
 
@@ -3382,6 +3214,7 @@ document.getElementById(
   event => {
 
     event.preventDefault();
+
 
     if(!game.battle)
       return;
@@ -3685,8 +3518,10 @@ document.getElementById(
 
     event.preventDefault();
 
+
     battleResult.style.display =
       "none";
+
 
     battle.classList.remove(
       "show"
@@ -3702,6 +3537,7 @@ document.getElementById(
         game.battle = false;
 
         game.currentTurn = 0;
+
 
         game.party.forEach(
           member => {
@@ -3741,6 +3577,7 @@ document.getElementById(
   event => {
 
     event.preventDefault();
+
 
     if(game.battle)
       return;
@@ -3814,6 +3651,7 @@ document.getElementById(
     worldPanel.style.display =
       "none";
 
+
     showMessage(
       "🌱 表世界のセーブポイントへ！"
     );
@@ -3833,6 +3671,7 @@ document.getElementById(
 
     worldPanel.style.display =
       "none";
+
 
     showMessage(
       "🌑 裏世界のセーブポイントへ！"
