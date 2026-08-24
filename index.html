@@ -221,6 +221,117 @@ button{
 
 
 /* =========================================================
+   STAGE SELECT AREA
+========================================================= */
+
+.stageSelectArea{
+  position:absolute;
+
+  z-index:8;
+
+  left:180px;
+  top:250px;
+
+  width:500px;
+  min-height:270px;
+
+  padding:25px;
+
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #365f38,
+      #27492d
+    );
+
+  border:6px solid #203d25;
+
+  box-shadow:
+    0 12px 25px rgba(0,0,0,.3);
+}
+
+.stageSelectTitle{
+  text-align:center;
+
+  color:white;
+
+  font-size:25px;
+
+  font-weight:900;
+
+  letter-spacing:3px;
+
+  text-shadow:
+    0 3px 4px rgba(0,0,0,.5);
+
+  margin-bottom:20px;
+}
+
+.stageCards{
+  display:flex;
+
+  gap:14px;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+}
+
+.stageCard{
+  width:180px;
+  min-height:105px;
+
+  padding:14px;
+
+  border-radius:17px;
+
+  border:3px solid #aa694a;
+
+  background:#43251c;
+
+  color:white;
+
+  font-weight:bold;
+
+  box-shadow:
+    0 7px 14px rgba(0,0,0,.35);
+
+  transition:
+    transform .1s,
+    filter .1s;
+}
+
+.stageCard:active{
+  transform:scale(.95);
+  filter:brightness(1.2);
+}
+
+.stageCardTitle{
+  font-size:17px;
+}
+
+.stageCardSmall{
+  display:block;
+
+  margin-top:7px;
+
+  font-size:11px;
+
+  opacity:.75;
+}
+
+.stageCardClear{
+  margin-top:8px;
+
+  font-size:11px;
+
+  color:#ffe66d;
+}
+
+
+/* =========================================================
    TREES
 ========================================================= */
 
@@ -349,9 +460,6 @@ button{
   pointer-events:none;
 }
 
-
-/* 白い三角形 */
-
 .goalArrow{
   width:0;
   height:0;
@@ -370,9 +478,6 @@ button{
 
   position:relative;
 }
-
-
-/* 三角形の縁 */
 
 .goalArrow:after{
   content:"";
@@ -397,14 +502,10 @@ button{
   z-index:-1;
 }
 
-
-/* GOAL文字 */
-
 .goalText{
   margin-top:10px;
 
-  font-family:
-    monospace;
+  font-family:monospace;
 
   font-size:27px;
 
@@ -418,9 +519,6 @@ button{
     0 3px 0 #555,
     0 5px 8px rgba(0,0,0,.5);
 }
-
-
-/* ゴール発光 */
 
 #goal.reached .goalArrow{
   animation:
@@ -1535,6 +1633,133 @@ button{
 
 
 /* =========================================================
+   GOAL RESULT
+========================================================= */
+
+#goalResult{
+  position:fixed;
+
+  z-index:900;
+
+  inset:0;
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:
+    rgba(5,10,18,.82);
+}
+
+#goalResult.show{
+  display:flex;
+}
+
+.goalResultBox{
+  width:min(86%,390px);
+
+  padding:30px 24px;
+
+  border-radius:25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #20334d,
+      #121d30
+    );
+
+  border:3px solid #ffd866;
+
+  color:white;
+
+  text-align:center;
+
+  box-shadow:
+    0 0 35px rgba(255,216,102,.18),
+    0 20px 70px rgba(0,0,0,.7);
+
+  animation:
+    goalResultAppear .45s
+    cubic-bezier(.2,1.4,.4,1);
+}
+
+@keyframes goalResultAppear{
+
+  from{
+    opacity:0;
+    transform:
+      scale(.65)
+      translateY(30px);
+  }
+
+  to{
+    opacity:1;
+    transform:
+      scale(1)
+      translateY(0);
+  }
+
+}
+
+.goalResultIcon{
+  font-size:72px;
+
+  margin-bottom:5px;
+}
+
+.goalResultTitle{
+  font-size:28px;
+
+  font-weight:900;
+
+  letter-spacing:2px;
+
+  margin:5px 0 10px;
+}
+
+.goalResultSub{
+  color:#ffd866;
+
+  font-size:13px;
+
+  font-weight:bold;
+
+  margin-bottom:10px;
+}
+
+.goalResultText{
+  font-size:14px;
+
+  opacity:.9;
+
+  line-height:1.7;
+}
+
+.goalResultButton{
+  width:100%;
+
+  margin-top:20px;
+
+  padding:14px;
+
+  border:0;
+
+  border-radius:12px;
+
+  background:#4c754e;
+
+  color:white;
+
+  font-size:15px;
+
+  font-weight:bold;
+}
+
+
+/* =========================================================
    RESPONSIVE
 ========================================================= */
 
@@ -1561,6 +1786,17 @@ button{
 }
 
 @media(max-width:500px){
+
+  .stageSelectArea{
+    left:100px;
+    top:250px;
+
+    width:380px;
+  }
+
+  .stageCard{
+    width:155px;
+  }
 
   .partyArea{
     gap:5px;
@@ -1612,114 +1848,28 @@ button{
 
 
 /* =========================================================
-   GOAL RESULT OVERLAY
+   SMALL SCREEN STAGE SELECT
 ========================================================= */
 
-#goalResult{
-  position:fixed;
+@media(max-width:420px){
 
-  z-index:900;
+  .stageSelectArea{
+    left:60px;
+    top:250px;
 
-  inset:0;
+    width:350px;
 
-  display:none;
-
-  align-items:center;
-
-  justify-content:center;
-
-  background:
-    rgba(5,10,18,.78);
-}
-
-#goalResult.show{
-  display:flex;
-}
-
-.goalResultBox{
-  width:min(86%,390px);
-
-  padding:30px 24px;
-
-  border-radius:22px;
-
-  background:#17243a;
-
-  border:3px solid #e6e6e6;
-
-  color:white;
-
-  text-align:center;
-
-  box-shadow:
-    0 15px 60px
-    rgba(0,0,0,.7);
-
-  animation:
-    goalResultAppear .45s
-    cubic-bezier(.2,1.4,.4,1);
-}
-
-@keyframes goalResultAppear{
-
-  from{
-    opacity:0;
-    transform:
-      scale(.65)
-      translateY(30px);
+    padding:18px;
   }
 
-  to{
-    opacity:1;
-    transform:
-      scale(1)
-      translateY(0);
+  .stageSelectTitle{
+    font-size:21px;
   }
 
-}
+  .stageCard{
+    width:145px;
+  }
 
-.goalResultIcon{
-  font-size:72px;
-
-  margin-bottom:5px;
-}
-
-.goalResultTitle{
-  font-size:30px;
-
-  font-weight:900;
-
-  letter-spacing:3px;
-
-  margin:5px 0 10px;
-}
-
-.goalResultText{
-  font-size:14px;
-
-  opacity:.9;
-
-  line-height:1.7;
-}
-
-.goalResultButton{
-  width:100%;
-
-  margin-top:20px;
-
-  padding:14px;
-
-  border:0;
-
-  border-radius:12px;
-
-  background:#4c754e;
-
-  color:white;
-
-  font-size:15px;
-
-  font-weight:bold;
 }
 
 </style>
@@ -1777,6 +1927,45 @@ button{
 
 
     <!-- =================================================
+         STAGE SELECT FIELD
+    ================================================= -->
+
+    <div class="stageSelectArea">
+
+      <div class="stageSelectTitle">
+        🗺️ ステージ選択
+      </div>
+
+      <div class="stageCards">
+
+        <button
+          class="stageCard"
+          id="stageSelect1">
+
+          <div class="stageCardTitle">
+            🚪 ステージ1
+          </div>
+
+          <span class="stageCardSmall">
+            山道
+          </span>
+
+          <div
+            class="stageCardClear"
+            id="stage1Clear">
+
+            未クリア
+
+          </div>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
          GOAL
     ================================================= -->
 
@@ -1813,7 +2002,7 @@ button{
 
 
     <!-- =================================================
-         STAGE
+         OLD STAGE BUTTON
     ================================================= -->
 
     <button class="stage" id="stage1">
@@ -1900,23 +2089,27 @@ button{
   <div class="goalResultBox">
 
     <div class="goalResultIcon">
-      🏆
+      🌟
     </div>
 
     <div class="goalResultTitle">
-      ステージクリア！
+      STAGE CLEAR!
+    </div>
+
+    <div class="goalResultSub">
+      山道を突破した！
     </div>
 
     <div class="goalResultText">
       そらまめたちは<br>
-      無事にゴールへたどり着いた！
+      新たな冒険への道を切り開いた！
     </div>
 
     <button
       class="goalResultButton"
       id="goalResultButton">
 
-      フィールドへ戻る
+      🗺️ ステージ選択へ
 
     </button>
 
@@ -1930,9 +2123,6 @@ button{
 ===================================================== -->
 
 <div id="battle">
-
-
-  <!-- 敵・ターン情報 -->
 
   <div class="battleTop">
 
@@ -1982,8 +2172,6 @@ button{
   </div>
 
 
-  <!-- 敵 -->
-
   <div class="battleEnemy">
 
     <div
@@ -2005,14 +2193,10 @@ button{
   </div>
 
 
-  <!-- 戦闘ログ -->
-
   <div id="battleLog">
     ワイルドウルフが現れた！
   </div>
 
-
-  <!-- 味方 -->
 
   <div class="partyArea">
 
@@ -2166,8 +2350,6 @@ button{
   </div>
 
 
-  <!-- コマンド -->
-
   <div class="commandArea">
 
     <button
@@ -2207,8 +2389,6 @@ button{
 
   </div>
 
-
-  <!-- スキル -->
 
   <div id="skillWindow">
 
@@ -2266,8 +2446,6 @@ button{
 
   </div>
 
-
-  <!-- 戦闘結果 -->
 
   <div id="battleResult">
 
@@ -2375,15 +2553,15 @@ const game = {
 
   currentTurn:0,
 
+  clearedStages:[],
 
   player:{
 
-    x:1200,
+    x:420,
 
-    y:900
+    y:620
 
   },
-
 
   camera:{
 
@@ -2392,7 +2570,6 @@ const game = {
     y:0
 
   },
-
 
   enemy:{
 
@@ -2405,7 +2582,6 @@ const game = {
     maxHp:50
 
   },
-
 
   party:[
 
@@ -2519,6 +2695,35 @@ function updateHUD(){
 
 
 /* =========================================================
+   STAGE SELECT UI
+========================================================= */
+
+function updateStageSelect(){
+
+  const clearText =
+    document.getElementById(
+      "stage1Clear"
+    );
+
+
+  if(
+    game.clearedStages.includes(1)
+  ){
+
+    clearText.textContent =
+      "✓ CLEAR済み";
+
+  }else{
+
+    clearText.textContent =
+      "未クリア";
+
+  }
+
+}
+
+
+/* =========================================================
    CAMERA
 ========================================================= */
 
@@ -2577,6 +2782,70 @@ function updateCamera(){
 
 
 /* =========================================================
+   RETURN TO STAGE SELECT
+========================================================= */
+
+function returnToStageSelect(){
+
+  game.battle = false;
+
+  game.goalReached = false;
+
+  game.steps = 0;
+
+  game.currentTurn = 0;
+
+
+  /*
+     ステージ選択フィールドへ
+     プレイヤーを移動
+  */
+
+  game.player.x = 420;
+
+  game.player.y = 620;
+
+
+  goal.classList.remove(
+    "reached"
+  );
+
+
+  battleResult.style.display =
+    "none";
+
+
+  battle.classList.remove(
+    "show"
+  );
+
+  battle.style.display =
+    "none";
+
+
+  skillWindow.classList.remove(
+    "show"
+  );
+
+
+  goalResult.classList.remove(
+    "show"
+  );
+
+
+  updateCamera();
+
+  updateStageSelect();
+
+
+  showMessage(
+    "🗺️ ステージ選択フィールドへ戻った！"
+  );
+
+}
+
+
+/* =========================================================
    GOAL CHECK
 ========================================================= */
 
@@ -2606,11 +2875,6 @@ function checkGoal(){
     );
 
 
-  /*
-     ゴールとの距離が
-     90px以内ならクリア
-  */
-
   if(distance <= 90){
 
     reachGoal();
@@ -2633,13 +2897,29 @@ function reachGoal(){
   game.goalReached = true;
 
 
+  /*
+     ステージ1クリア
+  */
+
+  if(
+    !game.clearedStages.includes(1)
+  ){
+
+    game.clearedStages.push(1);
+
+  }
+
+
+  updateStageSelect();
+
+
   goal.classList.add(
     "reached"
   );
 
 
   showMessage(
-    "🏆 ゴールに到着！"
+    "🌟 ステージクリア！"
   );
 
 
@@ -2745,21 +3025,12 @@ function move(direction){
   game.steps++;
 
 
-  /*
-     ゴール判定
-  */
-
   checkGoal();
 
 
   if(game.goalReached)
     return;
 
-
-  /*
-     15歩以上歩いたら
-     6%の確率で敵出現
-  */
 
   if(
     game.steps >= 15 &&
@@ -2808,25 +3079,10 @@ function bindControl(
 }
 
 
-bindControl(
-  "up",
-  "up"
-);
-
-bindControl(
-  "down",
-  "down"
-);
-
-bindControl(
-  "left",
-  "left"
-);
-
-bindControl(
-  "right",
-  "right"
-);
+bindControl("up","up");
+bindControl("down","down");
+bindControl("left","left");
+bindControl("right","right");
 
 
 /* =========================================================
@@ -2905,9 +3161,7 @@ function encounter(){
     ];
 
 
-  startBattle(
-    enemy
-  );
+  startBattle(enemy);
 
 }
 
@@ -2974,10 +3228,6 @@ function startBattle(enemy){
 
   updateBattleUI();
 
-
-  /*
-     戦闘突入演出
-  */
 
   battleTransition.classList.remove(
     "active",
@@ -3479,9 +3729,7 @@ document
   );
 
 
-function useSkill(
-  skill
-){
+function useSkill(skill){
 
   if(!game.battle)
     return;
@@ -3717,6 +3965,85 @@ document.getElementById(
       nextTurn,
       550
     );
+
+  }
+);
+
+
+/* =========================================================
+   RUN
+========================================================= */
+
+document.getElementById(
+  "runButton"
+)
+.addEventListener(
+  "pointerdown",
+  event => {
+
+    event.preventDefault();
+
+
+    if(!game.battle)
+      return;
+
+
+    if(game.currentTurn >= 3)
+      return;
+
+
+    if(Math.random() < 0.7){
+
+      setLog(
+        "🏃 うまく逃げ切った！"
+      );
+
+
+      setTimeout(
+        () => {
+
+          battleResult.style.display =
+            "none";
+
+          battle.classList.remove(
+            "show"
+          );
+
+
+          setTimeout(
+            () => {
+
+              battle.style.display =
+                "none";
+
+              game.battle = false;
+
+              updateCamera();
+
+              showMessage(
+                "🏃 戦闘から逃げた！"
+              );
+
+            },
+            350
+          );
+
+        },
+        500
+      );
+
+    }else{
+
+      setLog(
+        "💨 逃げられなかった！"
+      );
+
+      setTimeout(
+        nextTurn,
+        600
+      );
+
+    }
 
   }
 );
@@ -4055,21 +4382,85 @@ document.getElementById(
     event.preventDefault();
 
 
-    goalResult.classList.remove(
-      "show"
-    );
+    /*
+       ここで普通のフィールドではなく
+       ステージ選択フィールドへ戻す
+    */
 
-
-    showMessage(
-      "🏆 ステージクリア！"
-    );
+    returnToStageSelect();
 
   }
 );
 
 
 /* =========================================================
-   STAGE 1
+   STAGE 1 START
+========================================================= */
+
+function startStage1(){
+
+  if(game.battle)
+    return;
+
+
+  /*
+     ステージ開始時に
+     ゴール判定をリセット
+  */
+
+  game.goalReached = false;
+
+  game.steps = 0;
+
+
+  goal.classList.remove(
+    "reached"
+  );
+
+
+  /*
+     ステージ開始位置
+  */
+
+  game.player.x = 1350;
+
+  game.player.y = 720;
+
+
+  updateCamera();
+
+
+  showMessage(
+    "🚪 ステージ1「山道」開始！"
+  );
+
+
+  /*
+     少し待ってからボス戦
+  */
+
+  setTimeout(
+    () => {
+
+      startBattle({
+
+        icon:"👹",
+
+        name:"山道の魔物",
+
+        hp:80
+
+      });
+
+    },
+    350
+  );
+
+}
+
+
+/* =========================================================
+   STAGE BUTTONS
 ========================================================= */
 
 document.getElementById(
@@ -4081,20 +4472,22 @@ document.getElementById(
 
     event.preventDefault();
 
+    startStage1();
 
-    if(game.battle)
-      return;
+  }
+);
 
 
-    startBattle({
+document.getElementById(
+  "stageSelect1"
+)
+.addEventListener(
+  "pointerdown",
+  event => {
 
-      icon:"👹",
+    event.preventDefault();
 
-      name:"山道の魔物",
-
-      hp:80
-
-    });
+    startStage1();
 
   }
 );
@@ -4315,6 +4708,8 @@ window.addEventListener(
 ========================================================= */
 
 updateHUD();
+
+updateStageSelect();
 
 updateCamera();
 
