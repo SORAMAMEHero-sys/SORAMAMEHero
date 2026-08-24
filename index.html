@@ -2696,7 +2696,7 @@ const stages = {
     boss:{
       name:"カマセキャット",
       icon:"🐱",
-      hp:90
+      hp:250
     },
     keys:3,
     keyPositions:[
@@ -2713,7 +2713,7 @@ const stages = {
     boss:{
       name:"ホドック",
       icon:"👹",
-      hp:120
+      hp:300
     },
     keys:4,
     keyPositions:[
@@ -2722,12 +2722,7 @@ const stages = {
       [1050,650],
       [900,300]
     ],
-    bg:"stageCave",
-    soldier:{
-      name:"ヌクレアイス",
-      icon:"❄️",
-      hp:100
-    }
+    bg:"stageCave"
   },
 
   3:{
@@ -2736,7 +2731,7 @@ const stages = {
     boss:{
       name:"シャラッシー",
       icon:"🦑",
-      hp:150
+      hp:350
     },
     keys:5,
     keyPositions:[
@@ -2750,7 +2745,7 @@ const stages = {
     soldier:{
       name:"ヌクレアイス",
       icon:"❄️",
-      hp:115
+      hp:250
     }
   }
 
@@ -3370,6 +3365,22 @@ function reachGoal(){
   setTimeout(
     () => {
 
+      /*
+         ステージ3だけは、
+         ゴール到達時に四天王の兵士が
+         固定で立ちはだかる。
+         兵士撃破後に中ボス戦へ進む。
+      */
+      if(stage.soldier){
+
+        game.pendingBoss = stage.boss;
+
+        startSoldierBattle();
+
+        return;
+
+      }
+
       startBossBattle(
         stage.boss
       );
@@ -3390,6 +3401,8 @@ function showStageSelect(){
   game.stageMode = false;
 
   game.currentStage = 0;
+
+  game.pendingBoss = null;
 
   game.goalReached = false;
 
@@ -3474,6 +3487,8 @@ function startStage(stageNumber){
   game.currentStage =
     stageNumber;
 
+  game.pendingBoss = null;
+
   game.goalReached = false;
 
   game.steps = 0;
@@ -3541,6 +3556,8 @@ function returnToStageSelect(){
   game.currentTurn = 0;
 
   game.currentStage = 0;
+
+  game.pendingBoss = null;
 
   game.collectedKeys = [];
 
@@ -3697,34 +3714,11 @@ function move(direction){
 
 
   /*
-     ステージ2・3では
-     四天王の兵士が低確率で出現
-  */
-
-  const stage =
-    stages[
-      game.currentStage
-    ];
-
-
-  if(
-    stage &&
-    stage.soldier &&
-    game.steps >= 18 &&
-    Math.random() < 0.035
-  ){
-
-    game.steps = 0;
-
-    startSoldierBattle();
-
-    return;
-
-  }
-
-
-  /*
      通常モンスター
+
+     四天王の兵士はランダム出現しない。
+     ステージ3のゴール到達時にのみ
+     固定イベントとして登場する。
   */
 
   if(
@@ -3971,6 +3965,11 @@ function startBattle(
 
   battleResult.style.display =
     "none";
+
+  document.getElementById(
+    "resultButton"
+  ).textContent =
+    "フィールドへ戻る";
 
 
   skillWindow.classList.remove(
@@ -5055,6 +5054,14 @@ function victory(){
       defeatedName +
       "を倒した！ 100ゴールド獲得！";
 
+  }else if(game.pendingBoss){
+
+    document.getElementById(
+      "resultText"
+    ).textContent =
+      defeatedName +
+      "を倒した！\n次は中ボス戦だ！";
+
   }else{
 
     document.getElementById(
@@ -5064,6 +5071,14 @@ function victory(){
       "を倒した！";
 
   }
+
+
+  document.getElementById(
+    "resultButton"
+  ).textContent =
+    game.pendingBoss
+      ? "⚔️ 次の戦いへ"
+      : "フィールドへ戻る";
 
 
   battleResult.style.display =
@@ -5169,6 +5184,56 @@ document.getElementById(
   event => {
 
     event.preventDefault();
+
+
+    /*
+       ステージ3の兵士を倒した後は
+       そのまま中ボス戦へ進む。
+    */
+
+    if(
+      game.pendingBoss &&
+      !game.enemy.boss
+    ){
+
+      const nextBoss =
+        game.pendingBoss;
+
+      game.pendingBoss = null;
+
+      battleResult.style.display =
+        "none";
+
+      battle.classList.remove(
+        "show"
+      );
+
+      setTimeout(
+        () => {
+
+          battle.style.display =
+            "none";
+
+          game.battle = false;
+          game.currentTurn = 0;
+
+          game.party.forEach(
+            member => {
+              member.defend = false;
+            }
+          );
+
+          startBossBattle(
+            nextBoss
+          );
+
+        },
+        350
+      );
+
+      return;
+
+    }
 
 
     /*
