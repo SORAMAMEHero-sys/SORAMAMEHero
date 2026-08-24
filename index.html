@@ -1,300 +1,108 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<title>勇者そらまめ - フィールド試作2</title>
+<title>勇者そらまめ - フィールド試作3</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0b1220;touch-action:none;overscroll-behavior:none;user-select:none;-webkit-user-select:none}
-body{font-family:system-ui,-apple-system,"Yu Gothic",sans-serif;color:#fff}
-button{font:inherit;touch-action:none}
-#app{width:100%;height:100%;display:flex;flex-direction:column}
-header{height:58px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:5px 9px;background:#101a2c;border-bottom:2px solid #3b4c68;z-index:50}
-.logo{font-size:17px;font-weight:900}
-.hud{display:flex;gap:5px}.hud span{background:#202d45;border:1px solid #60708d;border-radius:9px;padding:5px 7px;font-size:12px;font-weight:900}
-#screen{position:relative;flex:1;min-height:0;overflow:hidden}
-
-/* ===== FIELD ===== */
-.field{position:absolute;inset:0;overflow:hidden;background:#70b95e}
-.world{position:absolute;width:1800px;height:1200px;will-change:transform;background:
-linear-gradient(145deg,#65b85c 0 35%,#78c465 35% 67%,#62ad58 67% 100%)}
-.world:after{content:"";position:absolute;inset:0;opacity:.13;background-image:radial-gradient(#fff 1px,transparent 1.5px);background-size:28px 28px;pointer-events:none}
-.path{position:absolute;background:#c7a56a;border:4px solid #aa8751;border-radius:28px;z-index:1}
-.water{position:absolute;background:#409bc8;border:5px solid #28779e;z-index:2}
-.tree{position:absolute;width:64px;height:64px;background:#337f39;border:6px solid #205c2a;border-radius:50%;z-index:4;box-shadow:0 7px 0 #0003}
-.rock{position:absolute;width:72px;height:42px;background:#777f89;border:5px solid #505760;border-radius:45%;z-index:4}
-.house{position:absolute;width:100px;height:80px;background:#c86b4d;border:5px solid #713a2c;border-radius:9px;z-index:4}
-.house:before{content:"";position:absolute;left:5px;top:-35px;border-left:45px solid transparent;border-right:45px solid transparent;border-bottom:38px solid #8d3d3c}
-.sign{position:absolute;padding:7px 10px;border-radius:10px;background:#000a;font-weight:900;font-size:13px;z-index:6;white-space:nowrap}
-.save{position:absolute;width:62px;height:62px;border-radius:50%;background:#6fe4dc;border:5px solid #287c80;display:flex;align-items:center;justify-content:center;font-size:29px;z-index:6;box-shadow:0 6px 0 #0003}
-.exit{position:absolute;width:66px;height:66px;border-radius:50%;background:#d64b55;border:5px solid #75232b;color:#fff;font-weight:900;font-size:25px;z-index:6}
-#player{position:absolute;width:48px;height:56px;z-index:20;display:flex;align-items:center;justify-content:center;font-size:38px;filter:drop-shadow(0 5px 2px #0005);will-change:left,top}
-#playerName{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:900;text-shadow:0 2px 3px #000;white-space:nowrap}
-.fog{position:absolute;inset:0;z-index:25;pointer-events:none;background:radial-gradient(circle at 50% 50%,transparent 0 135px,#0002 190px,#0007 330px)}
-.topmsg{position:absolute;left:8px;right:8px;top:8px;z-index:40;background:#000a;border:1px solid #fff3;border-radius:11px;padding:7px 10px;font-size:12px;text-align:center;pointer-events:none}
-.worldbtn{position:absolute;right:8px;top:49px;z-index:45;background:#b78619;color:#fff;border:0;border-radius:12px;padding:9px 11px;font-weight:900;box-shadow:0 4px 0 #0005}
-
-/* easy controls */
-.dpad{position:absolute;left:12px;bottom:15px;z-index:45;width:174px;height:174px}
-.dpad button{position:absolute;width:58px;height:58px;border:2px solid #8190a9;border-radius:15px;background:#17243a;color:#fff;box-shadow:0 5px 0 #0006;font-size:25px;font-weight:900}
-.dpad button:active{transform:translateY(4px);box-shadow:0 1px 0 #0006}
-.dpad .up{left:58px;top:0}.dpad .left{left:0;top:58px}.dpad .down{left:58px;top:116px}.dpad .right{left:116px;top:58px}
-.action{position:absolute;right:14px;bottom:28px;z-index:45;width:78px;height:78px;border-radius:50%;border:3px solid #8190a9;background:#233450;color:#fff;font-size:30px;font-weight:900;box-shadow:0 6px 0 #0006}
-
-/* screens */
-.panel{height:100%;overflow:auto;padding:15px;background:#0d1627}
-.card{max-width:650px;margin:auto;background:#121d31;border:2px solid #43536f;border-radius:16px;padding:15px}
-.center{text-align:center}
-.btn{border:0;border-radius:12px;padding:11px 15px;margin:4px;color:#fff;font-weight:900;box-shadow:0 4px 0 #0005}
-.blue{background:#167bd8}.green{background:#329958}.gray{background:#4b5870}.gold{background:#b98413}.red{background:#c53d4f}
-.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #0005}
-.battle{height:100%;overflow:auto;padding:12px;background:radial-gradient(circle at 50% 25%,#405476,#101829 65%)}
-.enemybox{text-align:center;max-width:500px;margin:auto}.sprite{font-size:68px}
-.hp{height:14px;background:#27141a;border:2px solid #667089;border-radius:10px;overflow:hidden}.fill{height:100%;background:#4fc75b}
-.party{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-width:600px;margin:10px auto}
-.member{background:#17243a;border:2px solid #43536f;border-radius:10px;padding:7px;font-size:12px}
-.log{height:105px;overflow:auto;background:#09101d;border:1px solid #3c4a61;border-radius:10px;padding:8px;font-size:12px}
-.skills{display:grid;grid-template-columns:1fr 1fr;max-width:600px;margin:auto}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;touch-action:none;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;background:#102039;color:#fff}
+button{font:inherit}
+#game{position:relative;width:100%;height:100%;overflow:hidden;background:#47753b}
+#hud{position:absolute;z-index:20;top:0;left:0;right:0;height:58px;background:#101b2c;border-bottom:2px solid #41526e;display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-weight:800}
+.title{font-size:15px}.stats{display:flex;gap:7px}.badge{padding:7px 10px;border-radius:12px;background:#263650;border:1px solid #617392;font-size:13px}
+#notice{position:absolute;z-index:21;top:63px;left:8px;right:8px;text-align:center;background:rgba(10,39,17,.82);border-radius:12px;padding:7px;font-size:11px;color:#d9f4dc}
+#world{position:absolute;inset:58px 0 0;overflow:hidden;background:
+radial-gradient(circle at 52% 45%,rgba(116,204,93,.75),transparent 30%),
+linear-gradient(155deg,#376b35 0 58%,#80643e 58% 77%,#2f6b7f 77%);}
+#path{position:absolute;left:-10%;top:52%;width:120%;height:25%;background:#8d7048;border-top:5px solid #725a3a;border-bottom:5px solid #725a3a;border-radius:20px;transform:rotate(1deg)}
+.water{position:absolute;right:-10%;bottom:-4%;width:58%;height:24%;background:#21637b;border-top:5px solid #17485b}
+.grass{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1px);background-size:25px 25px;opacity:.55}
+#player{position:absolute;z-index:8;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:86px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.player-body{font-size:48px;filter:drop-shadow(0 3px 2px #17351a)}
+#playerName{margin-top:-3px;background:#142b18;padding:3px 9px;border-radius:10px;font-size:12px;font-weight:900}
+#playerMarker{position:absolute;z-index:7;left:50%;top:calc(50% + 37px);transform:translateX(-50%);font-size:23px;filter:drop-shadow(0 2px 2px #17351a)}
+.node{position:absolute;z-index:5;padding:9px 13px;border-radius:14px;background:#16261a;color:#fff;border:2px solid #4d7654;font-weight:900;box-shadow:0 4px 8px #18351a66}
+.stage{right:10%;top:58%;background:#3d241b;border-color:#a76d45}
+.mountain{left:45%;top:45%;font-size:14px}
+#worldBtn{position:absolute;z-index:30;right:9px;top:54px;border:0;border-radius:13px;background:#d79b1e;color:white;padding:11px 14px;font-weight:900;box-shadow:0 3px 0 #8b5e0c}
+#dpad{position:absolute;z-index:30;left:10px;bottom:22px;width:158px;height:150px}
+.pad{position:absolute;width:55px;height:55px;border-radius:13px;border:2px solid #7184a5;background:#233652;color:#fff;box-shadow:0 4px 0 #142239;font-size:25px;font-weight:900}
+.pad:active{transform:translateY(3px);box-shadow:0 1px 0 #142239}
+.up{left:52px;top:0}.left{left:0;top:52px}.right{right:0;top:52px}.down{left:52px;bottom:0}
+#menu{position:absolute;z-index:30;right:10px;bottom:25px;width:58px;height:58px;border-radius:50%;border:2px solid #8799b7;background:#263752;color:#fff;font-size:24px}
+#fade{position:absolute;z-index:100;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .45s ease}
+#encounter{position:absolute;z-index:110;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.78);opacity:0;pointer-events:none}
+.enc-card{transform:scale(.82);text-align:center;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.enc-flash{font-size:58px}.enc-title{font-size:27px;font-weight:1000;letter-spacing:3px}.enc-sub{margin-top:8px;color:#ddd}
+.show{opacity:1!important}.show .enc-card{transform:scale(1)}
+#battle{position:absolute;z-index:120;inset:0;display:none;background:linear-gradient(#101a2c,#17233a);padding:70px 18px 20px}
+.enemy{font-size:74px;text-align:center;margin:60px 0 20px}.battleTitle{text-align:center;font-size:22px;font-weight:1000}
+.battleBox{position:absolute;left:18px;right:18px;bottom:25px;background:#0c1422;border:2px solid #4d607d;border-radius:18px;padding:15px}
+.battleBox button{padding:12px 20px;margin:4px;border:0;border-radius:12px;background:#395274;color:#fff;font-weight:900}
 </style>
 </head>
 <body>
-<div id="app">
-<header>
-  <div class="logo">🌱 勇者そらまめ</div>
-  <div class="hud"><span>Lv.<b id="lv">1</b></span><span>💰<b id="gold">0</b></span></div>
-</header>
-<div id="screen"></div>
+<div id="game">
+  <div id="hud"><div class="title">🌱 勇者そらまめ</div><div class="stats"><div class="badge">Lv.3</div><div class="badge">💰 375</div></div></div>
+  <div id="notice">👣 歩いていると敵が突然あらわれる！　敵はフィールドには表示されません</div>
+  <div id="world">
+    <div class="grass"></div><div id="path"></div><div class="water"></div>
+    <div class="node mountain">⛰️ 山道</div>
+    <div class="node stage">🚪 ステージ1</div>
+    <button id="worldBtn">🌎 世界移動</button>
+    <div id="player"><div class="player-body">🧑‍🌾</div><div id="playerName">そらまめ</div></div>
+    <div id="playerMarker">🌱</div>
+  </div>
+  <div id="dpad">
+    <button class="pad up" data-dir="up">▲</button><button class="pad left" data-dir="left">◀</button>
+    <button class="pad right" data-dir="right">▶</button><button class="pad down" data-dir="down">▼</button>
+  </div>
+  <button id="menu">☰</button>
+  <div id="fade"></div>
+  <div id="encounter"><div class="enc-card"><div class="enc-flash">⚡👾⚡</div><div class="enc-title">てきが あらわれた！</div><div class="enc-sub">戦闘準備中……</div></div></div>
+  <div id="battle">
+    <div class="battleTitle">⚔️ バトル</div><div class="enemy">👾</div>
+    <div class="battleBox"><b>そらまめ Lv.3</b><br><br>
+      <button onclick="attack()">こうげき</button><button onclick="endBattle()">にげる</button>
+    </div>
+  </div>
 </div>
-
 <script>
-"use strict";
-
-/* =========================
-   勇者そらまめ フィールド試作2
-   ・敵はフィールドに表示しない
-   ・歩くと一定確率でランダムエンカウント
-   ・カメラはそらまめ中心
-   ・スマホのピンチ/ダブルタップ拡大を防止
-========================= */
-
-const G={
-  worldW:1800,worldH:1200,
-  x:900,y:600,speed:7,
-  gold:0,level:1,exp:0,steps:0,
-  party:[
-    {name:"そらまめ",role:"勇者",hp:120,maxHp:120,mp:35,maxMp:35,atk:24,alive:true},
-    {name:"えんどう",role:"戦士",hp:145,maxHp:145,mp:20,maxMp:20,atk:28,alive:true},
-    {name:"えだまめ",role:"魔法使い",hp:90,maxHp:90,mp:50,maxMp:50,atk:18,alive:true},
-    {name:"ひよこ",role:"僧侶",hp:105,maxHp:105,mp:45,maxMp:45,atk:15,alive:true}
-  ],
-  enemy:null,logs:[]
-};
-
-const screen=document.getElementById("screen");
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
-
-function hud(){
-  document.getElementById("lv").textContent=G.level;
-  document.getElementById("gold").textContent=G.gold;
+let x=0,y=0,moving=false,steps=0,inBattle=false;
+const world=document.getElementById('world');
+function move(dir){
+  if(inBattle)return;
+  const dx={left:-1,right:1,up:0,down:0}[dir];
+  const dy={left:0,right:0,up:-1,down:1}[dir];
+  x+=dx;y+=dy;steps++;
+  // 背景を逆方向へ動かして「自分の周りだけ見える」カメラ感を演出
+  world.style.backgroundPosition=`${-x*18}px ${-y*18}px`;
+  if(steps>=4 && Math.random()<0.23){steps=0;encounter();}
 }
-function render(h){screen.innerHTML=h;hud();updateCamera()}
-function field(){
-  render(`
-  <div class="field" id="field">
-    <div class="world" id="world">
-      <div class="path" style="left:110px;top:520px;width:1580px;height:150px"></div>
-      <div class="path" style="left:800px;top:100px;width:190px;height:1000px"></div>
-      <div class="water" style="left:250px;top:0;width:250px;height:410px;border-radius:0 0 80px 0"></div>
-      <div class="water" style="left:1250px;top:790px;width:550px;height:410px;border-radius:80px 0 0 0"></div>
-
-      <div class="sign" style="left:90px;top:455px">🏘️ そらまめ村</div>
-      <div class="house" style="left:120px;top:350px"></div>
-      <div class="save" style="left:270px;top:390px">💠</div>
-
-      <div class="sign" style="left:710px;top:55px">🌲 はじまりの森</div>
-      <div class="sign" style="left:1450px;top:475px">🏔️ 山道</div>
-
-      <div class="tree" style="left:560px;top:120px"></div>
-      <div class="tree" style="left:650px;top:180px"></div>
-      <div class="tree" style="left:1080px;top:100px"></div>
-      <div class="tree" style="left:1180px;top:180px"></div>
-      <div class="tree" style="left:1450px;top:100px"></div>
-      <div class="tree" style="left:1600px;top:170px"></div>
-      <div class="tree" style="left:480px;top:820px"></div>
-      <div class="tree" style="left:620px;top:900px"></div>
-      <div class="tree" style="left:1050px;top:920px"></div>
-      <div class="tree" style="left:1170px;top:850px"></div>
-      <div class="tree" style="left:1570px;top:760px"></div>
-
-      <div class="rock" style="left:700px;top:500px"></div>
-      <div class="rock" style="left:1050px;top:510px"></div>
-      <div class="rock" style="left:1380px;top:650px"></div>
-
-      <button class="exit" style="left:1600px;top:480px" onclick="enterStage()">🚪</button>
-      <div class="sign" style="left:1560px;top:555px">ステージ1</div>
-
-      <div id="player">
-        <div id="playerName">そらまめ</div>🌱
-      </div>
-    </div>
-    <div class="fog"></div>
-    <div class="topmsg">👣 歩いていると敵が突然あらわれる！　敵はフィールドには表示されません</div>
-    <button class="worldbtn" onclick="worldMove()">🌎 世界移動</button>
-
-    <div class="dpad" aria-label="移動">
-      <button class="up" onpointerdown="startMove(0,-1)" onpointerup="stopMove()" onpointercancel="stopMove()">⬆️</button>
-      <button class="left" onpointerdown="startMove(-1,0)" onpointerup="stopMove()" onpointercancel="stopMove()">⬅️</button>
-      <button class="down" onpointerdown="startMove(0,1)" onpointerup="stopMove()" onpointercancel="stopMove()">⬇️</button>
-      <button class="right" onpointerdown="startMove(1,0)" onpointerup="stopMove()" onpointercancel="stopMove()">➡️</button>
-    </div>
-    <button class="action" onclick="toggleInfo()">☰</button>
-  </div>`);
-  updateCamera();
-}
-
-let moveTimer=null;
-function startMove(dx,dy){
-  stopMove();
-  move(dx,dy);
-  moveTimer=setInterval(()=>move(dx,dy),75);
-}
-function stopMove(){if(moveTimer){clearInterval(moveTimer);moveTimer=null}}
-function move(dx,dy){
-  G.x=clamp(G.x+dx*G.speed,35,G.worldW-80);
-  G.y=clamp(G.y+dy*G.speed,65,G.worldH-80);
-  G.steps++;
-  updateCamera();
-  checkSpecial();
-  if(Math.random()<0.025) randomEncounter();
-}
-function updateCamera(){
-  const world=document.getElementById("world"), fieldEl=document.getElementById("field");
-  if(!world||!fieldEl)return;
-  const w=fieldEl.clientWidth,h=fieldEl.clientHeight;
-  const scale=Math.max(1,Math.min(w/520,h/430));
-  const viewW=w/scale,viewH=h/scale;
-  let cx=G.x+24-viewW/2,cy=G.y+28-viewH/2;
-  cx=clamp(cx,0,G.worldW-viewW);
-  cy=clamp(cy,0,G.worldH-viewH);
-  world.style.transform=`translate(${-cx*scale}px,${-cy*scale}px) scale(${scale})`;
-  world.style.transformOrigin="0 0";
-}
-function checkSpecial(){
-  if(Math.hypot(G.x-300,G.y-420)<70){
-    G.party.forEach(p=>{p.hp=p.maxHp;p.mp=p.maxMp;p.alive=true});
-  }
-  if(G.x>1550&&G.y>430&&G.y<600)enterStage();
-}
-function randomEncounter(){
-  stopMove();
-  const list=[
-    {name:"スライム",icon:"🟢",hp:70,atk:14,reward:35},
-    {name:"ゴブリン",icon:"👺",hp:95,atk:17,reward:50},
-    {name:"オオカミ",icon:"🐺",hp:115,atk:20,reward:65},
-    {name:"森の魔物",icon:"👹",hp:135,atk:22,reward:80}
-  ];
-  battle(list[rnd(0,list.length-1)]);
-}
-function worldMove(){
-  stopMove();
-  render(`<div class="panel"><div class="card center">
-    <h2>🌎 世界移動</h2>
-    <p>セーブポイントから、表世界と裏世界を自由に行き来できる予定！</p>
-    <button class="btn blue" onclick="field()">☀️ 表世界</button>
-    <button class="btn red" onclick="alert("🌙 裏世界は次の試作で実装！")">🌙 裏世界</button>
-    <br><button class="btn gray" onclick="field()">戻る</button>
-  </div></div>`);
-}
-function toggleInfo(){
-  stopMove();
-  render(`<div class="panel"><div class="card">
-    <h2>📖 フィールド</h2>
-    <p>🌱 そらまめを中心に、近くの景色だけが見える方式。</p>
-    <p>👾 敵はフィールド上に表示せず、歩いているとランダムエンカウント。</p>
-    <p>💠 セーブポイントではHP・MPを回復。</p>
-    <p>🚪 右側の入口からステージ1へ。</p>
-    <button class="btn blue" onclick="field()">🗺️ 戻る</button>
-  </div></div>`);
-}
-function enterStage(){
-  stopMove();
-  render(`<div class="panel"><div class="card center">
-    <h2>🚪 ステージ1「はじまりの道」</h2>
-    <p>フィールドからステージへ突入！</p>
-    <button class="btn blue" onclick="stageBattle()">⚔️ ステージ開始</button>
-    <button class="btn gray" onclick="field()">🗺️ 戻る</button>
-  </div></div>`);
-}
-function stageBattle(){battle({name:"森の番人",icon:"🌳",hp:150,atk:20,reward:120,boss:true})}
-function battle(e){
-  stopMove();
-  G.enemy={...e,max:e.hp};G.logs=["⚔️ "+e.name+"が現れた！"];
-  renderBattle();
-}
-function alive(){return G.party.filter(p=>p.alive&&p.hp>0)}
-function renderBattle(){
-  const e=G.enemy;
-  render(`<div class="battle">
-    <div class="enemybox"><div>ENEMY</div><div class="sprite">${e.icon}</div><h2>${e.name}</h2>
-    <div class="hp"><div class="fill" style="width:${Math.max(0,e.hp/e.max*100)}%"></div></div>
-    HP ${Math.max(0,e.hp)}/${e.max}</div>
-    <div class="party">${G.party.map(p=>`<div class="member"><b>${p.name}</b> ${p.role}<br>❤️${Math.max(0,p.hp)}/${p.maxHp} 💙${p.mp}/${p.maxMp}</div>`).join("")}</div>
-    <div class="log">${G.logs.slice(-7).map(x=>"<div>"+x+"</div>").join("")}</div>
-    <div class="skills">
-      <button class="btn blue" onclick="act('attack')">⚔️ こうげき</button>
-      <button class="btn gold" onclick="act('fire')">🔥 ファイア<br>MP8</button>
-      <button class="btn green" onclick="act('heal')">✨ ヒール<br>MP6</button>
-      <button class="btn gray" onclick="act('defend')">🛡️ ぼうぎょ</button>
-    </div>
-    <div class="center"><button class="btn gray" onclick="field()">🏃 逃げる</button></div>
-  </div>`);
-}
-function act(type){
-  const p=alive()[0];if(!p){gameOver();return}
-  if(type==="attack"){let d=p.atk+rnd(0,7);G.enemy.hp-=d;G.logs.push("⚔️ "+p.name+"の攻撃！ "+d+"ダメージ！")}
-  if(type==="fire"){if(p.mp<8){G.logs.push("💙 MP不足！");renderBattle();return}p.mp-=8;let d=rnd(35,49);G.enemy.hp-=d;G.logs.push("🔥 ファイア！ "+d+"ダメージ！")}
-  if(type==="heal"){if(p.mp<6){G.logs.push("💙 MP不足！");renderBattle();return}p.mp-=6;let t=G.party.find(x=>x.alive&&x.hp<x.maxHp);if(t){t.hp=Math.min(t.maxHp,t.hp+45);G.logs.push("✨ "+t.name+"のHPを回復！")}else G.logs.push("✨ 回復する必要はない！")}
-  if(type==="defend")G.logs.push("🛡️ 防御した！");
-  if(G.enemy.hp<=0){win();return}
-  const targets=alive();if(!targets.length){gameOver();return}
-  const t=targets[rnd(0,targets.length-1)];
-  let d=G.enemy.atk+rnd(0,5);if(type==="defend")d=Math.max(1,Math.floor(d/2));
-  t.hp-=d;G.logs.push("👿 "+G.enemy.name+"の攻撃！ "+t.name+"に"+d+"ダメージ！");
-  if(t.hp<=0){t.hp=0;t.alive=false;G.logs.push("💥 "+t.name+"は倒れた…")}
-  renderBattle();
-}
-function win(){
-  G.gold+=G.enemy.reward;G.exp+=G.enemy.reward;G.level=1+Math.floor(G.exp/150);
-  render(`<div class="panel"><div class="card center"><h1>🎉 勝利！</h1><div class="sprite">${G.enemy.icon}</div><h2>${G.enemy.name}を倒した！</h2><p>💰 +${G.enemy.reward}　✨ 経験値 +${G.enemy.reward}</p><button class="btn blue" onclick="field()">🗺️ フィールドへ</button></div></div>`);
-}
-function gameOver(){
-  render(`<div class="panel"><div class="card center"><h1>💀 全滅…</h1><button class="btn green" onclick="field()">🏘️ 村へ戻る</button></div></div>`);
-}
-
-/* iPhone/iPadでの意図しない拡大・ジェスチャーを抑える */
-document.addEventListener("gesturestart",e=>e.preventDefault(),{passive:false});
-document.addEventListener("gesturechange",e=>e.preventDefault(),{passive:false});
-document.addEventListener("gestureend",e=>e.preventDefault(),{passive:false});
-document.addEventListener("touchmove",e=>{
-  if(e.touches.length>1)e.preventDefault();
-},{passive:false});
-document.addEventListener("dblclick",e=>e.preventDefault(),{passive:false});
-document.addEventListener("wheel",e=>{
-  if(e.ctrlKey)e.preventDefault();
-},{passive:false});
-document.addEventListener("pointerup",stopMove);
-document.addEventListener("pointercancel",stopMove);
-document.addEventListener("keydown",e=>{
-  if(e.key==="ArrowUp")move(0,-1);
-  if(e.key==="ArrowDown")move(0,1);
-  if(e.key==="ArrowLeft")move(-1,0);
-  if(e.key==="ArrowRight")move(1,0);
+document.querySelectorAll('.pad').forEach(b=>{
+  b.addEventListener('pointerdown',e=>{e.preventDefault();move(b.dataset.dir)});
 });
-
-field();
+function encounter(){
+  if(inBattle)return;
+  inBattle=true;
+  const enc=document.getElementById('encounter'),fade=document.getElementById('fade');
+  enc.classList.add('show');
+  setTimeout(()=>fade.classList.add('show'),260);
+  setTimeout(()=>{
+    enc.classList.remove('show');fade.classList.remove('show');
+    document.getElementById('battle').style.display='block';
+  },1050);
+}
+function attack(){
+  document.querySelector('.enemy').textContent='💥';
+  setTimeout(()=>endBattle(),450);
+}
+function endBattle(){
+  document.getElementById('battle').style.display='none';inBattle=false;
+}
+document.getElementById('worldBtn').onclick=()=>alert('表世界・裏世界のセーブポイントを選択できます！');
+document.getElementById('menu').onclick=()=>alert('メニュー（試作）');
 </script>
 </body>
 </html>
