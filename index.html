@@ -4,26 +4,31 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width,
-               initial-scale=1,
-               maximum-scale=1,
-               minimum-scale=1,
-               user-scalable=no,
-               viewport-fit=cover">
+content="width=device-width,
+initial-scale=1,
+maximum-scale=1,
+minimum-scale=1,
+user-scalable=no,
+viewport-fit=cover">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
 
 <title>勇者そらまめ</title>
 
 <style>
 
-/* =====================================================
-   BASIC
-===================================================== */
+/* =========================================================
+   BASE
+========================================================= */
 
 *{
   box-sizing:border-box;
+
   -webkit-user-select:none;
   user-select:none;
+
   -webkit-touch-callout:none;
+
   -webkit-tap-highlight-color:transparent;
 }
 
@@ -32,7 +37,7 @@ body{
   margin:0;
   width:100%;
   height:100%;
-  min-height:100%;
+
   overflow:hidden;
 
   background:#101827;
@@ -40,28 +45,32 @@ body{
   font-family:
     -apple-system,
     BlinkMacSystemFont,
-    "Segoe UI",
+    "Hiragino Sans",
+    "Yu Gothic",
     sans-serif;
 
   touch-action:none;
-  overscroll-behavior:none;
 }
 
 button{
-  font-family:inherit;
+  font:inherit;
+
   -webkit-user-select:none;
   user-select:none;
+
   touch-action:manipulation;
 }
 
 
-/* =====================================================
+/* =========================================================
    HUD
-===================================================== */
+========================================================= */
 
 #hud{
+
   position:fixed;
-  z-index:1000;
+
+  z-index:100;
 
   top:0;
   left:0;
@@ -70,24 +79,24 @@ button{
   height:58px;
 
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
 
-  padding:
-    env(safe-area-inset-top)
-    12px
-    8px
-    12px;
+  padding:8px 12px;
 
   color:white;
+
   background:#101827;
 
-  border-bottom:2px solid #4d6380;
+  border-bottom:
+    2px solid #4d6380;
 }
 
 #title{
   font-size:15px;
-  font-weight:bold;
+  font-weight:900;
 }
 
 .stats{
@@ -96,51 +105,50 @@ button{
 }
 
 .stat{
+
   padding:6px 9px;
 
   border-radius:10px;
 
   background:#202e46;
-  border:1px solid #596d8d;
+
+  border:
+    1px solid #596d8d;
 
   font-size:13px;
-  font-weight:bold;
+
+  font-weight:900;
 }
 
 
-/* =====================================================
-   VIEWPORT
-===================================================== */
+/* =========================================================
+   FIELD
+========================================================= */
 
 #viewport{
-  position:fixed;
+
+  position:absolute;
 
   left:0;
   top:58px;
 
   width:100%;
-  height:calc(100dvh - 58px);
+  height:calc(100% - 58px);
 
   overflow:hidden;
 
   background:#376e37;
-
-  touch-action:none;
 }
 
-
-/* =====================================================
-   WORLD
-===================================================== */
-
 #world{
-  position:absolute;
 
-  left:0;
-  top:0;
+  position:absolute;
 
   width:2400px;
   height:1800px;
+
+  left:0;
+  top:0;
 
   transform-origin:0 0;
 
@@ -150,7 +158,8 @@ button{
 
   background-image:
     radial-gradient(
-      rgba(255,255,255,.08) 1px,
+      rgba(255,255,255,.08)
+      1px,
       transparent 1px
     );
 
@@ -158,21 +167,24 @@ button{
 }
 
 
-/* =====================================================
-   ROAD
-===================================================== */
+/* =========================================================
+   MAP
+========================================================= */
 
 .road{
+
   position:absolute;
 
   background:#927247;
 
-  border:6px solid #765a37;
+  border:
+    6px solid #765a37;
 
   border-radius:35px;
 }
 
 .road.horizontal{
+
   left:-100px;
   top:760px;
 
@@ -181,6 +193,7 @@ button{
 }
 
 .road.vertical{
+
   left:1120px;
   top:-100px;
 
@@ -188,12 +201,8 @@ button{
   height:2000px;
 }
 
-
-/* =====================================================
-   WATER
-===================================================== */
-
 .water{
+
   position:absolute;
 
   left:1450px;
@@ -204,17 +213,14 @@ button{
 
   background:#286f88;
 
-  border:7px solid #1d5367;
+  border:
+    7px solid #1d5367;
 
   border-radius:50px;
 }
 
-
-/* =====================================================
-   VILLAGE
-===================================================== */
-
 .village{
+
   position:absolute;
 
   left:220px;
@@ -225,17 +231,19 @@ button{
 
   background:#548d43;
 
-  border:5px solid #3d6e34;
+  border:
+    5px solid #3d6e34;
 
   border-radius:30px;
 }
 
 
-/* =====================================================
+/* =========================================================
    TREES
-===================================================== */
+========================================================= */
 
 .tree{
+
   position:absolute;
 
   width:70px;
@@ -245,13 +253,15 @@ button{
 
   background:#28612f;
 
-  border:8px solid #1c4824;
+  border:
+    8px solid #1c4824;
 
   box-shadow:
     inset 0 0 0 5px #3d8140;
 }
 
-.tree::after{
+.tree:after{
+
   content:"";
 
   position:absolute;
@@ -267,42 +277,20 @@ button{
   z-index:-1;
 }
 
-.t1{
-  left:300px;
-  top:260px;
-}
-
-.t2{
-  left:700px;
-  top:420px;
-}
-
-.t3{
-  left:830px;
-  top:1280px;
-}
-
-.t4{
-  left:1660px;
-  top:1040px;
-}
-
-.t5{
-  left:2050px;
-  top:1330px;
-}
-
-.t6{
-  left:1900px;
-  top:260px;
-}
+.t1{left:300px;top:260px}
+.t2{left:700px;top:420px}
+.t3{left:830px;top:1280px}
+.t4{left:1660px;top:1040px}
+.t5{left:2050px;top:1330px}
+.t6{left:1900px;top:260px}
 
 
-/* =====================================================
+/* =========================================================
    ROCKS
-===================================================== */
+========================================================= */
 
 .rock{
+
   position:absolute;
 
   width:60px;
@@ -312,36 +300,27 @@ button{
 
   background:#6b7279;
 
-  border:4px solid #4d5359;
+  border:
+    4px solid #4d5359;
 }
 
-.r1{
-  left:600px;
-  top:1080px;
-}
-
-.r2{
-  left:1500px;
-  top:800px;
-}
-
-.r3{
-  left:2050px;
-  top:700px;
-}
+.r1{left:600px;top:1080px}
+.r2{left:1500px;top:800px}
+.r3{left:2050px;top:700px}
 
 
-/* =====================================================
+/* =========================================================
    STAGE
-===================================================== */
+========================================================= */
 
 .stage{
+
   position:absolute;
 
-  z-index:20;
+  z-index:10;
 
-  width:140px;
-  min-height:65px;
+  width:150px;
+  min-height:68px;
 
   padding:10px;
 
@@ -349,22 +328,21 @@ button{
 
   background:#43251c;
 
-  border:3px solid #aa694a;
+  border:
+    3px solid #aa694a;
 
   color:white;
 
-  font-size:16px;
-  font-weight:bold;
+  font-weight:900;
 
   text-align:center;
 
   box-shadow:
     0 6px 15px rgba(0,0,0,.35);
-
-  cursor:pointer;
 }
 
 .stage small{
+
   display:block;
 
   margin-top:4px;
@@ -374,65 +352,43 @@ button{
   opacity:.75;
 }
 
-.stage:active{
-  transform:scale(.96);
-}
-
 #stage1{
+
   left:1350px;
   top:650px;
 }
 
 
-/* =====================================================
+/* =========================================================
    PLAYER
-===================================================== */
-
-/*
-  ★重要
-
-  playerはworldの中に存在する。
-
-  カメラ移動時にworldだけを動かすので、
-  playerをさらに画面座標へ移動させない。
-
-  これで「二重移動」がなくなる。
-*/
+========================================================= */
 
 #player{
+
   position:absolute;
 
-  z-index:100;
+  z-index:50;
 
   width:80px;
-  height:95px;
+  height:90px;
 
-  left:1200px;
-  top:900px;
+  pointer-events:none;
 
   transform:
     translate(-50%,-50%);
 
-  pointer-events:none;
-
   text-align:center;
-
-  will-change:transform;
 }
 
 #hero{
+
   font-size:44px;
 
   line-height:50px;
-
-  filter:
-    drop-shadow(
-      0 3px 3px
-      rgba(0,0,0,.35)
-    );
 }
 
 #playerName{
+
   display:block;
 
   width:max-content;
@@ -449,33 +405,30 @@ button{
 
   font-size:12px;
 
-  font-weight:bold;
-
-  white-space:nowrap;
+  font-weight:900;
 }
 
 #marker{
-  text-align:center;
 
   font-size:20px;
-
-  line-height:20px;
 }
 
 
-/* =====================================================
+/* =========================================================
    MESSAGE
-===================================================== */
+========================================================= */
 
 #message{
+
   position:fixed;
 
-  z-index:900;
+  z-index:80;
 
   left:50%;
   top:70px;
 
-  transform:translateX(-50%);
+  transform:
+    translateX(-50%);
 
   width:max-content;
 
@@ -485,42 +438,36 @@ button{
 
   border-radius:12px;
 
-  background:rgba(15,40,20,.88);
+  background:
+    rgba(15,40,20,.88);
 
   color:#d9ffd9;
 
   font-size:12px;
 
   pointer-events:none;
-
-  white-space:nowrap;
 }
 
 
-/* =====================================================
-   CONTROLS
-===================================================== */
+/* =========================================================
+   CONTROLLER
+========================================================= */
 
 #controls{
+
   position:fixed;
 
-  z-index:950;
+  z-index:90;
 
   left:15px;
-
-  bottom:
-    calc(
-      18px +
-      env(safe-area-inset-bottom)
-    );
+  bottom:18px;
 
   width:175px;
   height:175px;
-
-  pointer-events:none;
 }
 
 .control{
+
   position:absolute;
 
   width:56px;
@@ -528,7 +475,8 @@ button{
 
   border-radius:14px;
 
-  border:2px solid #617895;
+  border:
+    2px solid #617895;
 
   background:#1d304d;
 
@@ -537,18 +485,7 @@ button{
   font-size:24px;
 
   box-shadow:
-    0 5px 10px
-    rgba(0,0,0,.3);
-
-  pointer-events:auto;
-
-  touch-action:none;
-}
-
-.control:active{
-  background:#3a587e;
-
-  transform:scale(.93);
+    0 5px 10px rgba(0,0,0,.3);
 }
 
 #up{
@@ -571,499 +508,69 @@ button{
   bottom:0;
 }
 
+.control:active{
 
-/* =====================================================
+  background:#3a587e;
+
+  transform:scale(.93);
+}
+
+
+/* =========================================================
    WORLD BUTTON
-===================================================== */
+========================================================= */
 
 #worldButton{
+
   position:fixed;
 
-  z-index:950;
+  z-index:90;
 
   right:15px;
-
-  bottom:
-    calc(
-      85px +
-      env(safe-area-inset-bottom)
-    );
+  bottom:85px;
 
   width:58px;
   height:58px;
 
   border-radius:50%;
 
-  border:2px solid #647b9c;
+  border:
+    2px solid #647b9c;
 
   background:#1d304d;
 
   color:white;
 
   font-size:22px;
-
-  touch-action:none;
 }
 
 
-/* =====================================================
-   BATTLE
-===================================================== */
-
-/*
-  ★戦闘画面
-
-  width/heightを明示的に指定して、
-  Safariで「右半分だけ表示される」問題を防ぐ。
-*/
-
-#battle{
-  position:fixed !important;
-
-  z-index:5000 !important;
-
-  left:0 !important;
-  top:0 !important;
-  right:auto !important;
-  bottom:auto !important;
-
-  width:100vw !important;
-  height:100dvh !important;
-
-  min-width:100vw;
-  min-height:100dvh;
-
-  display:none;
-
-  align-items:center;
-  justify-content:center;
-
-  overflow:hidden;
-
-  background:rgba(4,7,14,.0);
-
-  opacity:0;
-
-  transition:
-    opacity .3s ease,
-    background .3s ease;
-
-  pointer-events:none;
-
-  touch-action:none;
-}
-
-#battle.show{
-  opacity:1;
-
-  background:
-    radial-gradient(
-      circle at 70% 45%,
-      rgba(164,86,38,.9),
-      rgba(24,12,25,.97) 65%,
-      rgba(5,7,14,1)
-    );
-
-  pointer-events:auto;
-}
-
-
-/* =====================================================
-   BATTLE BACKGROUND
-===================================================== */
-
-.battleScene{
-  position:absolute;
-
-  inset:0;
-
-  overflow:hidden;
-
-  pointer-events:none;
-}
-
-.battleGlow{
-  position:absolute;
-
-  width:65vw;
-  height:65vw;
-
-  max-width:600px;
-  max-height:600px;
-
-  border-radius:50%;
-
-  left:55%;
-  top:40%;
-
-  transform:
-    translate(-50%,-50%);
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,192,82,.55),
-      rgba(255,120,40,.18) 40%,
-      transparent 70%
-    );
-
-  filter:blur(10px);
-}
-
-.battleFloor{
-  position:absolute;
-
-  left:0;
-  bottom:0;
-
-  width:100%;
-  height:42%;
-
-  background:
-    linear-gradient(
-      165deg,
-      rgba(82,53,39,.15),
-      rgba(26,18,26,.85)
-    );
-
-  border-top:
-    2px solid
-    rgba(255,255,255,.08);
-
-  transform:
-    skewY(-5deg);
-
-  transform-origin:left top;
-}
-
-
-/* =====================================================
-   BATTLE BOX
-===================================================== */
-
-.battleBox{
-  position:relative;
-
-  z-index:10;
-
-  width:min(94vw,720px);
-
-  max-height:94dvh;
-
-  padding:18px;
-
-  border-radius:22px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(24,36,58,.96),
-      rgba(14,22,37,.98)
-    );
-
-  border:2px solid #667b9c;
-
-  color:white;
-
-  text-align:center;
-
-  box-shadow:
-    0 15px 50px
-    rgba(0,0,0,.6);
-
-  overflow:hidden;
-}
-
-
-/* =====================================================
-   BATTLE TOP
-===================================================== */
-
-.battleTop{
-  display:flex;
-
-  align-items:center;
-  justify-content:space-between;
-
-  gap:12px;
-
-  margin-bottom:8px;
-}
-
-.battleTitle{
-  font-size:18px;
-
-  font-weight:bold;
-}
-
-.battleTurn{
-  padding:5px 9px;
-
-  border-radius:9px;
-
-  background:#273956;
-
-  font-size:11px;
-}
-
-
-/* =====================================================
-   ENEMY AREA
-===================================================== */
-
-.enemyArea{
-  position:relative;
-
-  min-height:190px;
-
-  display:flex;
-
-  flex-direction:column;
-
-  align-items:center;
-  justify-content:center;
-}
-
-.enemy{
-  font-size:82px;
-
-  line-height:1;
-
-  margin:8px;
-
-  filter:
-    drop-shadow(
-      0 8px 8px
-      rgba(0,0,0,.45)
-    );
-
-  animation:
-    enemyFloat
-    2.2s
-    ease-in-out
-    infinite;
-}
-
-@keyframes enemyFloat{
-
-  0%,
-  100%{
-    transform:translateY(0);
-  }
-
-  50%{
-    transform:translateY(-8px);
-  }
-}
-
-.enemyName{
-  font-size:18px;
-
-  font-weight:bold;
-}
-
-.hp{
-  width:min(90%,430px);
-
-  height:18px;
-
-  margin:10px auto 6px;
-
-  border-radius:10px;
-
-  overflow:hidden;
-
-  background:#3a1919;
-
-  border:1px solid #663333;
-}
-
-.hpBar{
-  width:100%;
-
-  height:100%;
-
-  background:
-    linear-gradient(
-      90deg,
-      #ef4949,
-      #ff7676
-    );
-
-  transition:
-    width .25s ease;
-}
-
-.enemyHPText{
-  font-size:12px;
-
-  opacity:.85;
-}
-
-
-/* =====================================================
-   PARTY
-===================================================== */
-
-.party{
-  display:flex;
-
-  justify-content:center;
-
-  gap:20px;
-
-  margin:8px 0 15px;
-}
-
-.partyMember{
-  min-width:110px;
-
-  padding:8px;
-
-  border-radius:12px;
-
-  background:#101b2d;
-
-  border:1px solid #425674;
-}
-
-.partyIcon{
-  font-size:43px;
-
-  line-height:45px;
-}
-
-.partyName{
-  font-size:12px;
-
-  font-weight:bold;
-}
-
-.partyHP{
-  height:7px;
-
-  margin-top:5px;
-
-  border-radius:5px;
-
-  background:#202c23;
-
-  overflow:hidden;
-}
-
-.partyHPBar{
-  width:100%;
-
-  height:100%;
-
-  background:#4fc76a;
-}
-
-
-/* =====================================================
-   BATTLE COMMANDS
-===================================================== */
-
-.commands{
-  display:grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap:8px;
-}
-
-.command{
-  min-height:58px;
-
-  border:0;
-
-  border-radius:13px;
-
-  color:white;
-
-  font-weight:bold;
-
-  font-size:14px;
-
-  border:1px solid
-    rgba(255,255,255,.12);
-
-  box-shadow:
-    0 4px 8px
-    rgba(0,0,0,.25);
-
-  touch-action:none;
-}
-
-.command:active{
-  transform:scale(.97);
-}
-
-.command.attack{
-  background:#a94f39;
-}
-
-.command.skill{
-  background:#55458f;
-}
-
-.command.guard{
-  background:#304967;
-}
-
-.command.run{
-  background:#304967;
-}
-
-
-/* =====================================================
-   BATTLE LOG
-===================================================== */
-
-#battleLog{
-  min-height:24px;
-
-  margin-top:10px;
-
-  padding:6px 8px;
-
-  border-radius:9px;
-
-  background:#0d1625;
-
-  color:#d7e6ff;
-
-  font-size:11px;
-}
-
-
-/* =====================================================
+/* =========================================================
    WORLD PANEL
-===================================================== */
+========================================================= */
 
 #worldPanel{
+
   position:fixed;
 
-  z-index:4000;
+  z-index:300;
 
   inset:0;
 
   display:none;
 
   align-items:center;
+
   justify-content:center;
 
-  width:100vw;
-  height:100dvh;
-
-  background:rgba(0,0,0,.7);
-
-  touch-action:none;
+  background:
+    rgba(0,0,0,.72);
 }
 
 .panel{
+
   width:85%;
+
   max-width:350px;
 
   padding:22px;
@@ -1072,7 +579,8 @@ button{
 
   background:#17243a;
 
-  border:2px solid #657b9c;
+  border:
+    2px solid #657b9c;
 
   color:white;
 
@@ -1080,6 +588,7 @@ button{
 }
 
 .panel button{
+
   width:100%;
 
   margin-top:10px;
@@ -1093,58 +602,658 @@ button{
   background:#304967;
 
   color:white;
-
-  font-weight:bold;
 }
 
 .close{
+
   background:#663b3b !important;
 }
 
 
-/* =====================================================
-   MOBILE
-===================================================== */
+/* =========================================================
+   BATTLE SCREEN
+========================================================= */
 
-@media(max-width:500px){
+#battle{
 
-  .battleBox{
-    width:94vw;
+  position:fixed;
 
-    padding:14px;
-  }
+  z-index:1000;
 
-  .enemyArea{
-    min-height:160px;
-  }
+  inset:0;
 
-  .enemy{
-    font-size:68px;
-  }
+  display:none;
 
-  .party{
-    gap:8px;
-  }
+  overflow:hidden;
 
-  .partyMember{
-    min-width:100px;
-  }
+  background:#101827;
 
-  .command{
-    min-height:54px;
-    font-size:13px;
-  }
+  color:white;
+}
 
+#battle.show{
+
+  display:block;
 }
 
 
-/* =====================================================
+/* =========================================================
+   BATTLE BACKGROUND
+========================================================= */
+
+#battleScene{
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+
+    radial-gradient(
+      circle at 70% 35%,
+      rgba(255,195,110,.95),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 70% 45%,
+      rgba(170,80,45,.8),
+      transparent 48%
+    ),
+
+    linear-gradient(
+      160deg,
+      #503848 0%,
+      #a45c39 45%,
+      #30263a 100%
+    );
+}
+
+#battleScene:after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      transparent 65%,
+      rgba(0,0,0,.5)
+    );
+}
+
+
+/* =========================================================
+   BATTLE TOP
+========================================================= */
+
+#battleTop{
+
+  position:absolute;
+
+  z-index:5;
+
+  top:
+    max(14px,env(safe-area-inset-top));
+
+  left:50%;
+
+  transform:
+    translateX(-50%);
+
+  width:min(92%,520px);
+
+  display:flex;
+
+  justify-content:space-between;
+
+  gap:12px;
+}
+
+.enemyCard,
+.allyCard{
+
+  background:
+    rgba(12,21,37,.92);
+
+  border:
+    2px solid #60738f;
+
+  border-radius:14px;
+
+  padding:9px 12px;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.3);
+}
+
+.enemyCard{
+
+  width:170px;
+}
+
+.enemyName{
+
+  font-size:14px;
+
+  font-weight:900;
+}
+
+.bar{
+
+  height:10px;
+
+  background:#361d25;
+
+  border-radius:99px;
+
+  overflow:hidden;
+
+  margin:5px 0;
+}
+
+.bar i{
+
+  display:block;
+
+  width:100%;
+  height:100%;
+
+  background:#e04e5c;
+
+  transition:
+    width .3s;
+}
+
+.hpText{
+
+  font-size:11px;
+
+  color:#dce5f2;
+}
+
+
+/* =========================================================
+   ENEMY
+========================================================= */
+
+#enemySprite{
+
+  position:absolute;
+
+  z-index:4;
+
+  left:70%;
+  top:39%;
+
+  transform:
+    translate(-50%,-50%);
+
+  font-size:120px;
+
+  filter:
+    drop-shadow(
+      0 14px 8px
+      rgba(0,0,0,.38)
+    );
+}
+
+#enemySprite.hit{
+
+  animation:
+    enemyHit .28s;
+}
+
+@keyframes enemyHit{
+
+  0%,100%{
+    transform:
+      translate(-50%,-50%);
+  }
+
+  35%{
+    transform:
+      translate(calc(-50% - 12px),-50%)
+      rotate(-6deg);
+  }
+
+  70%{
+    transform:
+      translate(calc(-50% + 10px),-50%)
+      rotate(5deg);
+  }
+}
+
+
+/* =========================================================
+   DAMAGE
+========================================================= */
+
+.damageFloat{
+
+  position:absolute;
+
+  z-index:10;
+
+  left:70%;
+  top:39%;
+
+  font-size:28px;
+
+  font-weight:900;
+
+  color:white;
+
+  text-shadow:
+    0 3px 5px #8d1720;
+
+  transform:
+    translate(-50%,-50%);
+
+  animation:
+    damageUp .7s forwards;
+
+  pointer-events:none;
+}
+
+@keyframes damageUp{
+
+  to{
+
+    opacity:0;
+
+    transform:
+      translate(-50%,-120px)
+      scale(1.25);
+  }
+}
+
+
+/* =========================================================
+   ALLIES
+========================================================= */
+
+#battleAllies{
+
+  position:absolute;
+
+  z-index:4;
+
+  left:50%;
+
+  bottom:160px;
+
+  transform:
+    translateX(-50%);
+
+  width:min(94%,520px);
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  align-items:end;
+
+  gap:18px;
+}
+
+.ally{
+
+  width:110px;
+
+  text-align:center;
+}
+
+.allyIcon{
+
+  font-size:65px;
+
+  line-height:70px;
+
+  filter:
+    drop-shadow(
+      0 9px 5px
+      rgba(0,0,0,.35)
+    );
+}
+
+.allyName{
+
+  background:#10203a;
+
+  border:
+    2px solid #526d8f;
+
+  border-radius:8px;
+
+  padding:3px;
+
+  font-size:11px;
+
+  font-weight:900;
+}
+
+.allyHp{
+
+  height:7px;
+
+  background:#17231d;
+
+  border-radius:99px;
+
+  margin-top:3px;
+
+  overflow:hidden;
+}
+
+.allyHp i{
+
+  display:block;
+
+  width:100%;
+
+  height:100%;
+
+  background:#55cf7a;
+
+  transition:
+    width .3s;
+}
+
+
+/* =========================================================
+   BATTLE LOG
+========================================================= */
+
+#battleLog{
+
+  position:absolute;
+
+  z-index:5;
+
+  left:50%;
+
+  bottom:310px;
+
+  transform:
+    translateX(-50%);
+
+  width:min(90%,430px);
+
+  min-height:38px;
+
+  padding:9px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(10,17,29,.78);
+
+  border:
+    1px solid rgba(255,255,255,.22);
+
+  font-size:12px;
+
+  text-align:center;
+}
+
+
+/* =========================================================
+   COMMANDS
+========================================================= */
+
+#commandPanel{
+
+  position:absolute;
+
+  z-index:10;
+
+  left:0;
+  right:0;
+  bottom:0;
+
+  padding:
+    10px
+    max(10px,env(safe-area-inset-right))
+    max(10px,env(safe-area-inset-bottom))
+    max(10px,env(safe-area-inset-left));
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8,15,28,.1),
+      rgba(8,15,28,.97) 25%
+    );
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:8px;
+}
+
+.cmd{
+
+  min-height:58px;
+
+  border:
+    2px solid #506685;
+
+  border-radius:12px;
+
+  background:#263b5a;
+
+  color:white;
+
+  font-weight:900;
+
+  box-shadow:
+    0 5px 12px
+    rgba(0,0,0,.25);
+}
+
+.cmd:active{
+
+  transform:scale(.97);
+}
+
+.cmd.attack{
+
+  background:#a64f3b;
+
+  border-color:#c47b67;
+}
+
+.cmd.skill{
+
+  background:#55458c;
+
+  border-color:#806bc1;
+}
+
+.cmd.guard{
+
+  background:#304a69;
+}
+
+.cmd.run{
+
+  background:#293a51;
+}
+
+
+/* =========================================================
+   SKILL MENU
+========================================================= */
+
+#skillMenu{
+
+  position:absolute;
+
+  z-index:20;
+
+  left:50%;
+
+  bottom:125px;
+
+  transform:
+    translateX(-50%);
+
+  display:none;
+
+  width:min(90%,400px);
+
+  padding:12px;
+
+  border-radius:16px;
+
+  background:#121e33;
+
+  border:
+    2px solid #667d9e;
+
+  box-shadow:
+    0 12px 30px
+    rgba(0,0,0,.45);
+}
+
+#skillMenu.show{
+
+  display:block;
+}
+
+.skillBtn{
+
+  width:100%;
+
+  padding:11px;
+
+  margin-top:7px;
+
+  border:0;
+
+  border-radius:10px;
+
+  background:#3f3470;
+
+  color:white;
+
+  text-align:left;
+}
+
+.skillBtn:first-child{
+
+  margin-top:0;
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+#battleResult{
+
+  position:absolute;
+
+  z-index:50;
+
+  inset:0;
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:
+    rgba(5,9,17,.84);
+}
+
+.resultBox{
+
+  width:min(86%,380px);
+
+  padding:28px;
+
+  border-radius:20px;
+
+  background:#19263d;
+
+  border:
+    2px solid #6c82a3;
+
+  text-align:center;
+
+  box-shadow:
+    0 20px 50px
+    rgba(0,0,0,.6);
+}
+
+.resultBox h2{
+
+  margin:
+    0 0 10px;
+}
+
+.resultBox button{
+
+  width:100%;
+
+  padding:13px;
+
+  border:0;
+
+  border-radius:12px;
+
+  background:#bd653e;
+
+  color:white;
+
+  font-weight:900;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-height:650px){
+
+  #battleAllies{
+
+    bottom:145px;
+  }
+
+  .allyIcon{
+
+    font-size:52px;
+
+    line-height:56px;
+  }
+
+  #battleLog{
+
+    bottom:270px;
+  }
+
+  .cmd{
+
+    min-height:50px;
+  }
+}
+
+
+/* =========================================================
    DESKTOP
-===================================================== */
+========================================================= */
 
 @media(min-width:700px){
 
   #viewport{
+
     width:700px;
 
     left:50%;
@@ -1154,6 +1263,7 @@ button{
   }
 
   #hud{
+
     width:700px;
 
     left:50%;
@@ -1161,36 +1271,17 @@ button{
     transform:
       translateX(-50%);
   }
-
-}
-
-
-/* =====================================================
-   SAFARI
-===================================================== */
-
-html,
-body,
-#viewport,
-#world,
-button{
-  -webkit-touch-callout:none;
-}
-
-body{
-  -webkit-text-size-adjust:none;
 }
 
 </style>
 </head>
 
-
 <body>
 
 
-<!-- =====================================================
+<!-- =======================================================
      HUD
-===================================================== -->
+======================================================= -->
 
 <header id="hud">
 
@@ -1213,16 +1304,13 @@ body{
 </header>
 
 
-<!-- =====================================================
-     VIEWPORT
-===================================================== -->
+<!-- =======================================================
+     FIELD
+======================================================= -->
 
 <div id="viewport">
 
   <div id="world">
-
-
-    <!-- 地形 -->
 
     <div class="road horizontal"></div>
 
@@ -1233,8 +1321,6 @@ body{
     <div class="village"></div>
 
 
-    <!-- 木 -->
-
     <div class="tree t1"></div>
     <div class="tree t2"></div>
     <div class="tree t3"></div>
@@ -1243,14 +1329,10 @@ body{
     <div class="tree t6"></div>
 
 
-    <!-- 岩 -->
-
     <div class="rock r1"></div>
     <div class="rock r2"></div>
     <div class="rock r3"></div>
 
-
-    <!-- ステージ -->
 
     <button
       class="stage"
@@ -1264,8 +1346,6 @@ body{
 
     </button>
 
-
-    <!-- プレイヤー -->
 
     <div id="player">
 
@@ -1283,24 +1363,23 @@ body{
 
     </div>
 
-
   </div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- =======================================================
      MESSAGE
-===================================================== -->
+======================================================= -->
 
 <div id="message">
   👣 フィールドを探索しよう！
 </div>
 
 
-<!-- =====================================================
+<!-- =======================================================
      CONTROLS
-===================================================== -->
+======================================================= -->
 
 <div id="controls">
 
@@ -1331,195 +1410,14 @@ body{
 </div>
 
 
-<!-- =====================================================
-     WORLD BUTTON
-===================================================== -->
-
 <button id="worldButton">
   🌎
 </button>
 
 
-<!-- =====================================================
-     BATTLE
-===================================================== -->
-
-<div id="battle">
-
-  <div class="battleScene">
-
-    <div class="battleGlow"></div>
-
-    <div class="battleFloor"></div>
-
-  </div>
-
-
-  <div class="battleBox">
-
-
-    <div class="battleTop">
-
-      <div class="battleTitle">
-        ⚔️ バトル
-      </div>
-
-      <div
-        class="battleTurn"
-        id="battleTurn">
-
-        PLAYER TURN
-
-      </div>
-
-    </div>
-
-
-    <!-- 敵 -->
-
-    <div class="enemyArea">
-
-      <div
-        class="enemy"
-        id="enemyIcon">
-
-        👾
-
-      </div>
-
-      <div
-        class="enemyName"
-        id="enemyName">
-
-        グリーンスライム
-
-      </div>
-
-      <div class="hp">
-
-        <div
-          class="hpBar"
-          id="enemyHPBar">
-        </div>
-
-      </div>
-
-      <div class="enemyHPText">
-
-        HP:
-        <span id="enemyHPText">
-          30 / 30
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <!-- パーティー -->
-
-    <div class="party">
-
-
-      <div class="partyMember">
-
-        <div class="partyIcon">
-          🧑‍🌾
-        </div>
-
-        <div class="partyName">
-          そらまめ
-        </div>
-
-        <div class="partyHP">
-
-          <div
-            class="partyHPBar"
-            id="soramameHP">
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="partyMember">
-
-        <div class="partyIcon">
-          🛡️
-        </div>
-
-        <div class="partyName">
-          えんどう
-        </div>
-
-        <div class="partyHP">
-
-          <div
-            class="partyHPBar"
-            id="endouHP">
-          </div>
-
-        </div>
-
-      </div>
-
-
-    </div>
-
-
-    <!-- コマンド -->
-
-    <div class="commands">
-
-      <button
-        class="command attack"
-        id="attackButton">
-
-        ⚔️ こうげき
-
-      </button>
-
-      <button
-        class="command skill"
-        id="skillButton">
-
-        ✨ スキル
-
-      </button>
-
-      <button
-        class="command guard"
-        id="guardButton">
-
-        🛡️ ぼうぎょ
-
-      </button>
-
-      <button
-        class="command run"
-        id="runButton">
-
-        🏃 にげる
-
-      </button>
-
-    </div>
-
-
-    <div id="battleLog">
-      敵の様子をうかがっている……
-    </div>
-
-
-  </div>
-
-</div>
-
-
-<!-- =====================================================
+<!-- =======================================================
      WORLD PANEL
-===================================================== -->
+======================================================= -->
 
 <div id="worldPanel">
 
@@ -1544,10 +1442,214 @@ body{
     <button
       class="close"
       id="closeWorld">
-
       閉じる
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     BATTLE
+======================================================= -->
+
+<div id="battle">
+
+  <div id="battleScene"></div>
+
+
+  <div id="battleTop">
+
+    <div class="enemyCard">
+
+      <div
+        class="enemyName"
+        id="enemyName">
+
+        サンドプラント
+
+      </div>
+
+      <div class="bar">
+
+        <i id="enemyHPBar"></i>
+
+      </div>
+
+      <div class="hpText">
+
+        HP
+        <span id="enemyHPText">
+          45 / 45
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="allyCard">
+
+      ⚔️ 戦闘中
+
+      <br>
+
+      <span class="hpText">
+        そらまめ &amp; えんどう
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div id="enemySprite">
+    🌵
+  </div>
+
+
+  <div id="battleLog">
+    敵の様子をうかがっている…
+  </div>
+
+
+  <div id="battleAllies">
+
+    <div class="ally">
+
+      <div class="allyIcon">
+        🛡️
+      </div>
+
+      <div class="allyName">
+        えんどう
+      </div>
+
+      <div class="allyHp">
+        <i></i>
+      </div>
+
+    </div>
+
+
+    <div class="ally">
+
+      <div
+        class="allyIcon"
+        id="battleHero">
+
+        🧑‍🌾
+
+      </div>
+
+      <div class="allyName">
+        そらまめ
+      </div>
+
+      <div class="allyHp">
+        <i id="playerHPBar"></i>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- SKILL -->
+
+  <div id="skillMenu">
+
+    <button
+      class="skillBtn"
+      data-skill="fire">
+
+      🔥 ファイア　
+      敵に大ダメージ
 
     </button>
+
+    <button
+      class="skillBtn"
+      data-skill="heal">
+
+      💚 ヒール　
+      HPを回復
+
+    </button>
+
+    <button
+      class="skillBtn"
+      data-skill="back">
+
+      ↩️ 戻る
+
+    </button>
+
+  </div>
+
+
+  <!-- COMMAND -->
+
+  <div id="commandPanel">
+
+    <button
+      class="cmd attack"
+      id="attackButton">
+
+      ⚔️ こうげき
+
+    </button>
+
+
+    <button
+      class="cmd skill"
+      id="skillButton">
+
+      ✨ スキル
+
+    </button>
+
+
+    <button
+      class="cmd guard"
+      id="guardButton">
+
+      🛡️ ぼうぎょ
+
+    </button>
+
+
+    <button
+      class="cmd run"
+      id="runButton">
+
+      🏃 にげる
+
+    </button>
+
+  </div>
+
+
+  <!-- RESULT -->
+
+  <div id="battleResult">
+
+    <div class="resultBox">
+
+      <h2 id="resultTitle">
+        🎉 勝利！
+      </h2>
+
+      <p id="resultText">
+        30Gを手に入れた！
+      </p>
+
+      <button id="resultButton">
+        フィールドへ戻る
+      </button>
+
+    </div>
 
   </div>
 
@@ -1556,9 +1658,9 @@ body{
 
 <script>
 
-/* =====================================================
-   GAME STATE
-===================================================== */
+/* =========================================================
+   GAME DATA
+========================================================= */
 
 const game = {
 
@@ -1570,20 +1672,17 @@ const game = {
 
   steps:0,
 
+  guard:false,
+
   player:{
-
-    /*
-      ★ワールド座標
-
-      プレイヤー自身は
-      worldの中に固定。
-
-      カメラだけがworldを動かす。
-    */
 
     x:1200,
 
-    y:900
+    y:900,
+
+    hp:60,
+
+    maxHp:60
 
   },
 
@@ -1597,91 +1696,63 @@ const game = {
 
   enemy:{
 
-    hp:30,
+    hp:45,
 
-    maxHp:30,
+    maxHp:45,
 
-    name:"",
+    name:"サンドプラント",
 
-    icon:"👾"
+    icon:"🌵"
 
-  },
-
-  party:{
-
-    soramameHP:100,
-
-    soramameMaxHP:100,
-
-    endouHP:100,
-
-    endouMaxHP:100
-
-  },
-
-  guard:false
+  }
 
 };
 
 
-/* =====================================================
-   CONSTANTS
-===================================================== */
+/* =========================================================
+   SHORTCUT
+========================================================= */
 
-const WORLD_WIDTH = 2400;
-
-const WORLD_HEIGHT = 1800;
-
-const MOVE_SPEED = 12;
+const $ =
+  id =>
+    document.getElementById(id);
 
 
-/* =====================================================
+/* =========================================================
    ELEMENTS
-===================================================== */
+========================================================= */
 
 const viewport =
-  document.getElementById(
-    "viewport"
-  );
+  $("viewport");
 
 const world =
-  document.getElementById(
-    "world"
-  );
+  $("world");
 
 const player =
-  document.getElementById(
-    "player"
-  );
+  $("player");
 
 const battle =
-  document.getElementById(
-    "battle"
-  );
+  $("battle");
 
 
-/* =====================================================
+/* =========================================================
    HUD
-===================================================== */
+========================================================= */
 
 function updateHUD(){
 
-  document.getElementById(
-    "level"
-  ).textContent =
+  $("level").textContent =
     game.level;
 
-  document.getElementById(
-    "gold"
-  ).textContent =
+  $("gold").textContent =
     game.gold;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    CAMERA
-===================================================== */
+========================================================= */
 
 function updateCamera(){
 
@@ -1691,13 +1762,6 @@ function updateCamera(){
   const height =
     viewport.clientHeight;
 
-
-  /*
-    プレイヤーを画面中央付近へ。
-
-    ただしマップ端では
-    カメラを止める。
-  */
 
   let cameraX =
     game.player.x -
@@ -1713,7 +1777,7 @@ function updateCamera(){
       0,
       Math.min(
         cameraX,
-        WORLD_WIDTH - width
+        2400 - width
       )
     );
 
@@ -1723,7 +1787,7 @@ function updateCamera(){
       0,
       Math.min(
         cameraY,
-        WORLD_HEIGHT - height
+        1800 - height
       )
     );
 
@@ -1736,63 +1800,74 @@ function updateCamera(){
 
 
   /*
-    ★重要
+    ワールドだけをカメラ移動。
 
-    worldだけを動かす。
-
-    player.style.left/topを
-    画面座標に書き換えない。
-
-    これが以前の
-    「そらまめが消える」
-    「ステージと動きがおかしい」
-    原因だった。
+    プレイヤーはワールドと同じ座標系で
+    正しい位置に置く。
   */
 
   world.style.transform =
-    `translate3d(${-cameraX}px,${-cameraY}px,0)`;
+    `translate3d(
+      ${-cameraX}px,
+      ${-cameraY}px,
+      0
+    )`;
 
-}
-
-
-/* =====================================================
-   PLAYER POSITION
-===================================================== */
-
-function updatePlayer(){
-
-  /*
-    プレイヤーはワールド座標そのもの。
-
-    worldがカメラによって移動するので、
-    playerも自動的に正しい場所へ表示される。
-  */
 
   player.style.left =
-    game.player.x + "px";
+    (
+      game.player.x -
+      cameraX
+    ) + "px";
+
 
   player.style.top =
-    game.player.y + "px";
+    (
+      game.player.y -
+      cameraY
+    ) + "px";
 
 }
 
 
-/* =====================================================
-   FULL UPDATE
-===================================================== */
+/* =========================================================
+   MESSAGE
+========================================================= */
 
-function updateWorld(){
+let messageTimer;
 
-  updatePlayer();
+function showMessage(text){
 
-  updateCamera();
+  const message =
+    $("message");
+
+
+  message.textContent =
+    text;
+
+
+  clearTimeout(
+    messageTimer
+  );
+
+
+  messageTimer =
+    setTimeout(
+      () => {
+
+        message.textContent =
+          "👣 フィールドを探索しよう！";
+
+      },
+      1800
+    );
 
 }
 
 
-/* =====================================================
-   MOVE
-===================================================== */
+/* =========================================================
+   FIELD MOVE
+========================================================= */
 
 function move(direction){
 
@@ -1800,35 +1875,31 @@ function move(direction){
     return;
 
 
-  let oldX =
-    game.player.x;
-
-  let oldY =
-    game.player.y;
+  const speed =
+    12;
 
 
   if(direction === "up")
-    game.player.y -= MOVE_SPEED;
+    game.player.y -= speed;
+
 
   if(direction === "down")
-    game.player.y += MOVE_SPEED;
+    game.player.y += speed;
+
 
   if(direction === "left")
-    game.player.x -= MOVE_SPEED;
+    game.player.x -= speed;
+
 
   if(direction === "right")
-    game.player.x += MOVE_SPEED;
+    game.player.x += speed;
 
-
-  /*
-    マップ外へ出ない
-  */
 
   game.player.x =
     Math.max(
       40,
       Math.min(
-        WORLD_WIDTH - 40,
+        2360,
         game.player.x
       )
     );
@@ -1838,33 +1909,14 @@ function move(direction){
     Math.max(
       40,
       Math.min(
-        WORLD_HEIGHT - 40,
+        1760,
         game.player.y
       )
     );
 
 
-  /*
-    実際に動いたか確認
-  */
+  updateCamera();
 
-  if(
-    oldX === game.player.x &&
-    oldY === game.player.y
-  ){
-    return;
-  }
-
-
-  updateWorld();
-
-
-  /*
-    歩行アニメーション
-
-    ★位置を変更するアニメーションではなく
-    見た目だけ上下させる。
-  */
 
   player.animate(
 
@@ -1872,7 +1924,7 @@ function move(direction){
 
       {
         transform:
-          "translate(-50%,-50%) translateY(0)"
+          "translate(-50%,-50%)"
       },
 
       {
@@ -1882,7 +1934,7 @@ function move(direction){
 
       {
         transform:
-          "translate(-50%,-50%) translateY(0)"
+          "translate(-50%,-50%)"
       }
 
     ],
@@ -1902,41 +1954,39 @@ function move(direction){
 
 
   /*
-    エンカウント
+    エンカウント率を低めに。
 
-    最初の15歩は安全。
-
-    その後6%。
+    18歩以上歩くまで
+    エンカウントしない。
   */
 
   if(
-    game.steps >= 15 &&
-    Math.random() < 0.06
+
+    game.steps >= 18 &&
+
+    Math.random() < 0.035
+
   ){
 
     game.steps = 0;
 
-    encounter();
+    startBattle(false);
 
   }
 
 }
 
 
-/* =====================================================
-   TOUCH CONTROLS
-===================================================== */
+/* =========================================================
+   CONTROLS
+========================================================= */
 
 function bindControl(
   id,
   direction
 ){
 
-  const button =
-    document.getElementById(id);
-
-
-  button.addEventListener(
+  $(id).addEventListener(
 
     "pointerdown",
 
@@ -1980,9 +2030,9 @@ bindControl(
 );
 
 
-/* =====================================================
+/* =========================================================
    KEYBOARD
-===================================================== */
+========================================================= */
 
 document.addEventListener(
 
@@ -1998,15 +2048,7 @@ document.addEventListener(
 
       ArrowLeft:"left",
 
-      ArrowRight:"right",
-
-      w:"up",
-
-      s:"down",
-
-      a:"left",
-
-      d:"right"
+      ArrowRight:"right"
 
     };
 
@@ -2028,195 +2070,61 @@ document.addEventListener(
 );
 
 
-/* =====================================================
-   ENCOUNTER
-===================================================== */
+/* =========================================================
+   ENEMY
+========================================================= */
 
-function encounter(){
+function setEnemy(
+  name,
+  icon,
+  hp
+){
 
-  if(game.battle)
-    return;
+  game.enemy = {
 
+    name:name,
 
-  const enemies = [
+    icon:icon,
 
-    {
-      icon:"👾",
-      name:"グリーンスライム",
-      hp:30
-    },
+    hp:hp,
 
-    {
-      icon:"🐺",
-      name:"ワイルドウルフ",
-      hp:40
-    },
+    maxHp:hp
 
-    {
-      icon:"🦇",
-      name:"ダークバット",
-      hp:35
-    },
-
-    {
-      icon:"🌵",
-      name:"サンドプラント",
-      hp:45
-    }
-
-  ];
+  };
 
 
-  const enemy =
-    enemies[
-      Math.floor(
-        Math.random() *
-        enemies.length
-      )
-    ];
+  $("enemyName").textContent =
+    name;
 
-
-  game.enemy.icon =
-    enemy.icon;
-
-  game.enemy.name =
-    enemy.name;
-
-  game.enemy.maxHp =
-    enemy.hp;
-
-  game.enemy.hp =
-    enemy.hp;
-
-
-  game.party.soramameHP =
-    game.party.soramameMaxHP;
-
-  game.party.endouHP =
-    game.party.endouMaxHP;
-
-
-  document.getElementById(
-    "enemyIcon"
-  ).textContent =
-    enemy.icon;
-
-
-  document.getElementById(
-    "enemyName"
-  ).textContent =
-    enemy.name;
-
-
-  document.getElementById(
-    "battleLog"
-  ).textContent =
-    "敵がこちらを見ている……";
+  $("enemySprite").textContent =
+    icon;
 
 
   updateEnemy();
 
-  updateParty();
-
-
-  openBattle();
-
 }
 
 
-/* =====================================================
-   OPEN BATTLE
-===================================================== */
-
-function openBattle(){
-
-  game.battle = true;
-
-  game.guard = false;
-
-
-  /*
-    display:flexを先に指定。
-
-    そのあとshowを付ける。
-  */
-
-  battle.style.display =
-    "flex";
-
-
-  battle.classList.remove(
-    "show"
-  );
-
-
-  requestAnimationFrame(() => {
-
-    requestAnimationFrame(() => {
-
-      battle.classList.add(
-        "show"
-      );
-
-    });
-
-  });
-
-}
-
-
-/* =====================================================
-   CLOSE BATTLE
-===================================================== */
-
-function closeBattle(){
-
-  battle.classList.remove(
-    "show"
-  );
-
-
-  setTimeout(() => {
-
-    battle.style.display =
-      "none";
-
-    game.battle = false;
-
-    game.guard = false;
-
-  },320);
-
-}
-
-
-/* =====================================================
+/* =========================================================
    ENEMY HP
-===================================================== */
+========================================================= */
 
 function updateEnemy(){
 
   const percent =
     Math.max(
       0,
-      Math.min(
-        100,
-        game.enemy.hp /
-        game.enemy.maxHp *
-        100
-      )
+      game.enemy.hp /
+      game.enemy.maxHp *
+      100
     );
 
 
-  document.getElementById(
-    "enemyHPBar"
-  ).style.width =
+  $("enemyHPBar").style.width =
     percent + "%";
 
 
-  document.getElementById(
-    "enemyHPText"
-  ).textContent =
+  $("enemyHPText").textContent =
 
     game.enemy.hp +
     " / " +
@@ -2225,448 +2133,564 @@ function updateEnemy(){
 }
 
 
-/* =====================================================
-   PARTY HP
-===================================================== */
+/* =========================================================
+   PLAYER HP
+========================================================= */
 
-function updateParty(){
+function updatePlayerHP(){
 
-  const soramame =
-    game.party.soramameHP /
-    game.party.soramameMaxHP *
-    100;
+  const percent =
 
-  const endou =
-    game.party.endouHP /
-    game.party.endouMaxHP *
-    100;
-
-
-  document.getElementById(
-    "soramameHP"
-  ).style.width =
     Math.max(
       0,
-      soramame
-    ) + "%";
+      game.player.hp /
+      game.player.maxHp *
+      100
+    );
 
 
-  document.getElementById(
-    "endouHP"
-  ).style.width =
-    Math.max(
-      0,
-      endou
-    ) + "%";
+  $("playerHPBar").style.width =
+    percent + "%";
 
 }
 
 
-/* =====================================================
-   BATTLE LOG
-===================================================== */
+/* =========================================================
+   START BATTLE
+========================================================= */
 
-function battleLog(text){
+function startBattle(stage){
 
-  document.getElementById(
-    "battleLog"
-  ).textContent =
-    text;
+  game.battle =
+    true;
+
+  game.guard =
+    false;
+
+  game.player.hp =
+    game.player.maxHp;
+
+
+  /*
+    ステージ戦
+  */
+
+  if(stage){
+
+    setEnemy(
+      "山道の魔物",
+      "👹",
+      65
+    );
+
+  }
+
+  /*
+    ランダム戦
+  */
+
+  else{
+
+    const enemies = [
+
+      [
+        "サンドプラント",
+        "🌵",
+        45
+      ],
+
+      [
+        "グリーンスライム",
+        "👾",
+        32
+      ],
+
+      [
+        "ワイルドウルフ",
+        "🐺",
+        50
+      ]
+
+    ];
+
+
+    const enemy =
+      enemies[
+        Math.floor(
+          Math.random() *
+          enemies.length
+        )
+      ];
+
+
+    setEnemy(
+      enemy[0],
+      enemy[1],
+      enemy[2]
+    );
+
+  }
+
+
+  updatePlayerHP();
+
+
+  $("battleLog").textContent =
+
+    game.enemy.name +
+    "が現れた！";
+
+
+  $("battleResult").style.display =
+    "none";
+
+
+  $("skillMenu")
+    .classList
+    .remove("show");
+
+
+  /*
+    ここでフィールドとは
+    完全に別画面になる。
+  */
+
+  battle.classList.add(
+    "show"
+  );
 
 }
 
 
-/* =====================================================
-   ATTACK
-===================================================== */
+/* =========================================================
+   DAMAGE EFFECT
+========================================================= */
 
-document.getElementById(
-  "attackButton"
-)
-.addEventListener(
+function damageFloat(
+  amount
+){
 
-  "pointerdown",
-
-  event => {
-
-    event.preventDefault();
-
-    event.stopPropagation();
-
-
-    if(!game.battle)
-      return;
-
-
-    const damage =
-      8 +
-      Math.floor(
-        Math.random() * 9
-      );
-
-
-    game.enemy.hp -=
-      damage;
-
-
-    if(game.enemy.hp < 0)
-      game.enemy.hp = 0;
-
-
-    updateEnemy();
-
-
-    battleLog(
-      `そらまめのこうげき！ ${damage}ダメージ！`
+  const damage =
+    document.createElement(
+      "div"
     );
 
 
-    if(game.enemy.hp <= 0){
+  damage.className =
+    "damageFloat";
 
-      victory();
 
-      return;
+  damage.textContent =
+    "-" + amount;
 
-    }
 
+  battle.appendChild(
+    damage
+  );
 
-    enemyTurn();
 
-  },
+  setTimeout(
+    () => damage.remove(),
+    750
+  );
 
-  {
-    passive:false
-  }
+}
 
-);
 
+/* =========================================================
+   ENEMY HIT
+========================================================= */
 
-/* =====================================================
-   SKILL
-===================================================== */
+function enemyHit(){
 
-document.getElementById(
-  "skillButton"
-)
-.addEventListener(
+  const sprite =
+    $("enemySprite");
 
-  "pointerdown",
 
-  event => {
+  sprite.classList.remove(
+    "hit"
+  );
 
-    event.preventDefault();
 
-    event.stopPropagation();
+  void sprite.offsetWidth;
 
 
-    if(!game.battle)
-      return;
+  sprite.classList.add(
+    "hit"
+  );
 
+}
 
-    const damage =
-      15 +
-      Math.floor(
-        Math.random() * 11
-      );
 
+/* =========================================================
+   ENEMY ATTACK
+========================================================= */
 
-    game.enemy.hp -=
-      damage;
-
-
-    if(game.enemy.hp < 0)
-      game.enemy.hp = 0;
-
-
-    updateEnemy();
-
-
-    battleLog(
-      `✨ そらまめのスキル！ ${damage}ダメージ！`
-    );
-
-
-    if(game.enemy.hp <= 0){
-
-      victory();
-
-      return;
-
-    }
-
-
-    enemyTurn();
-
-  },
-
-  {
-    passive:false
-  }
-
-);
-
-
-/* =====================================================
-   GUARD
-===================================================== */
-
-document.getElementById(
-  "guardButton"
-)
-.addEventListener(
-
-  "pointerdown",
-
-  event => {
-
-    event.preventDefault();
-
-    event.stopPropagation();
-
-
-    if(!game.battle)
-      return;
-
-
-    game.guard = true;
-
-
-    battleLog(
-      "🛡️ そらまめは身を守っている！"
-    );
-
-
-    enemyTurn();
-
-  },
-
-  {
-    passive:false
-  }
-
-);
-
-
-/* =====================================================
-   RUN
-===================================================== */
-
-document.getElementById(
-  "runButton"
-)
-.addEventListener(
-
-  "pointerdown",
-
-  event => {
-
-    event.preventDefault();
-
-    event.stopPropagation();
-
-
-    if(!game.battle)
-      return;
-
-
-    /*
-      70%で逃走成功
-    */
-
-    if(Math.random() < .7){
-
-      battleLog(
-        "🏃 うまく逃げ切った！"
-      );
-
-
-      setTimeout(() => {
-
-        closeBattle();
-
-      },500);
-
-
-    }else{
-
-      battleLog(
-        "❌ 逃げられなかった！"
-      );
-
-
-      enemyTurn();
-
-    }
-
-  },
-
-  {
-    passive:false
-  }
-
-);
-
-
-/* =====================================================
-   ENEMY TURN
-===================================================== */
-
-function enemyTurn(){
+function enemyAttack(){
 
   if(!game.battle)
     return;
 
 
-  document.getElementById(
-    "battleTurn"
-  ).textContent =
-    "ENEMY TURN";
+  let damage =
+
+    5 +
+    Math.floor(
+      Math.random() * 6
+    );
 
 
-  setTimeout(() => {
+  if(game.guard){
+
+    damage =
+      Math.ceil(
+        damage / 2
+      );
+
+  }
+
+
+  game.player.hp =
+    Math.max(
+      0,
+      game.player.hp -
+      damage
+    );
+
+
+  updatePlayerHP();
+
+
+  if(game.guard){
+
+    $("battleLog").textContent =
+      "🛡️ 防御成功！ " +
+      damage +
+      "ダメージ！";
+
+  }
+
+  else{
+
+    $("battleLog").textContent =
+      game.enemy.name +
+      "の攻撃！ " +
+      damage +
+      "ダメージ！";
+
+  }
+
+
+  game.guard =
+    false;
+
+
+  if(
+    game.player.hp <= 0
+  ){
+
+    showBattleResult(
+      false
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   ATTACK
+========================================================= */
+
+function playerAttack(){
+
+  if(!game.battle)
+    return;
+
+
+  const damage =
+
+    8 +
+    Math.floor(
+      Math.random() * 8
+    );
+
+
+  game.enemy.hp =
+
+    Math.max(
+      0,
+      game.enemy.hp -
+      damage
+    );
+
+
+  updateEnemy();
+
+  enemyHit();
+
+  damageFloat(
+    damage
+  );
+
+
+  $("battleLog").textContent =
+
+    "⚔️ そらまめの攻撃！ " +
+    damage +
+    "ダメージ！";
+
+
+  if(
+    game.enemy.hp <= 0
+  ){
+
+    setTimeout(
+      () => {
+
+        showBattleResult(
+          true
+        );
+
+      },
+      350
+    );
+
+    return;
+
+  }
+
+
+  setTimeout(
+    enemyAttack,
+    650
+  );
+
+}
+
+
+/* =========================================================
+   ATTACK BUTTON
+========================================================= */
+
+$("attackButton")
+.addEventListener(
+
+  "pointerdown",
+
+  event => {
+
+    event.preventDefault();
+
+    playerAttack();
+
+  }
+
+);
+
+
+/* =========================================================
+   SKILL MENU
+========================================================= */
+
+$("skillButton")
+.addEventListener(
+
+  "pointerdown",
+
+  event => {
+
+    event.preventDefault();
+
 
     if(!game.battle)
       return;
 
 
-    let damage =
-      5 +
-      Math.floor(
-        Math.random() * 6
+    $("skillMenu")
+      .classList
+      .toggle("show");
+
+  }
+
+);
+
+
+/* =========================================================
+   SKILLS
+========================================================= */
+
+document
+  .querySelectorAll(
+    ".skillBtn"
+  )
+  .forEach(
+
+    button => {
+
+      button.addEventListener(
+
+        "pointerdown",
+
+        event => {
+
+          event.preventDefault();
+
+
+          const skill =
+            button.dataset.skill;
+
+
+          /*
+            戻る
+          */
+
+          if(
+            skill === "back"
+          ){
+
+            $("skillMenu")
+              .classList
+              .remove("show");
+
+            return;
+
+          }
+
+
+          /*
+            ファイア
+          */
+
+          if(
+            skill === "fire"
+          ){
+
+            const damage =
+
+              14 +
+              Math.floor(
+                Math.random() * 10
+              );
+
+
+            game.enemy.hp =
+
+              Math.max(
+                0,
+                game.enemy.hp -
+                damage
+              );
+
+
+            updateEnemy();
+
+            enemyHit();
+
+            damageFloat(
+              damage
+            );
+
+
+            $("battleLog")
+              .textContent =
+
+              "🔥 ファイア！ " +
+              damage +
+              "ダメージ！";
+
+
+            $("skillMenu")
+              .classList
+              .remove("show");
+
+
+            if(
+              game.enemy.hp <= 0
+            ){
+
+              setTimeout(
+                () => {
+
+                  showBattleResult(
+                    true
+                  );
+
+                },
+                350
+              );
+
+              return;
+
+            }
+
+
+            setTimeout(
+              enemyAttack,
+              700
+            );
+
+          }
+
+
+          /*
+            ヒール
+          */
+
+          if(
+            skill === "heal"
+          ){
+
+            const heal =
+              15;
+
+
+            game.player.hp =
+
+              Math.min(
+                game.player.maxHp,
+                game.player.hp +
+                heal
+              );
+
+
+            updatePlayerHP();
+
+
+            $("battleLog")
+              .textContent =
+
+              "💚 HPが " +
+              heal +
+              " 回復した！";
+
+
+            $("skillMenu")
+              .classList
+              .remove("show");
+
+
+            setTimeout(
+              enemyAttack,
+              700
+            );
+
+          }
+
+        }
+
       );
 
-
-    if(game.guard){
-
-      damage =
-        Math.floor(
-          damage / 2
-        );
-
-      game.guard = false;
-
     }
 
-
-    game.party.soramameHP -=
-      damage;
-
-
-    if(
-      game.party.soramameHP < 0
-    ){
-
-      game.party.soramameHP =
-        0;
-
-    }
-
-
-    updateParty();
-
-
-    battleLog(
-      `${game.enemy.name}のこうげき！ ${damage}ダメージ！`
-    );
-
-
-    if(
-      game.party.soramameHP <= 0
-    ){
-
-      defeat();
-
-      return;
-
-    }
-
-
-    document.getElementById(
-      "battleTurn"
-    ).textContent =
-      "PLAYER TURN";
-
-  },650);
-
-}
-
-
-/* =====================================================
-   VICTORY
-===================================================== */
-
-function victory(){
-
-  battleLog(
-    "🎉 敵を倒した！"
   );
 
 
-  game.gold += 30;
+/* =========================================================
+   GUARD
+========================================================= */
 
-  game.level +=
-    Math.random() < .25
-      ? 1
-      : 0;
-
-
-  updateHUD();
-
-
-  setTimeout(() => {
-
-    closeBattle();
-
-    showMessage(
-      "✨ 戦闘に勝利した！ +30G"
-    );
-
-  },900);
-
-}
-
-
-/* =====================================================
-   DEFEAT
-===================================================== */
-
-function defeat(){
-
-  battleLog(
-    "💀 そらまめは倒れてしまった……"
-  );
-
-
-  setTimeout(() => {
-
-    closeBattle();
-
-
-    game.player.x =
-      1200;
-
-    game.player.y =
-      900;
-
-    updateWorld();
-
-
-    showMessage(
-      "🌱 セーブポイントへ戻った！"
-    );
-
-  },1000);
-
-}
-
-
-/* =====================================================
-   STAGE
-===================================================== */
-
-document.getElementById(
-  "stage1"
-)
+$("guardButton")
 .addEventListener(
 
   "pointerdown",
@@ -2675,72 +2699,232 @@ document.getElementById(
 
     event.preventDefault();
 
-    event.stopPropagation();
+
+    if(!game.battle)
+      return;
+
+
+    game.guard =
+      true;
+
+
+    $("battleLog")
+      .textContent =
+
+      "🛡️ そらまめは身を守っている！";
+
+
+    setTimeout(
+      enemyAttack,
+      650
+    );
+
+  }
+
+);
+
+
+/* =========================================================
+   RUN
+========================================================= */
+
+$("runButton")
+.addEventListener(
+
+  "pointerdown",
+
+  event => {
+
+    event.preventDefault();
+
+
+    if(!game.battle)
+      return;
+
+
+    const success =
+      Math.random() < 0.7;
+
+
+    if(success){
+
+      $("battleLog")
+        .textContent =
+
+        "🏃 うまく逃げ切った！";
+
+
+      setTimeout(
+        endBattle,
+        500
+      );
+
+    }
+
+    else{
+
+      $("battleLog")
+        .textContent =
+
+        "❌ 逃げられない！";
+
+
+      setTimeout(
+        enemyAttack,
+        600
+      );
+
+    }
+
+  }
+
+);
+
+
+/* =========================================================
+   BATTLE RESULT
+========================================================= */
+
+function showBattleResult(
+  victory
+){
+
+  if(!game.battle)
+    return;
+
+
+  $("battleResult")
+    .style
+    .display = "flex";
+
+
+  if(victory){
+
+    game.gold +=
+      30;
+
+
+    updateHUD();
+
+
+    $("resultTitle")
+      .textContent =
+      "🎉 勝利！";
+
+
+    $("resultText")
+      .textContent =
+      "30Gを手に入れた！";
+
+  }
+
+  else{
+
+    $("resultTitle")
+      .textContent =
+      "💀 敗北…";
+
+
+    $("resultText")
+      .textContent =
+      "フィールドへ戻ります。";
+
+  }
+
+}
+
+
+/* =========================================================
+   END BATTLE
+========================================================= */
+
+function endBattle(){
+
+  game.battle =
+    false;
+
+
+  battle.classList.remove(
+    "show"
+  );
+
+
+  $("battleResult")
+    .style
+    .display = "none";
+
+
+  $("skillMenu")
+    .classList
+    .remove("show");
+
+
+  game.player.hp =
+    game.player.maxHp;
+
+
+  updatePlayerHP();
+
+
+  showMessage(
+    "🌱 フィールドへ戻った！"
+  );
+
+}
+
+
+/* =========================================================
+   RESULT BUTTON
+========================================================= */
+
+$("resultButton")
+.addEventListener(
+
+  "pointerdown",
+
+  event => {
+
+    event.preventDefault();
+
+    endBattle();
+
+  }
+
+);
+
+
+/* =========================================================
+   STAGE 1
+========================================================= */
+
+$("stage1")
+.addEventListener(
+
+  "pointerdown",
+
+  event => {
+
+    event.preventDefault();
 
 
     if(game.battle)
       return;
 
 
-    game.enemy.icon =
-      "👹";
+    startBattle(
+      true
+    );
 
-    game.enemy.name =
-      "山道の魔物";
-
-    game.enemy.maxHp =
-      60;
-
-    game.enemy.hp =
-      60;
-
-
-    document.getElementById(
-      "enemyIcon"
-    ).textContent =
-      "👹";
-
-
-    document.getElementById(
-      "enemyName"
-    ).textContent =
-      "山道の魔物";
-
-
-    document.getElementById(
-      "battleLog"
-    ).textContent =
-      "山道の魔物が立ちはだかった！";
-
-
-    updateEnemy();
-
-    updateParty();
-
-    openBattle();
-
-  },
-
-  {
-    passive:false
   }
 
 );
 
 
-/* =====================================================
-   WORLD PANEL
-===================================================== */
+/* =========================================================
+   WORLD
+========================================================= */
 
-const worldPanel =
-  document.getElementById(
-    "worldPanel"
-  );
-
-
-document.getElementById(
-  "worldButton"
-)
+$("worldButton")
 .addEventListener(
 
   "pointerdown",
@@ -2749,32 +2933,16 @@ document.getElementById(
 
     event.preventDefault();
 
-    event.stopPropagation();
+    $("worldPanel")
+      .style
+      .display = "flex";
 
-
-    if(game.battle)
-      return;
-
-
-    worldPanel.style.display =
-      "flex";
-
-  },
-
-  {
-    passive:false
   }
 
 );
 
 
-/* =====================================================
-   CLOSE WORLD PANEL
-===================================================== */
-
-document.getElementById(
-  "closeWorld"
-)
+$("closeWorld")
 .addEventListener(
 
   "pointerdown",
@@ -2783,28 +2951,16 @@ document.getElementById(
 
     event.preventDefault();
 
-    event.stopPropagation();
+    $("worldPanel")
+      .style
+      .display = "none";
 
-
-    worldPanel.style.display =
-      "none";
-
-  },
-
-  {
-    passive:false
   }
 
 );
 
 
-/* =====================================================
-   SURFACE SAVE
-===================================================== */
-
-document.getElementById(
-  "surfaceSave"
-)
+$("surfaceSave")
 .addEventListener(
 
   "pointerdown",
@@ -2813,33 +2969,21 @@ document.getElementById(
 
     event.preventDefault();
 
-    event.stopPropagation();
-
-
-    worldPanel.style.display =
-      "none";
+    $("worldPanel")
+      .style
+      .display = "none";
 
 
     showMessage(
       "🌱 表世界のセーブポイントへ！"
     );
 
-  },
-
-  {
-    passive:false
   }
 
 );
 
 
-/* =====================================================
-   UNDER SAVE
-===================================================== */
-
-document.getElementById(
-  "underSave"
-)
+$("underSave")
 .addEventListener(
 
   "pointerdown",
@@ -2848,66 +2992,26 @@ document.getElementById(
 
     event.preventDefault();
 
-    event.stopPropagation();
-
-
-    worldPanel.style.display =
-      "none";
+    $("worldPanel")
+      .style
+      .display = "none";
 
 
     showMessage(
       "🌑 裏世界のセーブポイントへ！"
     );
 
-  },
-
-  {
-    passive:false
   }
 
 );
 
 
-/* =====================================================
-   MESSAGE
-===================================================== */
+/* =========================================================
+   MOBILE / SAFARI
+========================================================= */
 
-let messageTimer = null;
-
-
-function showMessage(text){
-
-  const message =
-    document.getElementById(
-      "message"
-    );
-
-
-  message.textContent =
-    text;
-
-
-  clearTimeout(
-    messageTimer
-  );
-
-
-  messageTimer =
-    setTimeout(() => {
-
-      message.textContent =
-        "👣 フィールドを探索しよう！";
-
-    },1800);
-
-}
-
-
-/* =====================================================
-   SAFARI ZOOM PREVENTION
-===================================================== */
-
-let lastTouchTime = 0;
+let lastTouch =
+  0;
 
 
 document.addEventListener(
@@ -2920,8 +3024,12 @@ document.addEventListener(
       Date.now();
 
 
+    /*
+      ダブルタップズーム防止
+    */
+
     if(
-      now - lastTouchTime <
+      now - lastTouch <
       350
     ){
 
@@ -2930,7 +3038,7 @@ document.addEventListener(
     }
 
 
-    lastTouchTime =
+    lastTouch =
       now;
 
   },
@@ -2942,9 +3050,9 @@ document.addEventListener(
 );
 
 
-/* =====================================================
-   PINCH ZOOM
-===================================================== */
+/*
+  ピンチズーム防止
+*/
 
 document.addEventListener(
 
@@ -2953,8 +3061,8 @@ document.addEventListener(
   event => {
 
     if(
-      event.touches &&
-      event.touches.length > 1
+      event.touches.length >
+      1
     ){
 
       event.preventDefault();
@@ -2970,14 +3078,15 @@ document.addEventListener(
 );
 
 
-/* =====================================================
-   SAFARI GESTURES
-===================================================== */
+/*
+  Safariジェスチャー防止
+*/
 
 [
   "gesturestart",
   "gesturechange",
   "gestureend"
+
 ].forEach(
 
   type => {
@@ -3003,50 +3112,19 @@ document.addEventListener(
 );
 
 
-/* =====================================================
-   RESIZE
-===================================================== */
-
-window.addEventListener(
-
-  "resize",
-
-  () => {
-
-    updateWorld();
-
-  }
-
-);
-
-
-/* =====================================================
-   ORIENTATION CHANGE
-===================================================== */
-
-window.addEventListener(
-
-  "orientationchange",
-
-  () => {
-
-    setTimeout(
-      updateWorld,
-      100
-    );
-
-  }
-
-);
-
-
-/* =====================================================
+/* =========================================================
    START
-===================================================== */
+========================================================= */
+
+window.addEventListener(
+  "resize",
+  updateCamera
+);
+
 
 updateHUD();
 
-updatePlayer();
+updatePlayerHP();
 
 updateCamera();
 
